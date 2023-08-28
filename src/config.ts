@@ -1,4 +1,4 @@
-const DOMAIN = "http://localhost:3000";
+const DOMAIN = "http://localhost:8000/api";
 
 const API = {
   COUNTRIES: DOMAIN + "/countries",
@@ -8,6 +8,7 @@ const API = {
   GOV_INFO: DOMAIN + "/gov_info",
   IMPORTS: DOMAIN + "/imports",
   EXPORTS: DOMAIN + "/exports",
+  GEOJSON: DOMAIN + "/geojson",
 } as const;
 
 export { API };
