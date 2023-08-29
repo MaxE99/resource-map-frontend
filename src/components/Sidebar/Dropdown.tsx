@@ -1,9 +1,5 @@
 const Dropdown = (): JSX.Element => {
-  return (
-    <div>
-      Dropdown
-    </div>
-  );
-}
+  return <div>Dropdown</div>;
+};
 
 export default Dropdown;

@@ -16,7 +16,7 @@ const Map = (): JSX.Element => {
   }, []);
 
   return (
-    <div style={{ width: "70%", display: "block", padding: "100px" }}>
+    <div>
       <MapContainer
         style={{ height: "50rem", borderRadius: "20px" }}
         center={[30, 0]}
