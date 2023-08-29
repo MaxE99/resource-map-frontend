@@ -3,6 +3,7 @@ import Map from "./components/Map/Map";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import Slider from "@mui/material/Slider";
 import { API } from "./config";
 
 const App = (): JSX.Element => {
@@ -10,6 +11,7 @@ const App = (): JSX.Element => {
   const [selectedCountry, setSelectedCountry] = useState<any>();
   const [commodities, setCommodities] = useState<any>([]);
   const [countries, setCountries] = useState<any>([]);
+  const [year, setYear] = useState<number>(2018);
 
   useEffect(() => {
     fetch(API.COMMODITIES, {
@@ -24,6 +26,10 @@ const App = (): JSX.Element => {
       .then((response) => response.json())
       .then((data) => setCountries(data));
   }, []);
+
+  const handleChange = (event, newValue) => {
+    setYear(newValue);
+  };
 
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
@@ -61,8 +67,18 @@ const App = (): JSX.Element => {
             )}
           />
         </div>
-
         <Map />
+        <Slider
+          sx={{ marginTop: "40px" }}
+          value={year}
+          min={2018}
+          max={2022}
+          step={1}
+          onChange={handleChange}
+          valueLabelDisplay="auto"
+          valueLabelFormat={(value) => value.toString()}
+          aria-label="Year Slider"
+        />
       </div>
 
       <Sidebar />
