@@ -9,6 +9,7 @@ const API = {
   IMPORTS: DOMAIN + "/imports",
   EXPORTS: DOMAIN + "/exports",
   GEOJSON: DOMAIN + "/geojson",
+  PRICES: DOMAIN + "/prices",
 } as const;
 
 export { API };

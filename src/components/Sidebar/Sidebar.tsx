@@ -1,8 +1,21 @@
 import { useEffect, useState } from "react";
+import { API } from "../../config";
+import PricePlot from "./PricePlot";
 
 const Sidebar = ({ commodity }: any): JSX.Element => {
-  console.log(commodity);
-  console.log(commodity?.name);
+  const [prices, setPrices] = useState();
+  console.log(prices);
+
+  useEffect(() => {
+    if (commodity) {
+      fetch(`${API.PRICES}?commodity=${commodity.name}`, {
+        method: "GET", // Specify the GET method
+      })
+        .then((response) => response.json())
+        .then((data) => setPrices(data));
+    }
+  }, [commodity]);
+
   return (
     <div
       style={{
@@ -33,6 +46,7 @@ const Sidebar = ({ commodity }: any): JSX.Element => {
           >
             <img src={commodity.img_path} alt={commodity.name + " Image"}></img>
           </div>
+          {prices && <PricePlot data={prices} />}
           <div
             style={{ margin: "20px 0 0" }}
             dangerouslySetInnerHTML={{
