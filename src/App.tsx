@@ -81,7 +81,11 @@ const App = (): JSX.Element => {
         />
       </div>
 
-      <Sidebar />
+      <Sidebar
+        commodity={commodities.find(
+          (commodity: any) => commodity.name === selectedCommodity
+        )}
+      />
     </div>
   );
 };
