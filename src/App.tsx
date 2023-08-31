@@ -12,6 +12,7 @@ const App = (): JSX.Element => {
   const [commodities, setCommodities] = useState<any>([]);
   const [countries, setCountries] = useState<any>([]);
   const [year, setYear] = useState<number>(2018);
+  const [geojson, setGeojson] = useState<any>();
 
   useEffect(() => {
     fetch(API.COMMODITIES, {
@@ -24,7 +25,16 @@ const App = (): JSX.Element => {
       method: "GET", // Specify the GET method
     })
       .then((response) => response.json())
-      .then((data) => setCountries(data));
+      .then((data) => {
+        setCountries(data);
+        const filteredArray = data.filter((obj: any) => obj.geojson !== null);
+        const features = filteredArray.map((obj: any) => obj.geojson);
+        const featureCollection = {
+          type: "FeatureCollection",
+          features: features,
+        };
+        setGeojson(featureCollection);
+      });
   }, []);
 
   const handleChange = (event, newValue) => {
@@ -67,7 +77,7 @@ const App = (): JSX.Element => {
             )}
           />
         </div>
-        <Map />
+        {geojson && <Map countries={geojson} />}
         <Slider
           sx={{ marginTop: "40px" }}
           value={year}

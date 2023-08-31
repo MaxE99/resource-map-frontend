@@ -8,7 +8,6 @@ const API = {
   GOV_INFO: DOMAIN + "/gov_info",
   IMPORTS: DOMAIN + "/imports",
   EXPORTS: DOMAIN + "/exports",
-  GEOJSON: DOMAIN + "/geojson",
   PRICES: DOMAIN + "/prices",
 } as const;
 

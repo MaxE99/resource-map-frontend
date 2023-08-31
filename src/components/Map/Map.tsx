@@ -1,23 +1,11 @@
 import "leaflet/dist/leaflet.css";
-import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 
-import { API } from "../../config";
-
-const Map = (): JSX.Element => {
-  const [countries, setCountries] = useState<any>();
+const Map = ({ countries }: any): JSX.Element => {
   const bounds: [[number, number], [number, number]] = [
     [-90, -180], // Bottom left corner of the world
     [90, 180], // Top right corner of the world
   ];
-
-  useEffect(() => {
-    fetch(API.GEOJSON, {
-      method: "GET", // Specify the GET method
-    })
-      .then((response) => response.json())
-      .then((data) => setCountries(data));
-  }, []);
 
   return (
     <div>

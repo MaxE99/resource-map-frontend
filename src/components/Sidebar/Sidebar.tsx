@@ -4,7 +4,6 @@ import PricePlot from "./PricePlot";
 
 const Sidebar = ({ commodity }: any): JSX.Element => {
   const [prices, setPrices] = useState();
-  console.log(prices);
 
   useEffect(() => {
     if (commodity) {
