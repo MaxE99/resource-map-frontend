@@ -7,6 +7,15 @@ const Map = ({ countries }: any): JSX.Element => {
     [90, 180], // Top right corner of the world
   ];
 
+  const getFeatureStyle = (feature: any) => {
+    return {
+      fillColor: feature?.properties?.style?.fillColor || "white",
+      weight: 1,
+      color: "black",
+      fillOpacity: 0.5,
+    };
+  };
+
   return (
     <div>
       <MapContainer
@@ -21,12 +30,7 @@ const Map = ({ countries }: any): JSX.Element => {
           attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {countries && (
-          <GeoJSON
-            pathOptions={{ color: "black", weight: 1, fillOpacity: 0 }}
-            data={countries}
-          />
-        )}
+        {countries && <GeoJSON data={countries} style={getFeatureStyle} />}
       </MapContainer>
     </div>
   );
