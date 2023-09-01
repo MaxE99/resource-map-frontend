@@ -16,6 +16,8 @@ const App = (): JSX.Element => {
   const [productionSwitch, setProductionSwitch] =
     useState<string>("Production");
   const [govInfo, setGovInfo] = useState<any>();
+  const [otherCountries, setOtherCountries] = useState<number>();
+  const [worldTotal, setWorldTotal] = useState<number>();
 
   useEffect(() => {
     fetch(API.COMMODITIES, {
@@ -91,6 +93,18 @@ const App = (): JSX.Element => {
               accumulator + parseFloat(productionCountry.amount),
             0
           );
+
+          const otherCountriesAmount = data.find(
+            (d: any) => d.country_name === "Other countries"
+          )?.amount;
+
+          setOtherCountries(otherCountriesAmount);
+
+          const worldTotalAmount = data.find(
+            (d: any) => d.country_name === "World total"
+          )?.amount;
+
+          setWorldTotal(worldTotalAmount);
 
           const updatedGeoJsonData = { ...geojson };
 
@@ -221,6 +235,12 @@ const App = (): JSX.Element => {
               ? "Switch To Reserves"
               : "Switch To Production"}
           </button>
+        </div>
+        <div style={{ display: "flex", marginBottom: "20px", color: "white" }}>
+          <span style={{ marginRight: "20px" }}>
+            Other Countries: {otherCountries}
+          </span>
+          <span>World Total: {worldTotal}</span>
         </div>
         {geojson && <Map key={JSON.stringify(geojson)} countries={geojson} />}
         <Slider

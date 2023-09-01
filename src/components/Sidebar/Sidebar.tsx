@@ -65,7 +65,7 @@ const Sidebar = ({ commodity, govInfo }: any): JSX.Element => {
               {commodity}
             </div>
           ))}
-          {govInfo[0]?.prod_and_use && (
+          {govInfo?.length && govInfo[0]?.prod_and_use && (
             <React.Fragment>
               <div style={{ marginTop: "20px" }}>Production and Use:</div>
               <div style={{ margin: "5px 0 20px 0" }}>
