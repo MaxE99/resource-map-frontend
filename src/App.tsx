@@ -15,6 +15,7 @@ const App = (): JSX.Element => {
   const [geojson, setGeojson] = useState<any>();
   const [productionSwitch, setProductionSwitch] =
     useState<string>("Production");
+  const [govInfo, setGovInfo] = useState<any>();
 
   useEffect(() => {
     fetch(API.COMMODITIES, {
@@ -122,6 +123,19 @@ const App = (): JSX.Element => {
     }
   }, [selectedCountry, selectedCommodity, year, productionSwitch]);
 
+  useEffect(() => {
+    if (selectedCommodity?.name) {
+      fetch(
+        `${API.GOV_INFO}?commodity=${selectedCommodity.name}&year=${year}`,
+        {
+          method: "GET", // Specify the GET method
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => setGovInfo(data));
+    }
+  }, [selectedCommodity, year]);
+
   const handleChange = (_: any, newValue: any) => {
     setYear(newValue);
   };
@@ -222,7 +236,7 @@ const App = (): JSX.Element => {
         />
       </div>
 
-      <Sidebar commodity={selectedCommodity} />
+      <Sidebar commodity={selectedCommodity} govInfo={govInfo} />
     </div>
   );
 };

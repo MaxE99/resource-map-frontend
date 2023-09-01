@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { API } from "../../config";
 import PricePlot from "./PricePlot";
 
-const Sidebar = ({ commodity }: any): JSX.Element => {
+const Sidebar = ({ commodity, govInfo }: any): JSX.Element => {
   const [prices, setPrices] = useState();
 
   useEffect(() => {
@@ -65,6 +65,28 @@ const Sidebar = ({ commodity }: any): JSX.Element => {
               {commodity}
             </div>
           ))}
+          {govInfo[0]?.prod_and_use && (
+            <React.Fragment>
+              <div style={{ marginTop: "20px" }}>Production and Use:</div>
+              <div style={{ margin: "5px 0 20px 0" }}>
+                {govInfo[0].prod_and_use}
+              </div>
+              <div>Recycling:</div>
+              <div style={{ margin: "5px 0 20px 0" }}>
+                {govInfo[0].recycling}
+              </div>
+              <div>Events & Trends:</div>
+              <div style={{ margin: "5px 0 20px 0" }}>{govInfo[0].events}</div>
+              <div>World Resources:</div>
+              <div style={{ margin: "5px 0 20px 0" }}>
+                {govInfo[0].world_resources}
+              </div>
+              <div>Substitutes:</div>
+              <div style={{ margin: "5px 0 20px 0" }}>
+                {govInfo[0].substitutes}
+              </div>
+            </React.Fragment>
+          )}
         </div>
       )}
     </div>
