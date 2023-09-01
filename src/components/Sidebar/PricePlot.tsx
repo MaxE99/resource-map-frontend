@@ -1,6 +1,7 @@
 import Plot from "react-plotly.js";
 
 const PricePlot = ({ data }: any) => {
+  console.log(data);
   const dates = data.map((entry: any) => entry.date);
   const prices = data.map((entry: any) => parseFloat(entry.price));
 
@@ -16,12 +17,12 @@ const PricePlot = ({ data }: any) => {
   ];
 
   const layout = {
-    title: "Price Trend Over Time",
+    title: data[0].description,
     xaxis: {
       title: "Date",
     },
     yaxis: {
-      title: "Price",
+      title: "Price in $",
     },
   };
 
