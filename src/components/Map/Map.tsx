@@ -16,6 +16,17 @@ const Map = ({ countries }: any): JSX.Element => {
     };
   };
 
+  const onEachCountryFeature = (feature: any, layer: any) => {
+    let popupText = "";
+    if (feature.properties && feature.properties.ADMIN) {
+      popupText += feature.properties.ADMIN;
+    }
+    if (feature.properties && feature.properties.amount) {
+      popupText += ": " + feature.properties.amount;
+    }
+    layer.bindPopup(popupText);
+  };
+
   return (
     <div>
       <MapContainer
@@ -31,7 +42,13 @@ const Map = ({ countries }: any): JSX.Element => {
           attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {countries && <GeoJSON data={countries} style={getFeatureStyle} />}
+        {countries && (
+          <GeoJSON
+            onEachFeature={onEachCountryFeature}
+            data={countries}
+            style={getFeatureStyle}
+          />
+        )}
       </MapContainer>
     </div>
   );

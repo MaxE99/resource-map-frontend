@@ -47,12 +47,12 @@ const App = (): JSX.Element => {
       queryString = `${API.RESERVES}?`;
     }
 
-    if (selectedCountry) {
-      queryString += `country=${selectedCountry}&`;
+    if (selectedCountry?.name) {
+      queryString += `country=${selectedCountry.name}&`;
     }
 
-    if (selectedCommodity) {
-      queryString += `commodity=${selectedCommodity}&`;
+    if (selectedCommodity?.name) {
+      queryString += `commodity=${selectedCommodity.name}&`;
     }
 
     if (year) {
@@ -64,7 +64,7 @@ const App = (): JSX.Element => {
       queryString = queryString.slice(0, -1);
     }
 
-    if (selectedCommodity || selectedCountry) {
+    if (selectedCommodity?.name || selectedCountry?.name) {
       fetch(queryString, {
         method: "GET",
       })
@@ -83,6 +83,7 @@ const App = (): JSX.Element => {
               feature.properties.style = {
                 fillColor: "black",
               };
+              feature.properties.amount = productionCountry.amount;
             } else {
               feature.properties.style = {
                 fillColor: "white",
