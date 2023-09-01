@@ -43,7 +43,11 @@ const Sidebar = ({ commodity }: any): JSX.Element => {
               borderRadius: "20px",
             }}
           >
-            <img src={commodity.img_path} alt={commodity.name + " Image"}></img>
+            <img
+              src={"http://localhost:8000/static/" + commodity.img_path}
+              alt={commodity.name + " Image"}
+              style={{ width: "100%" }}
+            />
           </div>
           {prices && <PricePlot data={prices} />}
           <div

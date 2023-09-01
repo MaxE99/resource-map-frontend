@@ -11,4 +11,4 @@ const API = {
   PRICES: DOMAIN + "/prices",
 } as const;
 
-export { API };
+export { API, DOMAIN };

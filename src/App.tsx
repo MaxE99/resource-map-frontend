@@ -116,11 +116,28 @@ const App = (): JSX.Element => {
             onChange={(_event, newValue) => {
               setSelectedCommodity(newValue);
             }}
-            options={commodities
-              .map((obj: any) => obj.name)
-              .sort((a: string, b: string) => a.localeCompare(b))}
+            options={commodities.sort((a: any, b: any) =>
+              a.name.localeCompare(b.name)
+            )}
+            getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField {...params} label="Select a commodity" />
+            )}
+            renderOption={(props, option: any) => (
+              <li {...props}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <img
+                    src={"http://localhost:8000/static/" + option.img_path}
+                    alt={option.name}
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      marginRight: "10px",
+                    }}
+                  />
+                  {option.name}
+                </div>
+              </li>
             )}
           />
           <Autocomplete
@@ -129,9 +146,26 @@ const App = (): JSX.Element => {
             onChange={(_event, newValue) => {
               setSelectedCountry(newValue);
             }}
-            options={countries.map((obj: any) => obj.name)}
+            options={countries}
+            getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField {...params} label="Select a country" />
+            )}
+            renderOption={(props, option: any) => (
+              <li {...props}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <img
+                    src={"http://localhost:8000/static/" + option.flag_path}
+                    alt={option.name}
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      marginRight: "10px",
+                    }}
+                  />
+                  {option.name}
+                </div>
+              </li>
             )}
           />
           <button
@@ -161,11 +195,7 @@ const App = (): JSX.Element => {
         />
       </div>
 
-      <Sidebar
-        commodity={commodities.find(
-          (commodity: any) => commodity.name === selectedCommodity
-        )}
-      />
+      <Sidebar commodity={selectedCommodity} />
     </div>
   );
 };

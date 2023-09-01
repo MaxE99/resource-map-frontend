@@ -21,7 +21,8 @@ const Map = ({ countries }: any): JSX.Element => {
       <MapContainer
         style={{ height: "50rem", borderRadius: "20px" }}
         center={[30, 0]}
-        zoom={2}
+        minZoom={2}
+        maxZoom={5}
         bounds={bounds}
         maxBoundsViscosity={1.0}
       >
