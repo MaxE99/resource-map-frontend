@@ -39,6 +39,21 @@ const App = (): JSX.Element => {
       });
   }, []);
 
+  // Function to generate a color based on percentage
+  function getColor(percentage: number) {
+    // Calculate the darkness based on the percentage (0% => 70, 100% => 0)
+    const darkness = 70 - percentage * 4;
+
+    // Use a fixed saturation and hue for black (0% saturation and hue)
+    const saturation = 0;
+    const hue = 0;
+
+    // Convert the HSL color to RGB format
+    const rgbColor = `hsl(${hue}, ${saturation}%, ${darkness}%)`;
+
+    return rgbColor;
+  }
+
   useEffect(() => {
     let queryString = "";
     if (productionSwitch === "Production") {
@@ -70,6 +85,12 @@ const App = (): JSX.Element => {
       })
         .then((response) => response.json())
         .then((data) => {
+          const totalAmount = data.reduce(
+            (accumulator: any, productionCountry: any) =>
+              accumulator + parseFloat(productionCountry.amount),
+            0
+          );
+
           const updatedGeoJsonData = { ...geojson };
 
           updatedGeoJsonData.features.forEach((feature: any) => {
@@ -80,10 +101,15 @@ const App = (): JSX.Element => {
             );
 
             if (productionCountry) {
+              const percentage = (
+                (productionCountry.amount / totalAmount) *
+                100
+              ).toFixed(2);
+
               feature.properties.style = {
-                fillColor: "black",
+                fillColor: getColor(percentage),
               };
-              feature.properties.amount = productionCountry.amount;
+              feature.properties.amount = `${productionCountry.amount} - ${percentage}`;
             } else {
               feature.properties.style = {
                 fillColor: "white",

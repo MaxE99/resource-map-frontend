@@ -1,7 +1,6 @@
 import Plot from "react-plotly.js";
 
 const PricePlot = ({ data }: any) => {
-  console.log(data);
   const dates = data.map((entry: any) => entry.date);
   const prices = data.map((entry: any) => parseFloat(entry.price));
 
