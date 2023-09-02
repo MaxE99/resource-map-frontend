@@ -19,6 +19,17 @@ const App = (): JSX.Element => {
   const [govInfo, setGovInfo] = useState<any>();
   const [otherCountries, setOtherCountries] = useState<number>();
   const [worldTotal, setWorldTotal] = useState<number>();
+  const [otherViz, setOtherViz] = useState<any>();
+
+  const otherVizOptions = [
+    "Commodity Export Dependency",
+    "Commodity Import Depdency",
+    "High Potential For Increasing Resource Revenue",
+    "Resource Import/Export Balance",
+    "Total Resource Imports in $",
+    "Total Resource Exports in $",
+    "Control Over Resources",
+  ];
 
   useEffect(() => {
     fetch(API.COMMODITIES, {
@@ -222,6 +233,17 @@ const App = (): JSX.Element => {
                   {option.name}
                 </div>
               </li>
+            )}
+          />
+          <Autocomplete
+            sx={{ width: "40%", background: "var(--main-text)" }}
+            value={otherViz}
+            onChange={(_event, newValue) => {
+              setOtherViz(newValue);
+            }}
+            options={otherVizOptions}
+            renderInput={(params) => (
+              <TextField {...params} label="Show other visualization" />
             )}
           />
           <button
