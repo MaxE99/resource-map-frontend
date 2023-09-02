@@ -242,7 +242,13 @@ const App = (): JSX.Element => {
           </span>
           <span>World Total: {worldTotal}</span>
         </div>
-        {geojson && <Map key={JSON.stringify(geojson)} countries={geojson} />}
+        {geojson && (
+          <Map
+            key={JSON.stringify(geojson)}
+            countries={geojson}
+            selectedCommodity={selectedCommodity}
+          />
+        )}
         <Slider
           sx={{ marginTop: "40px" }}
           value={year}

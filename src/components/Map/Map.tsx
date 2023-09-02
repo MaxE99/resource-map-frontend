@@ -1,7 +1,13 @@
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, Popup } from "react-leaflet";
+import { useState } from "react";
 
-const Map = ({ countries }: any): JSX.Element => {
+import CountryResourcePopup from "./CountryResourcePopup";
+
+const Map = ({ countries, selectedCommodity }: any): JSX.Element => {
+  const [popupOpen, setPopupOpen] = useState<boolean>(false);
+  const [selectedCountry, setSelectedCountry] = useState<any>();
+
   const bounds: [[number, number], [number, number]] = [
     [-90, -180], // Bottom left corner of the world
     [90, 180], // Top right corner of the world
@@ -17,14 +23,10 @@ const Map = ({ countries }: any): JSX.Element => {
   };
 
   const onEachCountryFeature = (feature: any, layer: any) => {
-    let popupText = "";
-    if (feature.properties && feature.properties.ADMIN) {
-      popupText += feature.properties.ADMIN;
-    }
-    if (feature.properties && feature.properties.amount) {
-      popupText += ": " + feature.properties.amount;
-    }
-    layer.bindPopup(popupText);
+    layer.on("click", () => {
+      setPopupOpen(true);
+      setSelectedCountry(feature);
+    });
   };
 
   return (
@@ -48,6 +50,15 @@ const Map = ({ countries }: any): JSX.Element => {
             data={countries}
             style={getFeatureStyle}
           />
+        )}
+
+        {popupOpen && (
+          <Popup position={[0, 0]} onClose={() => setPopupOpen(false)}>
+            <CountryResourcePopup
+              feature={selectedCountry}
+              commodity={selectedCommodity}
+            />
+          </Popup>
         )}
       </MapContainer>
     </div>
