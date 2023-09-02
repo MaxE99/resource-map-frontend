@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import Map from "./components/Map/Map";
-import Sidebar from "./components/Sidebar/Sidebar";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Slider from "@mui/material/Slider";
+import Dialog from "@mui/material/Dialog";
+
 import { API } from "./config";
+import Sidebar from "./components/Sidebar/Sidebar";
 import CountryInformation from "./components/Sidebar/CountryInformation";
 
 const App = (): JSX.Element => {
@@ -283,10 +285,11 @@ const App = (): JSX.Element => {
           valueLabelFormat={(value) => value.toString()}
           aria-label="Year Slider"
         />
-        {selectedCountry && <CountryInformation country={selectedCountry} />}
       </div>
-
       <Sidebar commodity={selectedCommodity} govInfo={govInfo} />
+      <Dialog open={selectedCountry} onClose={() => selectedCountry(undefined)}>
+        <CountryInformation country={selectedCountry} />
+      </Dialog>
     </div>
   );
 };
