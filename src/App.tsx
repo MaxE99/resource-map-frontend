@@ -124,7 +124,7 @@ const App = (): JSX.Element => {
               feature.properties.style = {
                 fillColor: getColor(percentage),
               };
-              feature.properties.amount = `${productionCountry.amount} - ${percentage}`;
+              feature.properties.amount = `${productionCountry.amount} ${productionCountry.metric} - ${percentage}%`;
             } else {
               feature.properties.style = {
                 fillColor: "white",
