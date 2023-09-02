@@ -5,6 +5,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Slider from "@mui/material/Slider";
 import { API } from "./config";
+import CountryInformation from "./components/Sidebar/CountryInformation";
 
 const App = (): JSX.Element => {
   const [selectedCommodity, setSelectedCommodity] = useState<any>();
@@ -260,6 +261,7 @@ const App = (): JSX.Element => {
           valueLabelFormat={(value) => value.toString()}
           aria-label="Year Slider"
         />
+        {selectedCountry && <CountryInformation country={selectedCountry} />}
       </div>
 
       <Sidebar commodity={selectedCommodity} govInfo={govInfo} />
