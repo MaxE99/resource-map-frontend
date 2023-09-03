@@ -32,6 +32,29 @@ const App = (): JSX.Element => {
     "Control Over Resources",
   ];
 
+  const marks = [
+    {
+      value: 2018,
+      label: "2018",
+    },
+    {
+      value: 2019,
+      label: "2019",
+    },
+    {
+      value: 2020,
+      label: "2020",
+    },
+    {
+      value: 2021,
+      label: "2021",
+    },
+    {
+      value: 2022,
+      label: "2022",
+    },
+  ];
+
   useEffect(() => {
     fetch(API.COMMODITIES, {
       method: "GET", // Specify the GET method
@@ -225,10 +248,21 @@ const App = (): JSX.Element => {
           />
         )}
         <Slider
-          sx={{ marginTop: "40px" }}
+          sx={{
+            marginTop: "30px",
+            color: "#1277c4",
+            height: "10px",
+            "& .MuiSlider-markLabel": {
+              color: "#1277c4",
+              fontSize: "14px",
+              fontWeight: 600,
+              marginTop: "5px",
+            },
+          }}
           value={year}
           min={2018}
           max={2022}
+          marks={marks}
           step={1}
           onChange={handleChange}
           valueLabelDisplay="auto"

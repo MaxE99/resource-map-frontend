@@ -76,15 +76,9 @@ const Map = ({
         <button
           style={{
             position: "absolute",
-            // top: "85px",
-            // left: "12px",
             top: 0,
             right: 0,
-            // width: "33px",
-            // height: "33px",
             cursor: "pointer",
-            // backgroundColor: "#fff",
-            // border: "2px solid rgba(0,0,0,0.2)",
             background: "white",
             padding: "20px",
             zIndex: 998,
