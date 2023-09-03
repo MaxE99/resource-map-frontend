@@ -32,7 +32,7 @@ const Map = ({ countries, selectedCommodity }: any): JSX.Element => {
   return (
     <div>
       <MapContainer
-        style={{ height: "50rem", borderRadius: "20px" }}
+        style={{ height: "75vh", borderRadius: "20px" }}
         center={[30, 0]}
         minZoom={2}
         maxZoom={5}

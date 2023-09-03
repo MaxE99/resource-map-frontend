@@ -9,23 +9,36 @@ const PricePlot = ({ data }: any) => {
       x: dates,
       y: prices,
       type: "scatter",
-      mode: "lines+markers",
-      marker: { color: "blue" },
-      line: { shape: "linear" },
+      mode: "lines",
+      line: { color: "white" },
     },
   ];
 
   const layout = {
-    title: data[0].description,
     xaxis: {
-      title: "Date",
+      tickfont: { color: "white" },
+      showgrid: false,
     },
     yaxis: {
-      title: "Price in $",
+      tickfont: { color: "white" },
     },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
+    margin: { t: 0, r: 20, b: 20, l: 40 },
   };
 
-  return <Plot style={{ width: "100%" }} data={plotData} layout={layout} />;
+  const config = {
+    displayModeBar: false,
+  };
+
+  return (
+    <Plot
+      style={{ width: "100%" }}
+      data={plotData}
+      layout={layout}
+      config={config}
+    />
+  );
 };
 
 export default PricePlot;

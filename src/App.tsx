@@ -164,8 +164,17 @@ const App = (): JSX.Element => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      <div style={{ width: "70%", display: "block", padding: "100px" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        margin: "30px 30px 0",
+      }}
+    >
+      <div
+        style={{ width: "65%", height: "calc(100vh - 60px)", display: "block" }}
+      >
         <div
           style={{
             display: "flex",
