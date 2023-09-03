@@ -61,7 +61,11 @@ const Map = ({
       )}
 
       {popupOpen && (
-        <Popup position={[0, 0]} onClose={() => setPopupOpen(false)}>
+        <Popup
+          className="mapPopup"
+          position={[0, 0]}
+          onClose={() => setPopupOpen(false)}
+        >
           <CountryResourcePopup
             feature={selectedCountry}
             commodity={selectedCommodity}

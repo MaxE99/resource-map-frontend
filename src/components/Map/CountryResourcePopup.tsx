@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, Fragment } from "react";
 import { API } from "../../config";
 import ProductionPlot from "./ProductionPlot";
 import { AppContext } from "../Sidebar/AppContextProvider";
@@ -28,32 +28,28 @@ const CountryResourcePopup = ({ feature, commodity }: any): JSX.Element => {
       .then((data) => setReserveData(data));
   }, []);
   return (
-    <div
-      style={{
-        width: "600px !important",
-        fontSize: "16px",
-        overflowY: "auto",
-        height: "300px",
-      }}
-    >
+    <div>
       <div style={{ textAlign: "center" }}>
         Country: {feature.properties.ADMIN}
       </div>
-      {feature.properties.amount && (
-        <div style={{ marginTop: "20px" }}>
-          Amount: {feature.properties.amount}
-        </div>
+      {productionData && productionData.length > 0 && (
+        <Fragment>
+          <div style={{ marginTop: "20px" }}>Production By Year:</div>
+          <ProductionPlot data={productionData} />
+        </Fragment>
       )}
-      <div style={{ marginTop: "20px" }}>Production By Year:</div>
-      {productionData && <ProductionPlot data={productionData} />}
-      <div style={{ marginTop: "20px" }}>Reserves By Year:</div>
-      {reserveData && <ProductionPlot data={reserveData} />}
-      <div style={{ marginTop: "20px" }}>Net Import/Export Balance:</div>
+      {reserveData && reserveData.length > 0 && (
+        <Fragment>
+          <div style={{ marginTop: "20px" }}>Reserves By Year:</div>
+          <ProductionPlot data={reserveData} />
+        </Fragment>
+      )}
+      {/* <div style={{ marginTop: "20px" }}>Net Import/Export Balance:</div>
       <div style={{ marginTop: "20px" }}>Share Of Total Exports:</div>
       <div style={{ marginTop: "20px" }}>Share Of Resource Exports:</div>
       <div style={{ marginTop: "20px" }}>
         Correlation between Price/Production and GDP:
-      </div>
+      </div> */}
       <button
         style={{
           marginTop: "20px",
@@ -62,6 +58,8 @@ const CountryResourcePopup = ({ feature, commodity }: any): JSX.Element => {
           color: "white",
           fontSize: "16px",
           cursor: "pointer",
+          width: "calc(100% - 40px)",
+          borderRadius: "4px",
         }}
         onClick={() => setSelectedCountry(feature.properties.ADMIN)}
       >

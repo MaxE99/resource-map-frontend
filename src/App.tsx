@@ -210,8 +210,17 @@ const App = (): JSX.Element => {
               <TextField {...params} label="Select a commodity" />
             )}
             renderOption={(props, option: any) => (
-              <li {...props}>
-                <div style={{ display: "flex", alignItems: "center" }}>
+              <li {...props} style={{ padding: 0 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    fontSize: "17px",
+                    padding: "5px 10px",
+                    borderBottom: "1px solid #e2e6ea",
+                    width: "100%",
+                  }}
+                >
                   <img
                     src={"http://localhost:8000/static/" + option.img_path}
                     alt={option.name}
@@ -219,6 +228,7 @@ const App = (): JSX.Element => {
                       width: "30px",
                       height: "30px",
                       marginRight: "10px",
+                      borderRadius: "2px",
                     }}
                   />
                   {option.name}

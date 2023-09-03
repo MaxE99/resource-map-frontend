@@ -10,19 +10,20 @@ const ProductionPlot = ({ data }: any) => {
       x: dates,
       y: prices,
       type: "scatter",
-      mode: "lines+markers",
-      marker: { color: "blue" },
-      line: { shape: "linear" },
+      mode: "lines",
+      line: { color: "black" },
     },
   ];
 
   const layout = {
     xaxis: {
       title: "Year",
+      showgrid: false,
     },
     yaxis: {
       title: data.length ? `Amount in ${data[0].metric}` : "Placeholder",
     },
+    margin: { t: 20, r: 60, b: 40, l: 40 },
   };
 
   return <Plot style={{ width: "100%" }} data={plotData} layout={layout} />;
