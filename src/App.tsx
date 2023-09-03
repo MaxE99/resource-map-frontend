@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Map from "./components/Map/Map";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
@@ -8,12 +8,11 @@ import Dialog from "@mui/material/Dialog";
 import { API } from "./config";
 import Sidebar from "./components/Sidebar/Sidebar";
 import CountryInformation from "./components/Sidebar/CountryInformation";
+import { AppContext } from "./components/Sidebar/AppContextProvider";
 
 const App = (): JSX.Element => {
   const [selectedCommodity, setSelectedCommodity] = useState<any>();
-  const [selectedCountry, setSelectedCountry] = useState<any>();
   const [commodities, setCommodities] = useState<any>([]);
-  const [countries, setCountries] = useState<any>([]);
   const [year, setYear] = useState<number>(2018);
   const [geojson, setGeojson] = useState<any>();
   const [productionSwitch, setProductionSwitch] =
@@ -22,6 +21,7 @@ const App = (): JSX.Element => {
   const [otherCountries, setOtherCountries] = useState<number>();
   const [worldTotal, setWorldTotal] = useState<number>();
   const [otherViz, setOtherViz] = useState<any>();
+  const { selectedCountry, setSelectedCountry } = useContext<any>(AppContext);
 
   const otherVizOptions = [
     "Commodity Export Dependency",
@@ -45,7 +45,6 @@ const App = (): JSX.Element => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setCountries(data);
         const filteredArray = data.filter((obj: any) => obj.geojson !== null);
         const features = filteredArray.map((obj: any) => obj.geojson);
         const featureCollection = {
@@ -79,10 +78,6 @@ const App = (): JSX.Element => {
       queryString = `${API.RESERVES}?`;
     }
 
-    if (selectedCountry?.name) {
-      queryString += `country=${selectedCountry.name}&`;
-    }
-
     if (selectedCommodity?.name) {
       queryString += `commodity=${selectedCommodity.name}&`;
     }
@@ -96,7 +91,7 @@ const App = (): JSX.Element => {
       queryString = queryString.slice(0, -1);
     }
 
-    if (selectedCommodity?.name || selectedCountry?.name) {
+    if (selectedCommodity?.name) {
       fetch(queryString, {
         method: "GET",
       })
@@ -149,7 +144,7 @@ const App = (): JSX.Element => {
           setGeojson(updatedGeoJsonData);
         });
     }
-  }, [selectedCountry, selectedCommodity, year, productionSwitch]);
+  }, [selectedCommodity, year, productionSwitch]);
 
   useEffect(() => {
     if (selectedCommodity?.name) {
@@ -197,34 +192,6 @@ const App = (): JSX.Element => {
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <img
                     src={"http://localhost:8000/static/" + option.img_path}
-                    alt={option.name}
-                    style={{
-                      width: "30px",
-                      height: "30px",
-                      marginRight: "10px",
-                    }}
-                  />
-                  {option.name}
-                </div>
-              </li>
-            )}
-          />
-          <Autocomplete
-            sx={{ width: "40%", background: "var(--main-text)" }}
-            value={selectedCountry}
-            onChange={(_event, newValue) => {
-              setSelectedCountry(newValue);
-            }}
-            options={countries}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <TextField {...params} label="Select a country" />
-            )}
-            renderOption={(props, option: any) => (
-              <li {...props}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <img
-                    src={"http://localhost:8000/static/" + option.flag_path}
                     alt={option.name}
                     style={{
                       width: "30px",
@@ -287,7 +254,10 @@ const App = (): JSX.Element => {
         />
       </div>
       <Sidebar commodity={selectedCommodity} govInfo={govInfo} />
-      <Dialog open={selectedCountry} onClose={() => selectedCountry(undefined)}>
+      <Dialog
+        open={selectedCountry}
+        onClose={() => setSelectedCountry(undefined)}
+      >
         <CountryInformation country={selectedCountry} />
       </Dialog>
     </div>

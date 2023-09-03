@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { API } from "../../config";
 import ProductionPlot from "./ProductionPlot";
+import { AppContext } from "../Sidebar/AppContextProvider";
 
 const CountryResourcePopup = ({ feature, commodity }: any): JSX.Element => {
   const [productionData, setProductionData] = useState<any>();
   const [reserveData, setReserveData] = useState<any>();
+  const { setSelectedCountry } = useContext<any>(AppContext);
 
   useEffect(() => {
     fetch(
@@ -61,6 +63,7 @@ const CountryResourcePopup = ({ feature, commodity }: any): JSX.Element => {
           fontSize: "16px",
           cursor: "pointer",
         }}
+        onClick={() => setSelectedCountry(feature.properties.ADMIN)}
       >
         Open Country Information
       </button>
