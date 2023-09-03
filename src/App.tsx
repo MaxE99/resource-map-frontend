@@ -15,13 +15,12 @@ const App = (): JSX.Element => {
   const [commodities, setCommodities] = useState<any>([]);
   const [year, setYear] = useState<number>(2018);
   const [geojson, setGeojson] = useState<any>();
-  const [productionSwitch, setProductionSwitch] =
-    useState<string>("Production");
   const [govInfo, setGovInfo] = useState<any>();
-  const [otherCountries, setOtherCountries] = useState<number>();
-  const [worldTotal, setWorldTotal] = useState<number>();
+  const [otherCountries, setOtherCountries] = useState<string>();
+  const [worldTotal, setWorldTotal] = useState<string>();
   const [otherViz, setOtherViz] = useState<any>();
-  const { selectedCountry, setSelectedCountry } = useContext<any>(AppContext);
+  const { selectedCountry, setSelectedCountry, isShowingProduction } =
+    useContext<any>(AppContext);
 
   const otherVizOptions = [
     "Commodity Export Dependency",
@@ -72,7 +71,7 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     let queryString = "";
-    if (productionSwitch === "Production") {
+    if (isShowingProduction) {
       queryString = `${API.PRODUCTION}?`;
     } else {
       queryString = `${API.RESERVES}?`;
@@ -97,26 +96,14 @@ const App = (): JSX.Element => {
       })
         .then((response) => response.json())
         .then((data) => {
-          const totalAmount = data.reduce(
-            (accumulator: any, productionCountry: any) =>
-              accumulator + parseFloat(productionCountry.amount),
-            0
-          );
-
+          const updatedGeoJsonData = { ...geojson };
+          const totalAmount = data.find(
+            (d: any) => d.country_name === "World total"
+          )?.amount;
           const otherCountriesAmount = data.find(
             (d: any) => d.country_name === "Other countries"
           )?.amount;
-
-          setOtherCountries(otherCountriesAmount);
-
-          const worldTotalAmount = data.find(
-            (d: any) => d.country_name === "World total"
-          )?.amount;
-
-          setWorldTotal(worldTotalAmount);
-
-          const updatedGeoJsonData = { ...geojson };
-
+          let metric = "";
           updatedGeoJsonData.features.forEach((feature: any) => {
             const countryName = feature.properties.ADMIN;
 
@@ -130,10 +117,11 @@ const App = (): JSX.Element => {
                 100
               ).toFixed(2);
 
+              metric = productionCountry.metric;
               feature.properties.style = {
                 fillColor: getColor(percentage),
               };
-              feature.properties.amount = `${productionCountry.amount} ${productionCountry.metric} - ${percentage}%`;
+              feature.properties.amount = `${productionCountry.amount} ${metric} - ${percentage}%`;
             } else {
               feature.properties.style = {
                 fillColor: "white",
@@ -142,9 +130,11 @@ const App = (): JSX.Element => {
           });
 
           setGeojson(updatedGeoJsonData);
+          setOtherCountries(`${otherCountriesAmount} ${metric}`);
+          setWorldTotal(`${totalAmount} ${metric}`);
         });
     }
-  }, [selectedCommodity, year, productionSwitch]);
+  }, [selectedCommodity, year, isShowingProduction]);
 
   useEffect(() => {
     if (selectedCommodity?.name) {
@@ -184,7 +174,7 @@ const App = (): JSX.Element => {
           }}
         >
           <Autocomplete
-            sx={{ width: "40%", background: "var(--main-text)" }}
+            sx={{ width: "40%", background: "var(--main-text)", zIndex: 999 }}
             value={selectedCommodity}
             onChange={(_event, newValue) => {
               setSelectedCommodity(newValue);
@@ -214,7 +204,7 @@ const App = (): JSX.Element => {
             )}
           />
           <Autocomplete
-            sx={{ width: "40%", background: "var(--main-text)" }}
+            sx={{ width: "40%", background: "var(--main-text)", zIndex: 999 }}
             value={otherViz}
             onChange={(_event, newValue) => {
               setOtherViz(newValue);
@@ -224,30 +214,14 @@ const App = (): JSX.Element => {
               <TextField {...params} label="Show other visualization" />
             )}
           />
-          <button
-            style={{ padding: "0 25px", fontSize: "18px" }}
-            onClick={() =>
-              productionSwitch === "Production"
-                ? setProductionSwitch("Reserves")
-                : setProductionSwitch("Production")
-            }
-          >
-            {productionSwitch === "Production"
-              ? "Switch To Reserves"
-              : "Switch To Production"}
-          </button>
-        </div>
-        <div style={{ display: "flex", marginBottom: "20px", color: "white" }}>
-          <span style={{ marginRight: "20px" }}>
-            Other Countries: {otherCountries}
-          </span>
-          <span>World Total: {worldTotal}</span>
         </div>
         {geojson && (
           <Map
             key={JSON.stringify(geojson)}
             countries={geojson}
             selectedCommodity={selectedCommodity}
+            otherCountries={otherCountries}
+            worldTotal={worldTotal}
           />
         )}
         <Slider
