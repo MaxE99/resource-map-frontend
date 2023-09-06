@@ -37,7 +37,7 @@ const data = [
   // Add more data rows as needed
 ];
 
-const ResourceTable = () => {
+const ResourceTable = (): JSX.Element => {
   const [year, setYear] = useState(2023); // Initial year
 
   const handleYearChange = (_: any, newValue: any) => {

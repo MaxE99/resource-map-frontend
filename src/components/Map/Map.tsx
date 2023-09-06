@@ -1,25 +1,33 @@
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, GeoJSON, Popup } from "react-leaflet";
-import { useContext, useState } from "react";
-
-import CountryResourcePopup from "./CountryResourcePopup";
 import { Tooltip } from "@mui/material";
-import { AppContext } from "../Sidebar/AppContextProvider";
+import { CSSProperties, useContext, useState } from "react";
+import { Layer } from "leaflet";
+
+import CountryResourcePopup from "../Country/CountryResourcePopup";
+import { AppContext } from "../AppContextProvider";
+import { MapT } from "../../types/map";
+import { BASE_STYLE } from "../../styles/base";
+import { MAP_STYLE } from "../../styles/map";
 
 const Map = ({
   countries,
   selectedCommodity,
   otherCountries,
   worldTotal,
-}: any): JSX.Element => {
+}: MapT): JSX.Element => {
   const [popupOpen, setPopupOpen] = useState<boolean>(false);
-  const [selectedCountry, setSelectedCountry] = useState<any>();
-  const { isShowingProduction, setIsShowingProduction } =
-    useContext<any>(AppContext);
+  //@ts-ignore
+  const {
+    isShowingProduction,
+    setIsShowingProduction,
+    selectedCountry,
+    setSelectedCountry,
+  } = useContext<any>(AppContext);
 
   const bounds: [[number, number], [number, number]] = [
-    [-90, -180], // Bottom left corner of the world
-    [90, 180], // Top right corner of the world
+    [-90, -180],
+    [90, 180],
   ];
 
   const getFeatureStyle = (feature: any) => {
@@ -31,7 +39,7 @@ const Map = ({
     };
   };
 
-  const onEachCountryFeature = (feature: any, layer: any) => {
+  const onEachCountryFeature = (feature: GeoJSON.Feature, layer: Layer) => {
     layer.on("click", () => {
       setPopupOpen(true);
       setSelectedCountry(feature);
@@ -48,6 +56,8 @@ const Map = ({
       maxBoundsViscosity={1.0}
     >
       <TileLayer
+        maxZoom={10}
+        maxNativeZoom={19}
         noWrap={true}
         attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -60,16 +70,23 @@ const Map = ({
         />
       )}
 
-      {popupOpen && (
+      {popupOpen && selectedCommodity && (
         <Popup
+          key={JSON.stringify(selectedCountry)}
           className="mapPopup"
           position={[0, 0]}
-          onClose={() => setPopupOpen(false)}
+          closeButton={false}
         >
           <CountryResourcePopup
             feature={selectedCountry}
             commodity={selectedCommodity}
           />
+          <button
+            style={MAP_STYLE.CLOSE_BUTTON as CSSProperties}
+            onClick={() => setPopupOpen(false)}
+          >
+            X
+          </button>
         </Popup>
       )}
       <Tooltip
@@ -79,16 +96,8 @@ const Map = ({
       >
         <button
           style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            cursor: "pointer",
-            background: "white",
-            padding: "20px",
-            zIndex: 998,
-            borderBottomLeftRadius: "20px",
-            border: "1px solid",
-            fontSize: "15px",
+            ...(MAP_STYLE.BOX as CSSProperties),
+            background: BASE_STYLE.COLOR_PALLETE.TEXT,
           }}
           onClick={() => setIsShowingProduction(!isShowingProduction)}
         >
@@ -97,15 +106,8 @@ const Map = ({
       </Tooltip>
       <div
         style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          background: "white",
-          padding: "20px",
-          zIndex: 998,
-          borderTopRightRadius: "20px",
-          border: "1px solid",
-          fontSize: "15px",
+          ...(MAP_STYLE.BOX as CSSProperties),
+          background: BASE_STYLE.COLOR_PALLETE.TEXT,
         }}
       >
         <span style={{ marginRight: "20px" }}>

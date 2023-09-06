@@ -1,11 +1,12 @@
 import { API } from "../config";
 import {
-  Commodity,
-  Country,
-  ProductionReserves,
-  GovInfo,
-  ImportExport,
-} from "../types/types";
+  CommodityT,
+  CountryT,
+  ProductionReservesT,
+  GovInfoT,
+  ImportExportT,
+  CommodityPriceT,
+} from "../types/api";
 
 async function fetchData<T>(
   endpoint: string,
@@ -19,10 +20,6 @@ async function fetchData<T>(
 
   const response = await fetch(url, {
     method: "GET",
-    headers: new Headers({
-      "content-type": "application/json",
-    }),
-    credentials: "include",
   });
 
   if (!response.ok) {
@@ -32,25 +29,25 @@ async function fetchData<T>(
   return await response.json();
 }
 
-const fetchCountryData = async (name?: string): Promise<Country[]> => {
+const fetchCountryData = async (name?: string): Promise<CountryT[]> => {
   const queryParams = name
     ? new URLSearchParams({ name: encodeURIComponent(name) })
     : undefined;
-  return fetchData<Country[]>(API.COUNTRIES, queryParams);
+  return fetchData<CountryT[]>(API.COUNTRIES, queryParams);
 };
 
-const fetchCommodityData = async (name?: string): Promise<Commodity[]> => {
+const fetchCommodityData = async (name?: string): Promise<CommodityT[]> => {
   const queryParams = name
     ? new URLSearchParams({ name: encodeURIComponent(name) })
     : undefined;
-  return fetchData<Commodity[]>(API.COMMODITIES, queryParams);
+  return fetchData<CommodityT[]>(API.COMMODITIES, queryParams);
 };
 
 const fetchProductionData = async (
   year?: number,
   commodity?: string,
   country?: string
-): Promise<ProductionReserves[]> => {
+): Promise<ProductionReservesT[]> => {
   const queryParams = new URLSearchParams();
   if (year !== undefined) {
     queryParams.append("year", year.toString());
@@ -61,14 +58,14 @@ const fetchProductionData = async (
   if (country !== undefined) {
     queryParams.append("country", country);
   }
-  return fetchData<ProductionReserves[]>(API.PRODUCTION, queryParams);
+  return fetchData<ProductionReservesT[]>(API.PRODUCTION, queryParams);
 };
 
 const fetchReservesData = async (
   year?: number,
   commodity?: string,
   country?: string
-): Promise<ProductionReserves[]> => {
+): Promise<ProductionReservesT[]> => {
   const queryParams = new URLSearchParams();
   if (year !== undefined) {
     queryParams.append("year", year.toString());
@@ -79,13 +76,13 @@ const fetchReservesData = async (
   if (country !== undefined) {
     queryParams.append("country", country);
   }
-  return fetchData<ProductionReserves[]>(API.RESERVES, queryParams);
+  return fetchData<ProductionReservesT[]>(API.RESERVES, queryParams);
 };
 
 const fetchGovInfoData = async (
   year?: number,
   commodity?: string
-): Promise<GovInfo[]> => {
+): Promise<GovInfoT[]> => {
   const queryParams = new URLSearchParams();
   if (year !== undefined) {
     queryParams.append("year", year.toString());
@@ -93,14 +90,14 @@ const fetchGovInfoData = async (
   if (commodity !== undefined) {
     queryParams.append("commodity", commodity);
   }
-  return fetchData<GovInfo[]>(API.GOV_INFO, queryParams);
+  return fetchData<GovInfoT[]>(API.GOV_INFO, queryParams);
 };
 
 const fetchImportData = async (
   year?: number,
   commodity?: string,
   country?: string
-): Promise<ImportExport[]> => {
+): Promise<ImportExportT[]> => {
   const queryParams = new URLSearchParams();
   if (year !== undefined) {
     queryParams.append("year", year.toString());
@@ -111,14 +108,14 @@ const fetchImportData = async (
   if (country !== undefined) {
     queryParams.append("country", country);
   }
-  return fetchData<ImportExport[]>(API.IMPORTS, queryParams);
+  return fetchData<ImportExportT[]>(API.IMPORTS, queryParams);
 };
 
 const fetchExportData = async (
   year?: number,
   commodity?: string,
   country?: string
-): Promise<ImportExport[]> => {
+): Promise<ImportExportT[]> => {
   const queryParams = new URLSearchParams();
   if (year !== undefined) {
     queryParams.append("year", year.toString());
@@ -129,8 +126,11 @@ const fetchExportData = async (
   if (country !== undefined) {
     queryParams.append("country", country);
   }
-  return fetchData<ImportExport[]>(API.EXPORTS, queryParams);
+  return fetchData<ImportExportT[]>(API.EXPORTS, queryParams);
 };
+
+const fetchPriceData = (commodity: string): Promise<CommodityPriceT[]> =>
+  fetchData<CommodityPriceT[]>(API.PRICES, new URLSearchParams({ commodity }));
 
 export {
   fetchCountryData,
@@ -140,4 +140,5 @@ export {
   fetchGovInfoData,
   fetchImportData,
   fetchExportData,
+  fetchPriceData,
 };

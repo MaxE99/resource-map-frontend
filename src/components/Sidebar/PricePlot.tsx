@@ -1,26 +1,31 @@
 import Plot from "react-plotly.js";
+import { Data } from "plotly.js";
 
-const PricePlot = ({ data }: any) => {
-  const dates = data.map((entry: any) => entry.date);
-  const prices = data.map((entry: any) => parseFloat(entry.price));
+import { CommodityPriceT } from "../../types/api";
+import { BASE_STYLE } from "../../styles/base";
+import { PricePlotT } from "../../types/sidebar";
 
-  const plotData = [
+const PricePlot = ({ data }: PricePlotT) => {
+  const dates: string[] = data.map((entry: CommodityPriceT) => entry.date);
+  const prices: number[] = data.map((entry: CommodityPriceT) => entry.price);
+
+  const plotData: Data[] = [
     {
       x: dates,
       y: prices,
       type: "scatter",
       mode: "lines",
-      line: { color: "white" },
+      line: { color: BASE_STYLE.COLOR_PALLETE.TEXT },
     },
   ];
 
   const layout = {
     xaxis: {
-      tickfont: { color: "white" },
+      tickfont: { color: BASE_STYLE.COLOR_PALLETE.TEXT },
       showgrid: false,
     },
     yaxis: {
-      tickfont: { color: "white" },
+      tickfont: { color: BASE_STYLE.COLOR_PALLETE.TEXT },
     },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "rgba(0,0,0,0)",

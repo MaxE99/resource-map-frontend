@@ -1,13 +1,15 @@
+import { BASE_STYLE } from "../../styles/base";
+import { CountryInformationT } from "../../types/country";
 import ResourceTable from "./ResourceTable";
 
-const CountryInformation = ({ country }: any): JSX.Element => {
+const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
   return (
     <div
       style={{
         margin: "100px 0 100px 2.5%",
-        border: "1px solid var(--main-text)",
         borderRadius: "20px",
-        color: "var(--main-text)",
+        border: `1px solid ${BASE_STYLE.COLOR_PALLETE.TEXT}`,
+        color: BASE_STYLE.COLOR_PALLETE.TEXT,
       }}
     >
       <div>Resource Table:</div>

@@ -1,46 +1,54 @@
-import React, { useEffect, useState } from "react";
-import { API } from "../../config";
+import { CSSProperties, useEffect, useState } from "react";
+
 import PricePlot from "./PricePlot";
 import AccordionWrapper from "./AccordionWrapper";
+import { AccordionWrapperT, SidebarT } from "../../types/sidebar";
+import { fetchPriceData } from "../../functions/api";
+import { CommodityPriceT } from "../../types/api";
+import { SIDEBAR_STYLE } from "../../styles/sidebar";
+import { BASE_STYLE } from "../../styles/base";
+import { DOMAIN } from "../../config";
 
-const Sidebar = ({ commodity, govInfo }: any): JSX.Element => {
-  const [prices, setPrices] = useState();
+const Sidebar = ({ commodity, govInfo }: SidebarT): JSX.Element => {
+  console.log(govInfo);
+  const [prices, setPrices] = useState<CommodityPriceT[]>();
+
+  const govInfoData: AccordionWrapperT[] = [
+    {
+      index: 3,
+      summary: "Production and Use",
+      details: govInfo?.prod_and_use,
+    },
+    { index: 4, summary: "Recycling", details: govInfo?.recycling },
+    { index: 5, summary: "Events & Trends", details: govInfo?.events },
+    {
+      index: 6,
+      summary: "World Resources",
+      details: govInfo?.world_resources,
+    },
+    { index: 7, summary: "Substitutes", details: govInfo?.substitutes },
+  ];
 
   useEffect(() => {
     if (commodity) {
-      fetch(`${API.PRICES}?commodity=${commodity.name}`, {
-        method: "GET", // Specify the GET method
-      })
-        .then((response) => response.json())
-        .then((data) => setPrices(data));
+      fetchPriceData(commodity.name)
+        .then((data: CommodityPriceT[]) => setPrices(data))
+        .catch((error) => console.error("Error fetching price data:", error));
     }
   }, [commodity]);
 
   return (
     <div
       style={{
-        width: "32.5%",
-        height: "calc(100vh - 60px)",
-        border: "1px solid var(--main-text)",
-        borderRadius: "20px",
-        color: "var(--main-text)",
-        overflowY: "auto",
+        ...(SIDEBAR_STYLE.WRAPPER as CSSProperties),
+        color: BASE_STYLE.COLOR_PALLETE.TEXT,
       }}
     >
       {commodity && (
         <div style={{ padding: "20px", lineHeight: 1.8, textAlign: "justify" }}>
-          <div
-            style={{
-              fontSize: "30px",
-              fontWeight: 600,
-              display: "flex",
-              marginBottom: "20px",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+          <div style={SIDEBAR_STYLE.NAME_CONTAINER}>
             <img
-              src={"http://localhost:8000/static/" + commodity.img_path}
+              src={DOMAIN + "/static/" + commodity.img_path}
               alt={commodity.name + " Image"}
               style={{
                 marginRight: "10px",
@@ -68,41 +76,21 @@ const Sidebar = ({ commodity, govInfo }: any): JSX.Element => {
           <AccordionWrapper
             index={2}
             summary="Largest Producers"
-            details={commodity.companies.map((commodity: any) => (
+            details={commodity.companies.map((commodity: string) => (
               <div key={commodity} style={{ margin: "5px 0 0 10px" }}>
                 {commodity}
               </div>
             ))}
           />
-          {govInfo?.length > 0 && govInfo[0]?.prod_and_use && (
-            <React.Fragment>
+          {govInfo?.events &&
+            govInfoData.map((item: AccordionWrapperT) => (
               <AccordionWrapper
-                index={3}
-                summary="Production and Use"
-                details={govInfo[0].prod_and_use}
+                key={item.index}
+                index={item.index}
+                summary={item.summary}
+                details={item.details}
               />
-              <AccordionWrapper
-                index={4}
-                summary="Recycling"
-                details={govInfo[0].recycling}
-              />
-              <AccordionWrapper
-                index={5}
-                summary="Events & Trends"
-                details={govInfo[0].events}
-              />
-              <AccordionWrapper
-                index={6}
-                summary="World Resources"
-                details={govInfo[0].world_resources}
-              />
-              <AccordionWrapper
-                index={7}
-                summary="Substitutes"
-                details={govInfo[0].substitutes}
-              />
-            </React.Fragment>
-          )}
+            ))}
         </div>
       )}
     </div>
