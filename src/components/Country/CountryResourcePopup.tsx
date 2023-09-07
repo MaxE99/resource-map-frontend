@@ -14,10 +14,7 @@ const CountryResourcePopup = ({
 }: CountryResourcePopupT): JSX.Element => {
   const [productionData, setProductionData] = useState<ProductionReservesT[]>();
   const [reserveData, setReserveData] = useState<ProductionReservesT[]>();
-  //@ts-ignore
-  const { setSelectedCountry } = useContext<AppContextType | undefined>(
-    AppContext
-  );
+  const { setDialogIsOpen } = useContext<any>(AppContext);
 
   useEffect(() => {
     if (feature?.properties) {
@@ -38,7 +35,17 @@ const CountryResourcePopup = ({
   return (
     <div>
       <div style={{ textAlign: "center" }}>
-        Country: {feature?.properties?.ADMIN}
+        <span>Country: </span>
+        <button
+          style={{ cursor: "pointer", background: "none", fontSize: "16px" }}
+          onMouseOver={(e: any) =>
+            (e.target.style.textDecoration = "underline")
+          }
+          onMouseOut={(e: any) => (e.target.style.textDecoration = "none")}
+          onClick={() => setDialogIsOpen(true)}
+        >
+          {feature?.properties?.ADMIN}
+        </button>
       </div>
       {productionData && productionData?.length > 0 && (
         <Fragment>
@@ -64,7 +71,7 @@ const CountryResourcePopup = ({
           background: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
           color: BASE_STYLE.COLOR_PALLETE.TEXT,
         }}
-        onClick={() => setSelectedCountry(feature?.properties?.ADMIN)}
+        onClick={() => setDialogIsOpen(true)}
       >
         Open Country Information
       </button>

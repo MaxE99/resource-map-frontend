@@ -17,7 +17,6 @@ const Map = ({
   worldTotal,
 }: MapT): JSX.Element => {
   const [popupOpen, setPopupOpen] = useState<boolean>(false);
-  //@ts-ignore
   const {
     isShowingProduction,
     setIsShowingProduction,
