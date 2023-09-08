@@ -100,13 +100,23 @@ const Map = ({
       <div
         style={{
           ...(MAP_STYLE.BOX as CSSProperties),
-          background: BASE_STYLE.COLOR_PALLETE.TEXT,
+          background: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
+          color: BASE_STYLE.COLOR_PALLETE.TEXT,
         }}
       >
-        <span style={{ marginRight: "20px" }}>
-          Other Countries: {otherCountries}
+        <span style={{ marginRight: "5px" }}>Other Countries:</span>
+        <span
+          style={{
+            color: BASE_STYLE.COLOR_PALLETE.ELEMENTS,
+            marginRight: "20px",
+          }}
+        >
+          {otherCountries}
         </span>
-        <span>World Total: {worldTotal}</span>
+        <span style={{ marginRight: "5px" }}>World Total:</span>
+        <span style={{ color: BASE_STYLE.COLOR_PALLETE.ELEMENTS }}>
+          {worldTotal}
+        </span>
       </div>
     </MapContainer>
   );

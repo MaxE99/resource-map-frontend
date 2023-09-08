@@ -17,8 +17,8 @@ const MAP_STYLE = {
     padding: "20px",
     zIndex: 998,
     borderTopRightRadius: "20px",
-    border: "1px solid",
     fontSize: "15px",
+    fontWeight: 600,
   },
 };
 
