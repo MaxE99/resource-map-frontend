@@ -12,6 +12,8 @@ type AppContextT = {
   setIsShowingProduction: Dispatch<SetStateAction<boolean>>;
   dialogIsOpen: boolean;
   setDialogIsOpen: Dispatch<SetStateAction<boolean>>;
+  isLoading: boolean;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 type AppContextProviderT = {

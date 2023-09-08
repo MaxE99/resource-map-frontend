@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useContext, useEffect, useState } from "react";
 
 import PricePlot from "./PricePlot";
 import AccordionWrapper from "./AccordionWrapper";
@@ -8,10 +8,12 @@ import { CommodityPriceT } from "../../types/api";
 import { SIDEBAR_STYLE } from "../../styles/sidebar";
 import { BASE_STYLE } from "../../styles/base";
 import { DOMAIN } from "../../config";
+import { AppContext } from "../AppContextProvider";
 
 const Sidebar = ({ commodity, govInfo }: SidebarT): JSX.Element => {
-  console.log(govInfo);
   const [prices, setPrices] = useState<CommodityPriceT[]>();
+
+  const { setIsLoading } = useContext<any>(AppContext);
 
   const govInfoData: AccordionWrapperT[] = [
     {
@@ -31,9 +33,11 @@ const Sidebar = ({ commodity, govInfo }: SidebarT): JSX.Element => {
 
   useEffect(() => {
     if (commodity) {
+      setIsLoading(true);
       fetchPriceData(commodity.name)
         .then((data: CommodityPriceT[]) => setPrices(data))
-        .catch((error) => console.error("Error fetching price data:", error));
+        .catch((error) => console.error("Error fetching price data:", error))
+        .finally(() => setIsLoading(false));
     }
   }, [commodity]);
 

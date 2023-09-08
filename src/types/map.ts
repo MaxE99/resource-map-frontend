@@ -1,7 +1,7 @@
 import { CommodityT, ProductionReservesT } from "./api";
 
 type MapT = {
-  countries: GeoJSON.GeoJsonObject;
+  countries: GeoJSON.GeoJsonObject | undefined;
   selectedCommodity: CommodityT | undefined;
   otherCountries: string | undefined;
   worldTotal: string | undefined;

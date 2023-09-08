@@ -1,3 +1,16 @@
+import { createTheme } from "@mui/material/styles";
+
+const THEME = createTheme({
+  palette: {
+    primary: {
+      main: "#333333", // Your primary color
+    },
+    secondary: {
+      main: "#1277c4", // Your secondary color
+    },
+  },
+});
+
 const BASE_STYLE = {
   COLOR_PALLETE: {
     BACKGROUND: "#333333",
@@ -6,4 +19,4 @@ const BASE_STYLE = {
   },
 };
 
-export { BASE_STYLE };
+export { BASE_STYLE, THEME };

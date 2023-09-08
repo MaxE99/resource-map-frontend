@@ -14,10 +14,11 @@ const CountryResourcePopup = ({
 }: CountryResourcePopupT): JSX.Element => {
   const [productionData, setProductionData] = useState<ProductionReservesT[]>();
   const [reserveData, setReserveData] = useState<ProductionReservesT[]>();
-  const { setDialogIsOpen } = useContext<any>(AppContext);
+  const { setDialogIsOpen, setIsLoading } = useContext<any>(AppContext);
 
   useEffect(() => {
     if (feature?.properties) {
+      setIsLoading(true);
       fetchProductionData(undefined, commodity.name, feature.properties.ADMIN)
         .then((data: ProductionReservesT[]) => setProductionData(data))
         .catch((error) =>
@@ -26,9 +27,8 @@ const CountryResourcePopup = ({
 
       fetchReservesData(undefined, commodity.name, feature.properties.ADMIN)
         .then((data: ProductionReservesT[]) => setReserveData(data))
-        .catch((error) =>
-          console.error("Error fetching reserves data:", error)
-        );
+        .catch((error) => console.error("Error fetching reserves data:", error))
+        .finally(() => setIsLoading(false));
     }
   }, []);
 

@@ -1,4 +1,10 @@
-import { useEffect, useState, useContext, CSSProperties } from "react";
+import {
+  useEffect,
+  useState,
+  useContext,
+  CSSProperties,
+  Fragment,
+} from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Slider from "@mui/material/Slider";
@@ -23,6 +29,7 @@ import {
 import { APP_STYLE } from "./styles/app";
 import { BASE_STYLE } from "./styles/base";
 import { DOMAIN, MARKS, OTHER_VIZ_OPTIONS } from "./config";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 const App = (): JSX.Element => {
   const [selectedCommodity, setSelectedCommodity] = useState<
@@ -41,6 +48,8 @@ const App = (): JSX.Element => {
     isShowingProduction,
     dialogIsOpen,
     setDialogIsOpen,
+    isLoading,
+    setIsLoading,
   } = useContext<any>(AppContext);
 
   useEffect(() => {
@@ -60,7 +69,8 @@ const App = (): JSX.Element => {
         };
         setWorldGeojson(featureCollection);
       })
-      .catch((error) => console.error("Error fetching country data:", error));
+      .catch((error) => console.error("Error fetching country data:", error))
+      .finally(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {
@@ -71,6 +81,7 @@ const App = (): JSX.Element => {
     );
 
     if (selectedCommodity?.name) {
+      setIsLoading(true);
       fetch(queryString, {
         method: "GET",
       })
@@ -116,19 +127,20 @@ const App = (): JSX.Element => {
           setOtherCountries(`${otherCountriesAmount} ${metric}`);
           setWorldTotal(`${totalAmount} ${metric}`);
         })
-        .catch((error) => console.error("Error fetching country data:", error));
+        .catch((error) => console.error("Error fetching country data:", error))
+        .finally(() => setIsLoading(false));
     }
   }, [selectedCommodity, year, isShowingProduction]);
 
   useEffect(() => {
     if (selectedCommodity?.name) {
+      setIsLoading(true);
       fetchGovInfoData(year, selectedCommodity.name)
         .then((data: GovInfoT[]) =>
           data?.length ? setGovInfo(data[0]) : setGovInfo(null)
         )
-        .catch((error) =>
-          console.error("Error fetching gov info data:", error)
-        );
+        .catch((error) => console.error("Error fetching gov info data:", error))
+        .finally(() => setIsLoading(false));
     }
   }, [selectedCommodity, year]);
 
@@ -137,56 +149,56 @@ const App = (): JSX.Element => {
   };
 
   return (
-    <div style={APP_STYLE.WRAPPER as CSSProperties}>
-      <div style={APP_STYLE.OUTER_BOX}>
-        <div style={APP_STYLE.INNER_BOX}>
-          <Autocomplete
-            sx={{
-              width: "40%",
-              background: BASE_STYLE.COLOR_PALLETE.TEXT,
-              zIndex: 999,
-            }}
-            value={selectedCommodity}
-            onChange={(_event, newValue) => {
-              newValue && setSelectedCommodity(newValue);
-            }}
-            options={commodities.sort((a: CommodityT, b: CommodityT) =>
-              a.name.localeCompare(b.name)
-            )}
-            getOptionLabel={(option) => option.name}
-            renderInput={(params) => (
-              <TextField {...params} label="Select a commodity" />
-            )}
-            renderOption={(props, option) => (
-              <li {...props} style={{ padding: 0 }}>
-                <div style={APP_STYLE.COMMODITY_BOX}>
-                  <img
-                    src={DOMAIN + "/static/" + option.img_path}
-                    alt={option.name}
-                    style={APP_STYLE.IMAGE}
-                  />
-                  {option.name}
-                </div>
-              </li>
-            )}
-          />
-          <Autocomplete
-            sx={{
-              width: "40%",
-              background: BASE_STYLE.COLOR_PALLETE.TEXT,
-              zIndex: 999,
-            }}
-            value={otherViz}
-            onChange={(_event, newValue) => {
-              newValue && setOtherViz(newValue);
-            }}
-            options={OTHER_VIZ_OPTIONS}
-            renderInput={(params) => (
-              <TextField {...params} label="Show other visualization" />
-            )}
-          />
-        </div>
-        {worldGeojson && (
+    <Fragment>
+      <div style={APP_STYLE.WRAPPER as CSSProperties}>
+        <div style={APP_STYLE.OUTER_BOX}>
+          <div style={APP_STYLE.INNER_BOX}>
+            <Autocomplete
+              sx={{
+                width: "40%",
+                background: BASE_STYLE.COLOR_PALLETE.TEXT,
+                zIndex: 999,
+              }}
+              value={selectedCommodity}
+              onChange={(_event, newValue) => {
+                newValue && setSelectedCommodity(newValue);
+              }}
+              options={commodities.sort((a: CommodityT, b: CommodityT) =>
+                a.name.localeCompare(b.name)
+              )}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <TextField {...params} label="Select a commodity" />
+              )}
+              renderOption={(props, option) => (
+                <li {...props} style={{ padding: 0 }}>
+                  <div style={APP_STYLE.COMMODITY_BOX}>
+                    <img
+                      src={DOMAIN + "/static/" + option.img_path}
+                      alt={option.name}
+                      style={APP_STYLE.IMAGE}
+                    />
+                    {option.name}
+                  </div>
+                </li>
+              )}
+            />
+            <Autocomplete
+              sx={{
+                width: "40%",
+                background: BASE_STYLE.COLOR_PALLETE.TEXT,
+                zIndex: 999,
+              }}
+              value={otherViz}
+              onChange={(_event, newValue) => {
+                newValue && setOtherViz(newValue);
+              }}
+              options={OTHER_VIZ_OPTIONS}
+              renderInput={(params) => (
+                <TextField {...params} label="Show other visualization" />
+              )}
+            />
+          </div>
           <Map
             key={JSON.stringify(worldGeojson)}
             countries={worldGeojson}
@@ -194,29 +206,52 @@ const App = (): JSX.Element => {
             otherCountries={otherCountries}
             worldTotal={worldTotal}
           />
-        )}
-        <Slider
-          sx={APP_STYLE.SLIDER}
-          value={year}
-          min={2018}
-          max={2022}
-          marks={MARKS}
-          step={1}
-          onChange={handleChange}
-          valueLabelDisplay="auto"
-          valueLabelFormat={(value) => value.toString()}
-          aria-label="Year Slider"
+          <Slider
+            sx={APP_STYLE.SLIDER}
+            value={year}
+            min={2018}
+            max={2022}
+            marks={MARKS}
+            step={1}
+            onChange={handleChange}
+            valueLabelDisplay="auto"
+            valueLabelFormat={(value) => value.toString()}
+            aria-label="Year Slider"
+          />
+        </div>
+        <Sidebar
+          key={JSON.stringify(govInfo)}
+          commodity={selectedCommodity}
+          govInfo={govInfo}
         />
+        <Dialog open={dialogIsOpen} onClose={() => setDialogIsOpen(false)}>
+          <CountryInformation country={selectedCountry} />
+        </Dialog>
       </div>
-      <Sidebar
-        key={JSON.stringify(govInfo)}
-        commodity={selectedCommodity}
-        govInfo={govInfo}
-      />
-      <Dialog open={dialogIsOpen} onClose={() => setDialogIsOpen(false)}>
-        <CountryInformation country={selectedCountry} />
-      </Dialog>
-    </div>
+      <Backdrop
+        sx={{ background: BASE_STYLE.COLOR_PALLETE.BACKGROUND, zIndex: 1000 }}
+        open={isLoading}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <img
+            src={DOMAIN + "/static/test-logo.jpg"}
+            style={{
+              borderRadius: "20px",
+              width: "150px",
+              marginBottom: "20px",
+            }}
+          ></img>
+          <CircularProgress color="secondary" />
+        </div>
+      </Backdrop>
+    </Fragment>
   );
 };
 
