@@ -7,6 +7,13 @@ const COUNTRY_STYLE = {
     width: "calc(100% - 40px)",
     borderRadius: "4px",
   },
+  COUNTRY_NAME_BOX: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "fit-content",
+    fontWeight: 600,
+  },
 };
 
 export { COUNTRY_STYLE };

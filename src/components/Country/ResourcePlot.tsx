@@ -24,16 +24,29 @@ const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
 
   const layout = {
     xaxis: {
-      title: "Year",
       showgrid: false,
+      ticklen: 15,
     },
     yaxis: {
-      title: data[0].metric,
+      ticklen: 15,
     },
-    margin: { t: 20, r: 60, b: 40, l: 40 },
+    margin: { t: 0, r: 60, b: 35, l: 55 },
   };
 
-  return <Plot style={{ width: "100%" }} data={plotData} layout={layout} />;
+  const config = {
+    displayModeBar: false,
+  };
+
+  return (
+    <Plot
+      style={{
+        width: "100%",
+      }}
+      data={plotData}
+      layout={layout}
+      config={config}
+    />
+  );
 };
 
 export default ResourcePlot;

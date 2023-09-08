@@ -23,14 +23,16 @@ const PricePlot = ({ data }: PricePlotT) => {
   const layout = {
     xaxis: {
       tickfont: { color: BASE_STYLE.COLOR_PALLETE.TEXT },
+      ticklen: 15,
       showgrid: false,
     },
     yaxis: {
       tickfont: { color: BASE_STYLE.COLOR_PALLETE.TEXT },
+      ticklen: 15,
     },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "rgba(0,0,0,0)",
-    margin: { t: 0, r: 20, b: 20, l: 40 },
+    margin: { t: 0, r: 20, b: 35, l: 55 },
   };
 
   const config = {

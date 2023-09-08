@@ -80,12 +80,6 @@ const Map = ({
             feature={selectedCountry}
             commodity={selectedCommodity}
           />
-          <button
-            style={MAP_STYLE.CLOSE_BUTTON as CSSProperties}
-            onClick={() => setPopupOpen(false)}
-          >
-            X
-          </button>
         </Popup>
       )}
       <Tooltip

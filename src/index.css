@@ -39,3 +39,7 @@ body {
 .mapPopup .leaflet-popup-content {
   width: 100% !important;
 }
+
+.countryNameBox:hover {
+  color: var(--main-element);
+}

@@ -20,13 +20,6 @@ const MAP_STYLE = {
     border: "1px solid",
     fontSize: "15px",
   },
-  CLOSE_BUTTON: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-    background: "none",
-    cursor: "pointer",
-  },
 };
 
 export { MAP_STYLE };

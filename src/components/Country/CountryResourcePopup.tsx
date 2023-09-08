@@ -7,6 +7,8 @@ import { ProductionReservesT } from "../../types/api";
 import { COUNTRY_STYLE } from "../../styles/country";
 import { BASE_STYLE } from "../../styles/base";
 import { fetchProductionData, fetchReservesData } from "../../functions/api";
+import { DOMAIN } from "../../config";
+import { slugify } from "../../functions/country";
 
 const CountryResourcePopup = ({
   feature,
@@ -34,28 +36,36 @@ const CountryResourcePopup = ({
 
   return (
     <div>
-      <div style={{ textAlign: "center" }}>
-        <span>Country: </span>
-        <button
-          style={{ cursor: "pointer", background: "none", fontSize: "16px" }}
-          onMouseOver={(e: any) =>
-            (e.target.style.textDecoration = "underline")
+      <div
+        style={COUNTRY_STYLE.COUNTRY_NAME_BOX}
+        onClick={() => setDialogIsOpen(true)}
+      >
+        <img
+          src={
+            DOMAIN + `/static/flags/${slugify(feature?.properties?.ADMIN)}.png`
           }
-          onMouseOut={(e: any) => (e.target.style.textDecoration = "none")}
-          onClick={() => setDialogIsOpen(true)}
+          style={{ height: "25px", marginRight: "5px" }}
+        />
+        <div
+          className="countryNameBox"
+          style={{ cursor: "pointer", fontSize: "30px" }}
         >
           {feature?.properties?.ADMIN}
-        </button>
+        </div>
       </div>
       {productionData && productionData?.length > 0 && (
         <Fragment>
-          <div style={{ marginTop: "20px" }}>Production By Year:</div>
+          <div style={{ marginTop: "20px", fontWeight: 600 }}>
+            Production By Year In {productionData[0].metric}:
+          </div>
           <ResourcePlot data={productionData} />
         </Fragment>
       )}
       {reserveData && reserveData?.length > 0 && (
         <Fragment>
-          <div style={{ marginTop: "20px" }}>Reserves By Year:</div>
+          <div style={{ marginTop: "20px", fontWeight: 600 }}>
+            Reserves By Year In {reserveData[0].metric}:
+          </div>
           <ResourcePlot data={reserveData} />
         </Fragment>
       )}
