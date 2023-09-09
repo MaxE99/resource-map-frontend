@@ -62,7 +62,7 @@ const Sidebar = ({ commodity, govInfo }: SidebarT): JSX.Element => {
             />
             {commodity.name}
           </div>
-          {prices && <PricePlot data={prices} />}
+          {prices && prices.length > 0 && <PricePlot data={prices} />}
           <AccordionWrapper
             index={1}
             summary="Overview"
