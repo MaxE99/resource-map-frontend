@@ -46,6 +46,7 @@ const Sidebar = ({ commodity, govInfo }: SidebarT): JSX.Element => {
       style={{
         ...(SIDEBAR_STYLE.WRAPPER as CSSProperties),
         color: BASE_STYLE.COLOR_PALLETE.TEXT,
+        boxShadow: BASE_STYLE.BOX_SHADOW,
       }}
     >
       {commodity && (

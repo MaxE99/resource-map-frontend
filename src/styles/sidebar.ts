@@ -21,7 +21,7 @@ const SIDEBAR_STYLE = {
   WRAPPER: {
     width: "32.5%",
     height: "calc(100vh - 60px)",
-    borderRadius: "20px",
+    borderRadius: "8px",
     overflowY: "auto",
     border: "1px solid",
   },

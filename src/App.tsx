@@ -207,7 +207,10 @@ const App = (): JSX.Element => {
             worldTotal={worldTotal}
           />
           <Slider
-            sx={APP_STYLE.SLIDER}
+            sx={{
+              ...APP_STYLE.SLIDER,
+              "& .MuiSlider-rail": { boxShadow: BASE_STYLE.BOX_SHADOW },
+            }}
             value={year}
             min={2018}
             max={2022}
@@ -243,7 +246,7 @@ const App = (): JSX.Element => {
           <img
             src={DOMAIN + "/static/test-logo.jpg"}
             style={{
-              borderRadius: "20px",
+              borderRadius: "8px",
               width: "150px",
               marginBottom: "20px",
             }}

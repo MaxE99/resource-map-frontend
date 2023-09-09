@@ -17,6 +17,7 @@ const BASE_STYLE = {
     ELEMENTS: "#1277c4",
     TEXT: "#fff",
   },
+  BOX_SHADOW: "0 -2px 10px rgba(0, 0, 0, 1)",
 };
 
 export { BASE_STYLE, THEME };

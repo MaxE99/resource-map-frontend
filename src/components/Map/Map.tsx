@@ -50,7 +50,8 @@ const Map = ({
       <MapContainer
         style={{
           height: "75vh",
-          borderRadius: "20px",
+          borderRadius: "8px",
+          boxShadow: BASE_STYLE.BOX_SHADOW,
         }}
         center={[30, 0]}
         minZoom={2}

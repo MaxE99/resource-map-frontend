@@ -23,6 +23,12 @@ const APP_STYLE = {
       fontWeight: 600,
       marginTop: "5px",
     },
+    "& .MuiSlider-markLabel:first-of-type": {
+      left: "1%",
+    },
+    "& .MuiSlider-markLabel:last-of-type": {
+      left: "99%",
+    },
   },
   WRAPPER: {
     display: "flex",

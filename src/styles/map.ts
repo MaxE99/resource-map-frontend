@@ -32,7 +32,7 @@ const MAP_STYLE = {
     cursor: "pointer",
   },
   POPUP: {
-    width: "400px",
+    maxWidth: "400px",
     fontSize: "16px",
     overflowY: "auto",
     maxHeight: "50vh",
@@ -42,7 +42,7 @@ const MAP_STYLE = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     background: "white",
-    padding: "10px 20px 20px",
+    padding: "20px",
     borderRadius: "8px",
   },
 };
