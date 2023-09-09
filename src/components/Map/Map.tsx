@@ -40,8 +40,8 @@ const Map = ({
 
   const onEachCountryFeature = (feature: GeoJSON.Feature, layer: Layer) => {
     layer.on("click", () => {
-      setPopupOpen(true);
       setSelectedCountry(feature);
+      setPopupOpen(true);
     });
   };
 

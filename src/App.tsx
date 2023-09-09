@@ -53,9 +53,17 @@ const App = (): JSX.Element => {
   } = useContext<any>(AppContext);
 
   useEffect(() => {
+    let isCommodityDataLoaded = false;
+    let isCountryDataLoaded = false;
     fetchCommodityData()
       .then((data: CommodityT[]) => setCommodities(data))
-      .catch((error) => console.error("Error fetching commodity data:", error));
+      .catch((error) => console.error("Error fetching commodity data:", error))
+      .finally(() => {
+        isCommodityDataLoaded = true;
+        if (isCommodityDataLoaded && isCountryDataLoaded) {
+          setIsLoading(false);
+        }
+      });
 
     fetchCountryData()
       .then((data: CountryT[]) => {
@@ -70,7 +78,12 @@ const App = (): JSX.Element => {
         setWorldGeojson(featureCollection);
       })
       .catch((error) => console.error("Error fetching country data:", error))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        isCountryDataLoaded = true;
+        if (isCommodityDataLoaded && isCountryDataLoaded) {
+          setIsLoading(false);
+        }
+      });
   }, []);
 
   useEffect(() => {
@@ -81,7 +94,22 @@ const App = (): JSX.Element => {
     );
 
     if (selectedCommodity?.name) {
+      let isGovDataLoaded = false;
+      let isResourceDataLoaded = false;
+
       setIsLoading(true);
+      fetchGovInfoData(year, selectedCommodity.name)
+        .then((data: GovInfoT[]) =>
+          data?.length ? setGovInfo(data[0]) : setGovInfo(null)
+        )
+        .catch((error) => console.error("Error fetching gov info data:", error))
+        .finally(() => {
+          isGovDataLoaded = true;
+          if (isGovDataLoaded && isResourceDataLoaded) {
+            setIsLoading(false);
+          }
+        });
+
       fetch(queryString, {
         method: "GET",
       })
@@ -128,21 +156,14 @@ const App = (): JSX.Element => {
           setWorldTotal(`${totalAmount} ${metric}`);
         })
         .catch((error) => console.error("Error fetching country data:", error))
-        .finally(() => setIsLoading(false));
+        .finally(() => {
+          isResourceDataLoaded = true;
+          if (isGovDataLoaded && isResourceDataLoaded) {
+            setIsLoading(false);
+          }
+        });
     }
   }, [selectedCommodity, year, isShowingProduction]);
-
-  useEffect(() => {
-    if (selectedCommodity?.name) {
-      setIsLoading(true);
-      fetchGovInfoData(year, selectedCommodity.name)
-        .then((data: GovInfoT[]) =>
-          data?.length ? setGovInfo(data[0]) : setGovInfo(null)
-        )
-        .catch((error) => console.error("Error fetching gov info data:", error))
-        .finally(() => setIsLoading(false));
-    }
-  }, [selectedCommodity, year]);
 
   const handleChange = (_: any, newValue: any) => {
     setYear(newValue);

@@ -22,13 +22,18 @@ const CountryResourcePopup = ({
   feature,
   commodity,
   setPopupOpen,
-}: CountryResourcePopupT): JSX.Element => {
+}: CountryResourcePopupT): JSX.Element | null => {
   const [productionData, setProductionData] = useState<ProductionReservesT[]>();
   const [reserveData, setReserveData] = useState<ProductionReservesT[]>();
   const { setDialogIsOpen, setIsLoading } = useContext<any>(AppContext);
+  const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
 
   useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
     if (feature?.properties) {
+      let isProductionDataLoaded = false;
+      let isReservesDataLoaded = false;
       setIsLoading(true);
       fetchProductionData(undefined, commodity.name, feature.properties.ADMIN)
         .then((data: ProductionReservesT[]) => {
@@ -39,7 +44,14 @@ const CountryResourcePopup = ({
         })
         .catch((error) =>
           console.error("Error fetching production data:", error)
-        );
+        )
+        .finally(() => {
+          isProductionDataLoaded = true;
+          if (isProductionDataLoaded && isReservesDataLoaded) {
+            setIsLoading(false);
+            setDataHasLoaded(true);
+          }
+        });
 
       fetchReservesData(undefined, commodity.name, feature.properties.ADMIN)
         .then((data: ProductionReservesT[]) => {
@@ -49,8 +61,18 @@ const CountryResourcePopup = ({
           setReserveData(sortedData);
         })
         .catch((error) => console.error("Error fetching reserves data:", error))
-        .finally(() => setIsLoading(false));
+        .finally(() => {
+          isReservesDataLoaded = true;
+          if (isProductionDataLoaded && isReservesDataLoaded) {
+            setIsLoading(false);
+            setDataHasLoaded(true);
+          }
+        });
     }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -60,17 +82,7 @@ const CountryResourcePopup = ({
     }
   };
 
-  // Add a click event listener when the component mounts
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-
-    // Remove the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  return (
+  return dataHasLoaded ? (
     <div
       className="countryResourcePopup"
       style={MAP_STYLE.POPUP as CSSProperties}
@@ -113,13 +125,13 @@ const CountryResourcePopup = ({
         </Fragment>
       )}
       {/* <div style={{ marginTop: "20px" }}>Net Import/Export Balance:</div>
-      <div style={{ marginTop: "20px" }}>Share Of Total Exports:</div>
-      <div style={{ marginTop: "20px" }}>Share Of Resource Exports:</div>
-      <div style={{ marginTop: "20px" }}>
-        Correlation between Price/Production and GDP:
-      </div> */}
+        <div style={{ marginTop: "20px" }}>Share Of Total Exports:</div>
+        <div style={{ marginTop: "20px" }}>Share Of Resource Exports:</div>
+        <div style={{ marginTop: "20px" }}>
+          Correlation between Price/Production and GDP:
+        </div> */}
     </div>
-  );
+  ) : null;
 };
 
 export default CountryResourcePopup;
