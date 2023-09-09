@@ -41,7 +41,8 @@ const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
   return (
     <Plot
       style={{
-        width: "100%",
+        width: "400px",
+        height: "300px",
       }}
       data={plotData}
       layout={layout}

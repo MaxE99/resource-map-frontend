@@ -1,4 +1,11 @@
-import { useContext, useEffect, useState, Fragment } from "react";
+import {
+  useContext,
+  useEffect,
+  useState,
+  Fragment,
+  CSSProperties,
+} from "react";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 import ResourcePlot from "./ResourcePlot";
 import { AppContext } from "../AppContextProvider";
@@ -9,10 +16,12 @@ import { BASE_STYLE } from "../../styles/base";
 import { fetchProductionData, fetchReservesData } from "../../functions/api";
 import { DOMAIN } from "../../config";
 import { slugify } from "../../functions/country";
+import { MAP_STYLE } from "../../styles/map";
 
 const CountryResourcePopup = ({
   feature,
   commodity,
+  setPopupOpen,
 }: CountryResourcePopupT): JSX.Element => {
   const [productionData, setProductionData] = useState<ProductionReservesT[]>();
   const [reserveData, setReserveData] = useState<ProductionReservesT[]>();
@@ -44,8 +53,28 @@ const CountryResourcePopup = ({
     }
   }, []);
 
+  const handleClickOutside = (event: MouseEvent) => {
+    const targetElement = event.target as Element;
+    if (!targetElement.closest(".countryResourcePopup")) {
+      setPopupOpen(false); // Close the popup when clicked outside
+    }
+  };
+
+  // Add a click event listener when the component mounts
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Remove the event listener when the component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div>
+    <div
+      className="countryResourcePopup"
+      style={MAP_STYLE.POPUP as CSSProperties}
+    >
       <div
         style={COUNTRY_STYLE.COUNTRY_NAME_BOX}
         onClick={() => setDialogIsOpen(true)}
@@ -56,16 +85,20 @@ const CountryResourcePopup = ({
           }
           style={{ height: "25px", marginRight: "5px" }}
         />
-        <div
-          className="countryNameBox"
-          style={{ cursor: "pointer", fontSize: "30px" }}
-        >
+        <div className="countryNameBox" style={{ fontSize: "30px" }}>
           {feature?.properties?.ADMIN}
         </div>
+        <OpenInNewIcon
+          sx={{
+            marginLeft: "5px",
+            fontSize: "20px",
+            "&:hover": { color: BASE_STYLE.COLOR_PALLETE.ELEMENTS },
+          }}
+        />
       </div>
       {productionData && productionData?.length > 0 && (
         <Fragment>
-          <div style={{ marginTop: "20px", fontWeight: 600 }}>
+          <div style={{ marginTop: "10px", fontWeight: 600 }}>
             Production By Year In {productionData[0].metric}:
           </div>
           <ResourcePlot data={productionData} />
@@ -85,16 +118,6 @@ const CountryResourcePopup = ({
       <div style={{ marginTop: "20px" }}>
         Correlation between Price/Production and GDP:
       </div> */}
-      <button
-        style={{
-          ...COUNTRY_STYLE.BUTTON,
-          background: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
-          color: BASE_STYLE.COLOR_PALLETE.TEXT,
-        }}
-        onClick={() => setDialogIsOpen(true)}
-      >
-        Open Country Information
-      </button>
     </div>
   );
 };

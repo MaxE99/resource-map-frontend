@@ -1,7 +1,7 @@
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, GeoJSON, Popup } from "react-leaflet";
-import { Tooltip } from "@mui/material";
-import { CSSProperties, useContext, useState } from "react";
+import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import { Backdrop, Tooltip } from "@mui/material";
+import { CSSProperties, Fragment, useContext, useState } from "react";
 import { Layer } from "leaflet";
 
 import CountryResourcePopup from "../Country/CountryResourcePopup";
@@ -46,86 +46,94 @@ const Map = ({
   };
 
   return (
-    <MapContainer
-      style={{
-        height: "75vh",
-        borderRadius: "20px",
-      }}
-      center={[30, 0]}
-      minZoom={2}
-      maxZoom={5}
-      bounds={bounds}
-      maxBoundsViscosity={1.0}
-    >
-      <TileLayer
-        maxZoom={10}
-        maxNativeZoom={19}
-        noWrap={true}
-        attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      {countries && (
-        <GeoJSON
-          onEachFeature={onEachCountryFeature}
-          data={countries}
-          style={getFeatureStyle}
-        />
-      )}
-
-      {popupOpen && selectedCommodity && (
-        <Popup
-          key={JSON.stringify(selectedCountry)}
-          className="mapPopup"
-          position={[0, 0]}
-          closeButton={false}
-        >
-          <CountryResourcePopup
-            feature={selectedCountry}
-            commodity={selectedCommodity}
-          />
-        </Popup>
-      )}
-      <Tooltip
-        style={{ zIndex: 998 }}
-        title={isShowingProduction ? "Show Reserves" : "Show Production"}
-        placement="right"
+    <div style={{ position: "relative" }}>
+      <MapContainer
+        style={{
+          height: "75vh",
+          borderRadius: "20px",
+        }}
+        center={[30, 0]}
+        minZoom={2}
+        maxZoom={5}
+        bounds={bounds}
+        maxBoundsViscosity={1.0}
       >
-        <button
-          style={{
-            ...(MAP_STYLE.SWITCH as CSSProperties),
-            background: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
-            color: BASE_STYLE.COLOR_PALLETE.TEXT,
-          }}
-          className="productionSwitch"
-          onClick={() => setIsShowingProduction(!isShowingProduction)}
+        <TileLayer
+          maxZoom={10}
+          maxNativeZoom={19}
+          noWrap={true}
+          attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {countries && (
+          <GeoJSON
+            onEachFeature={onEachCountryFeature}
+            data={countries}
+            style={getFeatureStyle}
+          />
+        )}
+
+        <Tooltip
+          style={{ zIndex: 998 }}
+          title={isShowingProduction ? "Show Reserves" : "Show Production"}
+          placement="right"
         >
-          {isShowingProduction ? "Production" : "Reserves"}
-        </button>
-      </Tooltip>
-      {otherCountries && worldTotal && (
-        <div
-          style={{
-            ...(MAP_STYLE.BOX as CSSProperties),
-            background: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
-            color: BASE_STYLE.COLOR_PALLETE.TEXT,
-          }}
-        >
-          <span style={{ marginRight: "5px" }}>Other Countries:</span>
-          <span
+          <button
             style={{
-              color: BASE_STYLE.COLOR_PALLETE.ELEMENTS,
-              marginRight: "20px",
+              ...(MAP_STYLE.SWITCH as CSSProperties),
+              background: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
+              color: BASE_STYLE.COLOR_PALLETE.TEXT,
+            }}
+            className="productionSwitch"
+            onClick={() => setIsShowingProduction(!isShowingProduction)}
+          >
+            {isShowingProduction ? "Production" : "Reserves"}
+          </button>
+        </Tooltip>
+        {otherCountries && worldTotal && (
+          <div
+            style={{
+              ...(MAP_STYLE.BOX as CSSProperties),
+              background: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
+              color: BASE_STYLE.COLOR_PALLETE.TEXT,
             }}
           >
-            {otherCountries}
-          </span>
-          <span style={{ marginRight: "5px" }}>World Total:</span>
-          <span style={{ color: BASE_STYLE.COLOR_PALLETE.ELEMENTS }}>
-            {worldTotal}
-          </span>
-        </div>
+            <span style={{ marginRight: "5px" }}>Other Countries:</span>
+            <span
+              style={{
+                color: BASE_STYLE.COLOR_PALLETE.ELEMENTS,
+                marginRight: "20px",
+              }}
+            >
+              {otherCountries}
+            </span>
+            <span style={{ marginRight: "5px" }}>World Total:</span>
+            <span style={{ color: BASE_STYLE.COLOR_PALLETE.ELEMENTS }}>
+              {worldTotal}
+            </span>
+          </div>
+        )}
+      </MapContainer>
+      {popupOpen && selectedCommodity && (
+        <Fragment>
+          <CountryResourcePopup
+            key={JSON.stringify(selectedCountry)}
+            feature={selectedCountry}
+            commodity={selectedCommodity}
+            setPopupOpen={setPopupOpen}
+          />
+          <Backdrop
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              zIndex: 401,
+            }}
+            open={popupOpen}
+          ></Backdrop>
+        </Fragment>
       )}
-    </MapContainer>
+    </div>
   );
 };
 

@@ -28,14 +28,6 @@ body {
   font-family: "JetBrains Mono", monospace;
 }
 
-.mapPopup {
-  width: 600px;
-  font-size: 16px;
-  overflow-y: auto;
-  height: 50vh;
-  top: -40vh;
-}
-
 .mapPopup .leaflet-popup-content {
   width: 100% !important;
 }
