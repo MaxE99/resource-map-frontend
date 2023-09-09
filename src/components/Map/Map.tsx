@@ -47,7 +47,10 @@ const Map = ({
 
   return (
     <MapContainer
-      style={{ height: "75vh", borderRadius: "20px" }}
+      style={{
+        height: "75vh",
+        borderRadius: "20px",
+      }}
       center={[30, 0]}
       minZoom={2}
       maxZoom={5}
@@ -89,35 +92,39 @@ const Map = ({
       >
         <button
           style={{
-            ...(MAP_STYLE.BOX as CSSProperties),
-            background: BASE_STYLE.COLOR_PALLETE.TEXT,
+            ...(MAP_STYLE.SWITCH as CSSProperties),
+            background: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
+            color: BASE_STYLE.COLOR_PALLETE.TEXT,
           }}
+          className="productionSwitch"
           onClick={() => setIsShowingProduction(!isShowingProduction)}
         >
           {isShowingProduction ? "Production" : "Reserves"}
         </button>
       </Tooltip>
-      <div
-        style={{
-          ...(MAP_STYLE.BOX as CSSProperties),
-          background: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
-          color: BASE_STYLE.COLOR_PALLETE.TEXT,
-        }}
-      >
-        <span style={{ marginRight: "5px" }}>Other Countries:</span>
-        <span
+      {otherCountries && worldTotal && (
+        <div
           style={{
-            color: BASE_STYLE.COLOR_PALLETE.ELEMENTS,
-            marginRight: "20px",
+            ...(MAP_STYLE.BOX as CSSProperties),
+            background: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
+            color: BASE_STYLE.COLOR_PALLETE.TEXT,
           }}
         >
-          {otherCountries}
-        </span>
-        <span style={{ marginRight: "5px" }}>World Total:</span>
-        <span style={{ color: BASE_STYLE.COLOR_PALLETE.ELEMENTS }}>
-          {worldTotal}
-        </span>
-      </div>
+          <span style={{ marginRight: "5px" }}>Other Countries:</span>
+          <span
+            style={{
+              color: BASE_STYLE.COLOR_PALLETE.ELEMENTS,
+              marginRight: "20px",
+            }}
+          >
+            {otherCountries}
+          </span>
+          <span style={{ marginRight: "5px" }}>World Total:</span>
+          <span style={{ color: BASE_STYLE.COLOR_PALLETE.ELEMENTS }}>
+            {worldTotal}
+          </span>
+        </div>
+      )}
     </MapContainer>
   );
 };

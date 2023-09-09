@@ -43,3 +43,7 @@ body {
 .countryNameBox:hover {
   color: var(--main-element);
 }
+
+.productionSwitch:hover {
+  background: var(--main-element) !important;
+}

@@ -22,13 +22,23 @@ const CountryResourcePopup = ({
     if (feature?.properties) {
       setIsLoading(true);
       fetchProductionData(undefined, commodity.name, feature.properties.ADMIN)
-        .then((data: ProductionReservesT[]) => setProductionData(data))
+        .then((data: ProductionReservesT[]) => {
+          const sortedData = data.sort(
+            (a: ProductionReservesT, b: ProductionReservesT) => a.year - b.year
+          );
+          setProductionData(sortedData);
+        })
         .catch((error) =>
           console.error("Error fetching production data:", error)
         );
 
       fetchReservesData(undefined, commodity.name, feature.properties.ADMIN)
-        .then((data: ProductionReservesT[]) => setReserveData(data))
+        .then((data: ProductionReservesT[]) => {
+          const sortedData = data.sort(
+            (a: ProductionReservesT, b: ProductionReservesT) => a.year - b.year
+          );
+          setReserveData(sortedData);
+        })
         .catch((error) => console.error("Error fetching reserves data:", error))
         .finally(() => setIsLoading(false));
     }

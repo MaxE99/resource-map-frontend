@@ -20,6 +20,17 @@ const MAP_STYLE = {
     fontSize: "15px",
     fontWeight: 600,
   },
+  SWITCH: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    padding: "20px",
+    zIndex: 998,
+    borderBottomLeftRadius: "20px",
+    fontSize: "15px",
+    fontWeight: 600,
+    cursor: "pointer",
+  },
 };
 
 export { MAP_STYLE };

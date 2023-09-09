@@ -26,6 +26,7 @@ const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
     xaxis: {
       showgrid: false,
       ticklen: 15,
+      dtick: 1,
     },
     yaxis: {
       ticklen: 15,
