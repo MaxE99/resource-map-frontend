@@ -30,8 +30,8 @@ const SIDEBAR_STYLE = {
     fontWeight: 600,
     display: "flex",
     marginBottom: "20px",
-    justifyContent: "center",
     alignItems: "center",
+    textTransform: "uppercase",
   },
 };
 
