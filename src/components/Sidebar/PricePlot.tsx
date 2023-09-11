@@ -16,7 +16,7 @@ const PricePlot = ({ data }: PricePlotT) => {
       type: "scatter",
       fill: "tozeroy",
       mode: "lines",
-      line: { color: BASE_STYLE.COLOR_PALLETE.TEXT },
+      line: { color: BASE_STYLE.COLOR_PALLETE.ELEMENTS },
     },
   ];
 

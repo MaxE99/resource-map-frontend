@@ -18,7 +18,7 @@ const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
       type: "scatter",
       fill: "tozeroy",
       mode: "lines",
-      line: { color: BASE_STYLE.COLOR_PALLETE.BACKGROUND },
+      line: { color: BASE_STYLE.COLOR_PALLETE.ELEMENTS },
     },
   ];
 
