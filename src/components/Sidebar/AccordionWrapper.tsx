@@ -22,7 +22,15 @@ const AccordionWrapper = ({
         id="panel1a-header"
       >
         <div style={{ display: "flex", alignItems: "center" }}>
-          <div style={SIDEBAR_STYLE.INDEX}>{index}</div>
+          <div
+            style={{
+              ...SIDEBAR_STYLE.INDEX,
+              background: BASE_STYLE.COLOR_PALLETE.ELEMENTS,
+              color: BASE_STYLE.COLOR_PALLETE.TEXT,
+            }}
+          >
+            {index}
+          </div>
           <span>{summary}</span>
         </div>
       </AccordionSummary>
