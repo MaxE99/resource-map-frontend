@@ -51,7 +51,7 @@ const Sidebar = ({ commodity, govInfo }: SidebarT): JSX.Element => {
     >
       {commodity && (
         <div style={{ padding: "20px", lineHeight: 1.8, textAlign: "justify" }}>
-          <div style={SIDEBAR_STYLE.NAME_CONTAINER}>
+          <div style={SIDEBAR_STYLE.NAME_CONTAINER as CSSProperties}>
             <img
               src={DOMAIN + "/static/" + commodity.img_path}
               alt={commodity.name + " Image"}

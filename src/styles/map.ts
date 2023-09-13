@@ -30,6 +30,7 @@ const MAP_STYLE = {
     fontSize: "15px",
     fontWeight: 600,
     cursor: "pointer",
+    textTransform: "uppercase",
   },
   POPUP: {
     maxWidth: "400px",
