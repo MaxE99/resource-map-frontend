@@ -21,6 +21,7 @@ import { MAP_STYLE } from "../../styles/map";
 const CountryResourcePopup = ({
   feature,
   commodity,
+  isFeatureBeingHoveredOver,
   setPopupOpen,
 }: CountryResourcePopupT): JSX.Element | null => {
   const [productionData, setProductionData] = useState<ProductionReservesT[]>();
@@ -31,7 +32,7 @@ const CountryResourcePopup = ({
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
 
-    if (feature?.properties) {
+    if (feature?.properties && !isFeatureBeingHoveredOver) {
       let isProductionDataLoaded = false;
       let isReservesDataLoaded = false;
       setIsLoading(true);
@@ -82,10 +83,13 @@ const CountryResourcePopup = ({
     }
   };
 
-  return dataHasLoaded ? (
+  return dataHasLoaded || isFeatureBeingHoveredOver ? (
     <div
       className="countryResourcePopup"
-      style={MAP_STYLE.POPUP as CSSProperties}
+      style={{
+        ...(MAP_STYLE.POPUP as CSSProperties),
+        top: isFeatureBeingHoveredOver ? "80%" : "50%",
+      }}
     >
       <div
         style={COUNTRY_STYLE.COUNTRY_NAME_BOX}
@@ -108,22 +112,27 @@ const CountryResourcePopup = ({
           }}
         />
       </div>
-      {productionData && productionData?.length > 0 && (
+      {!isFeatureBeingHoveredOver && (
         <Fragment>
-          <div style={{ marginTop: "10px", fontWeight: 600 }}>
-            Production By Year In {productionData[0].metric}:
-          </div>
-          <ResourcePlot data={productionData} />
+          {productionData && productionData?.length > 0 && (
+            <Fragment>
+              <div style={{ marginTop: "10px", fontWeight: 600 }}>
+                Production By Year In {productionData[0].metric}:
+              </div>
+              <ResourcePlot data={productionData} />
+            </Fragment>
+          )}
+          {reserveData && reserveData?.length > 0 && (
+            <Fragment>
+              <div style={{ marginTop: "20px", fontWeight: 600 }}>
+                Reserves By Year In {reserveData[0].metric}:
+              </div>
+              <ResourcePlot data={reserveData} />
+            </Fragment>
+          )}
         </Fragment>
       )}
-      {reserveData && reserveData?.length > 0 && (
-        <Fragment>
-          <div style={{ marginTop: "20px", fontWeight: 600 }}>
-            Reserves By Year In {reserveData[0].metric}:
-          </div>
-          <ResourcePlot data={reserveData} />
-        </Fragment>
-      )}
+
       {/* <div style={{ marginTop: "20px" }}>Net Import/Export Balance:</div>
         <div style={{ marginTop: "20px" }}>Share Of Total Exports:</div>
         <div style={{ marginTop: "20px" }}>Share Of Resource Exports:</div>

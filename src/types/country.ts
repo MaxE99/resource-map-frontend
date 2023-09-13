@@ -4,6 +4,7 @@ import { CommodityT, CountryT } from "./api";
 type CountryResourcePopupT = {
   feature: GeoJSON.Feature;
   commodity: CommodityT;
+  isFeatureBeingHoveredOver: boolean;
   setPopupOpen: Dispatch<SetStateAction<boolean>>;
 };
 

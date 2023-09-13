@@ -2,7 +2,7 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import { Backdrop, Tooltip } from "@mui/material";
 import { CSSProperties, Fragment, useContext, useState } from "react";
-import { Layer } from "leaflet";
+import { Path } from "leaflet";
 
 import CountryResourcePopup from "../Country/CountryResourcePopup";
 import { AppContext } from "../AppContextProvider";
@@ -17,6 +17,11 @@ const Map = ({
   worldTotal,
 }: MapT): JSX.Element => {
   const [popupOpen, setPopupOpen] = useState<boolean>(false);
+  const [isFeatureBeingHoveredOver, setIsFeatureBeingHoveredOver] =
+    useState<boolean>(true);
+  const [hoveredFeature, setHoveredFeature] = useState<
+    GeoJSON.Feature | undefined
+  >(undefined);
   const {
     isShowingProduction,
     setIsShowingProduction,
@@ -32,18 +37,47 @@ const Map = ({
   const getFeatureStyle = (feature: any) => {
     return {
       fillColor: feature?.properties?.style?.fillColor || "white",
-      weight: 1,
-      color: "black",
+      weight: hoveredFeature === feature ? 2 : 1,
+      color:
+        hoveredFeature === feature
+          ? BASE_STYLE.COLOR_PALLETE.ELEMENTS
+          : "black",
       fillOpacity: 0.5,
     };
   };
 
-  const onEachCountryFeature = (feature: GeoJSON.Feature, layer: Layer) => {
-    layer.on("click", () => {
-      if (selectedCommodity) {
-        setSelectedCountry(feature);
+  const onEachCountryFeature = (feature: GeoJSON.Feature, layer: Path) => {
+    let featureIsBeingClickedOn = false;
+    layer.on({
+      click: () => {
+        if (selectedCommodity) {
+          setIsFeatureBeingHoveredOver(false);
+          setSelectedCountry(feature);
+          setPopupOpen(true);
+          featureIsBeingClickedOn = true;
+        }
+      },
+      mouseover: () => {
+        setIsFeatureBeingHoveredOver(true);
         setPopupOpen(true);
-      }
+        setSelectedCountry(feature);
+        setHoveredFeature(feature);
+        layer.setStyle({
+          weight: 2,
+          color: BASE_STYLE.COLOR_PALLETE.ELEMENTS,
+        });
+      },
+      mouseout: () => {
+        if (!featureIsBeingClickedOn) {
+          setIsFeatureBeingHoveredOver(false);
+          setPopupOpen(false);
+          setHoveredFeature(undefined);
+          layer.setStyle({
+            weight: 1,
+            color: "black",
+          });
+        }
+      },
     });
   };
 
@@ -124,6 +158,7 @@ const Map = ({
             feature={selectedCountry}
             commodity={selectedCommodity}
             setPopupOpen={setPopupOpen}
+            isFeatureBeingHoveredOver={isFeatureBeingHoveredOver}
           />
           <Backdrop
             sx={{
@@ -132,7 +167,7 @@ const Map = ({
               left: 0,
               zIndex: 401,
             }}
-            open={popupOpen}
+            open={popupOpen && !isFeatureBeingHoveredOver}
           ></Backdrop>
         </Fragment>
       )}
