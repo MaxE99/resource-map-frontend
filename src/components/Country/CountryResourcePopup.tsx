@@ -24,6 +24,13 @@ const CountryResourcePopup = ({
   isFeatureBeingHoveredOver,
   setPopupOpen,
 }: CountryResourcePopupT): JSX.Element | null => {
+  let amount = null;
+  let share = null;
+  if (feature.properties?.amount) {
+    amount = feature.properties.amount.split("-")[0];
+    share = feature.properties.amount.split("-")[1];
+  }
+
   const [productionData, setProductionData] = useState<ProductionReservesT[]>();
   const [reserveData, setReserveData] = useState<ProductionReservesT[]>();
   const { setDialogIsOpen, setIsLoading } = useContext<any>(AppContext);
@@ -112,7 +119,21 @@ const CountryResourcePopup = ({
           }}
         />
       </div>
-      {!isFeatureBeingHoveredOver && (
+      {isFeatureBeingHoveredOver ? (
+        share &&
+        amount && (
+          <Fragment>
+            <div style={{ margin: "5px 0" }}>
+              <span style={{ fontWeight: 600 }}>Amount: </span>
+              <span>{amount}</span>
+            </div>
+            <div>
+              <span style={{ fontWeight: 600 }}>Share: </span>
+              <span>{share}</span>
+            </div>
+          </Fragment>
+        )
+      ) : (
         <Fragment>
           {productionData && productionData?.length > 0 && (
             <Fragment>
