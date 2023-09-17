@@ -5,8 +5,6 @@ import {
   CSSProperties,
   Fragment,
 } from "react";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
 import Slider from "@mui/material/Slider";
 import Dialog from "@mui/material/Dialog";
 
@@ -44,14 +42,14 @@ const App = (): JSX.Element | null => {
   });
   const [commodities, setCommodities] = useState<CommodityT[]>([]);
   const [year, setYear] = useState<number>(
-    [2018, 2019, 2020, 2021, 2022][Math.floor(Math.random() * 5)]
+    [2018, 2019, 2020, 2021, 2022][Math.floor(Math.random() * 5)],
   );
   const [worldGeojson, setWorldGeojson] = useState<
     GeoJSON.FeatureCollection | undefined
   >(undefined);
   const [govInfo, setGovInfo] = useState<GovInfoT | null>(null);
   const [otherCountries, setOtherCountries] = useState<string | undefined>(
-    undefined
+    undefined,
   );
   const [worldTotal, setWorldTotal] = useState<string | undefined>(undefined);
   const [otherViz, setOtherViz] = useState<string | undefined>(undefined);
@@ -83,7 +81,7 @@ const App = (): JSX.Element | null => {
         }
 
         const filteredCountryData = countryData.filter(
-          (obj) => obj.geojson !== null
+          (obj) => obj.geojson !== null,
         );
         const features = filteredCountryData.map((obj) => obj.geojson);
         const featureCollection: GeoJSON.FeatureCollection = {
@@ -100,7 +98,7 @@ const App = (): JSX.Element | null => {
         const queryString = getQueryString(
           isShowingProduction,
           randomCommodity,
-          year
+          year,
         );
 
         const dataUpdateProps: GeoJSONDataUpdateT = {
@@ -140,7 +138,7 @@ const App = (): JSX.Element | null => {
       const queryString = getQueryString(
         isShowingProduction,
         selectedCommodity,
-        year
+        year,
       );
       setIsLoading(true);
 
@@ -179,13 +177,13 @@ const App = (): JSX.Element | null => {
         <div style={APP_STYLE.WRAPPER as CSSProperties}>
           <div style={APP_STYLE.OUTER_BOX}>
             <Forms
-            commodities={commodities}
-            selectedCommodity={selectedCommodity}
-            setSelectedCommodity={setSelectedCommodity}
-            OTHER_VIZ_OPTIONS={OTHER_VIZ_OPTIONS}
-            otherViz={otherViz}
-            setOtherViz={setOtherViz}
-          />
+              commodities={commodities}
+              selectedCommodity={selectedCommodity}
+              setSelectedCommodity={setSelectedCommodity}
+              OTHER_VIZ_OPTIONS={OTHER_VIZ_OPTIONS}
+              otherViz={otherViz}
+              setOtherViz={setOtherViz}
+            />
             <Map
               key={JSON.stringify(worldGeojson)}
               countries={worldGeojson}

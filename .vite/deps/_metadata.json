@@ -1,0 +1,206 @@
+{
+  "hash": "01eecb68",
+  "browserHash": "bb79d941",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "3890a330",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "dbdefc21",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "96a73889",
+      "needsInterop": true
+    },
+    "@emotion/react": {
+      "src": "../../node_modules/@emotion/react/dist/emotion-react.browser.esm.js",
+      "file": "@emotion_react.js",
+      "fileHash": "b0ddbdc2",
+      "needsInterop": false
+    },
+    "@mui/material/Slider": {
+      "src": "../../node_modules/@mui/material/Slider/index.js",
+      "file": "@mui_material_Slider.js",
+      "fileHash": "552d321e",
+      "needsInterop": false
+    },
+    "@mui/material/Dialog": {
+      "src": "../../node_modules/@mui/material/Dialog/index.js",
+      "file": "@mui_material_Dialog.js",
+      "fileHash": "f323f7df",
+      "needsInterop": false
+    },
+    "@mui/material": {
+      "src": "../../node_modules/@mui/material/index.js",
+      "file": "@mui_material.js",
+      "fileHash": "5a575656",
+      "needsInterop": false
+    },
+    "@mui/material/styles": {
+      "src": "../../node_modules/@mui/material/styles/index.js",
+      "file": "@mui_material_styles.js",
+      "fileHash": "8a6e2780",
+      "needsInterop": false
+    },
+    "react-leaflet": {
+      "src": "../../node_modules/react-leaflet/lib/index.js",
+      "file": "react-leaflet.js",
+      "fileHash": "eb21de03",
+      "needsInterop": false
+    },
+    "@mui/icons-material/KeyboardArrowDown": {
+      "src": "../../node_modules/@mui/icons-material/KeyboardArrowDown.js",
+      "file": "@mui_icons-material_KeyboardArrowDown.js",
+      "fileHash": "cf9af260",
+      "needsInterop": true
+    },
+    "react-plotly.js": {
+      "src": "../../node_modules/react-plotly.js/react-plotly.js",
+      "file": "react-plotly__js.js",
+      "fileHash": "570e5fc0",
+      "needsInterop": true
+    },
+    "@mui/material/Table": {
+      "src": "../../node_modules/@mui/material/Table/index.js",
+      "file": "@mui_material_Table.js",
+      "fileHash": "8c0b31be",
+      "needsInterop": false
+    },
+    "@mui/material/TableBody": {
+      "src": "../../node_modules/@mui/material/TableBody/index.js",
+      "file": "@mui_material_TableBody.js",
+      "fileHash": "f85ca902",
+      "needsInterop": false
+    },
+    "@mui/material/TableCell": {
+      "src": "../../node_modules/@mui/material/TableCell/index.js",
+      "file": "@mui_material_TableCell.js",
+      "fileHash": "361336fe",
+      "needsInterop": false
+    },
+    "@mui/material/TableContainer": {
+      "src": "../../node_modules/@mui/material/TableContainer/index.js",
+      "file": "@mui_material_TableContainer.js",
+      "fileHash": "9732bc89",
+      "needsInterop": false
+    },
+    "@mui/material/TableHead": {
+      "src": "../../node_modules/@mui/material/TableHead/index.js",
+      "file": "@mui_material_TableHead.js",
+      "fileHash": "cbe4a295",
+      "needsInterop": false
+    },
+    "@mui/material/TableRow": {
+      "src": "../../node_modules/@mui/material/TableRow/index.js",
+      "file": "@mui_material_TableRow.js",
+      "fileHash": "bb2b3c9a",
+      "needsInterop": false
+    },
+    "@mui/material/Paper": {
+      "src": "../../node_modules/@mui/material/Paper/index.js",
+      "file": "@mui_material_Paper.js",
+      "fileHash": "b26d0273",
+      "needsInterop": false
+    },
+    "@mui/icons-material/OpenInNew": {
+      "src": "../../node_modules/@mui/icons-material/OpenInNew.js",
+      "file": "@mui_icons-material_OpenInNew.js",
+      "fileHash": "cc263383",
+      "needsInterop": true
+    },
+    "react-icons/io": {
+      "src": "../../node_modules/react-icons/io/index.esm.js",
+      "file": "react-icons_io.js",
+      "fileHash": "0b31204b",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-HICZKRWZ": {
+      "file": "chunk-HICZKRWZ.js"
+    },
+    "chunk-MQKNZREE": {
+      "file": "chunk-MQKNZREE.js"
+    },
+    "chunk-U6BNKVSX": {
+      "file": "chunk-U6BNKVSX.js"
+    },
+    "chunk-GIG2QH2Y": {
+      "file": "chunk-GIG2QH2Y.js"
+    },
+    "chunk-L3U33QV5": {
+      "file": "chunk-L3U33QV5.js"
+    },
+    "chunk-WRVEQ5A3": {
+      "file": "chunk-WRVEQ5A3.js"
+    },
+    "chunk-TAM7NI6A": {
+      "file": "chunk-TAM7NI6A.js"
+    },
+    "chunk-YBODA2AA": {
+      "file": "chunk-YBODA2AA.js"
+    },
+    "chunk-4HVLMTDX": {
+      "file": "chunk-4HVLMTDX.js"
+    },
+    "chunk-6I4G6CV5": {
+      "file": "chunk-6I4G6CV5.js"
+    },
+    "chunk-BPGSQW3A": {
+      "file": "chunk-BPGSQW3A.js"
+    },
+    "chunk-RBCSOTWF": {
+      "file": "chunk-RBCSOTWF.js"
+    },
+    "chunk-X7JGFNDX": {
+      "file": "chunk-X7JGFNDX.js"
+    },
+    "chunk-RHC6MCI4": {
+      "file": "chunk-RHC6MCI4.js"
+    },
+    "chunk-QVX2PVPU": {
+      "file": "chunk-QVX2PVPU.js"
+    },
+    "chunk-3BNB6CU2": {
+      "file": "chunk-3BNB6CU2.js"
+    },
+    "chunk-5VBEGHZO": {
+      "file": "chunk-5VBEGHZO.js"
+    },
+    "chunk-W35RGOJH": {
+      "file": "chunk-W35RGOJH.js"
+    },
+    "chunk-6MNSBIFA": {
+      "file": "chunk-6MNSBIFA.js"
+    },
+    "chunk-W3VT5O72": {
+      "file": "chunk-W3VT5O72.js"
+    },
+    "chunk-YEITXGAM": {
+      "file": "chunk-YEITXGAM.js"
+    },
+    "chunk-7SHIL4X2": {
+      "file": "chunk-7SHIL4X2.js"
+    },
+    "chunk-TREB7JGS": {
+      "file": "chunk-TREB7JGS.js"
+    },
+    "chunk-ZK7CAUDE": {
+      "file": "chunk-ZK7CAUDE.js"
+    },
+    "chunk-RJ7MXMWY": {
+      "file": "chunk-RJ7MXMWY.js"
+    },
+    "chunk-2FATVHAI": {
+      "file": "chunk-2FATVHAI.js"
+    }
+  }
+}
