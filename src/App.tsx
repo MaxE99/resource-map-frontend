@@ -14,34 +14,49 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import CountryInformation from "./components/Country/CountryInformation";
 import { AppContext } from "./components/AppContextProvider";
 import Map from "./components/Map/Map";
-import {
-  CommodityT,
-  CountryT,
-  GovInfoT,
-  ProductionReservesT,
-} from "./types/api";
-import { getColor, getQueryString } from "./functions/app";
+import { CommodityPriceT, CommodityT, GovInfoT } from "./types/api";
+import { addDataToGeojson, getQueryString } from "./functions/app";
 import {
   fetchCommodityData,
   fetchCountryData,
-  fetchGovInfoData,
+  fetchPriceData,
 } from "./functions/api";
 import { APP_STYLE } from "./styles/app";
 import { BASE_STYLE } from "./styles/base";
 import { DOMAIN, MARKS, OTHER_VIZ_OPTIONS } from "./config";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { GeoJSONDataUpdateT } from "./types/map";
 
-const App = (): JSX.Element => {
-  const [selectedCommodity, setSelectedCommodity] = useState<
-    CommodityT | undefined
-  >(undefined);
+const App = (): JSX.Element | null => {
+  const [selectedCommodity, setSelectedCommodity] = useState<CommodityT>({
+    id: 45,
+    name: "Gold",
+    info: "",
+    img_path: "commodity_imgs/gold.jpg",
+    companies: [
+      "Newmont Corporation",
+      "Barrick Gold Corporation",
+      "AngloGold Ashanti Limited",
+      "Polyus",
+      "Kinross Gold Corporation",
+    ],
+  });
   const [commodities, setCommodities] = useState<CommodityT[]>([]);
-  const [year, setYear] = useState<number>(2018);
-  const [worldGeojson, setWorldGeojson] = useState<GeoJSON.FeatureCollection>();
+  const [year, setYear] = useState<number>(
+    [2018, 2019, 2020, 2021, 2022][Math.floor(Math.random() * 5)]
+  );
+  const [worldGeojson, setWorldGeojson] = useState<
+    GeoJSON.FeatureCollection | undefined
+  >(undefined);
   const [govInfo, setGovInfo] = useState<GovInfoT | null>(null);
-  const [otherCountries, setOtherCountries] = useState<string>();
-  const [worldTotal, setWorldTotal] = useState<string>();
-  const [otherViz, setOtherViz] = useState<string>();
+  const [otherCountries, setOtherCountries] = useState<string | undefined>(
+    undefined
+  );
+  const [worldTotal, setWorldTotal] = useState<string | undefined>(undefined);
+  const [otherViz, setOtherViz] = useState<string | undefined>(undefined);
+  const [prices, setPrices] = useState<CommodityPriceT[]>([]);
+  const [initialLoadComplete, setInitialLoadComplete] =
+    useState<boolean>(false);
 
   const {
     selectedCountry,
@@ -53,117 +68,105 @@ const App = (): JSX.Element => {
   } = useContext<any>(AppContext);
 
   useEffect(() => {
-    let isCommodityDataLoaded = false;
-    let isCountryDataLoaded = false;
-    fetchCommodityData()
-      .then((data: CommodityT[]) => setCommodities(data))
-      .catch((error) => console.error("Error fetching commodity data:", error))
-      .finally(() => {
-        isCommodityDataLoaded = true;
-        if (isCommodityDataLoaded && isCountryDataLoaded) {
-          setIsLoading(false);
-        }
-      });
+    let isMounted = true;
 
-    fetchCountryData()
-      .then((data: CountryT[]) => {
-        const filteredArray = data.filter(
-          (obj: CountryT) => obj.geojson !== null
+    const fetchData = async () => {
+      try {
+        const [commodityData, countryData] = await Promise.all([
+          fetchCommodityData(),
+          fetchCountryData(),
+        ]);
+
+        if (!isMounted) {
+          return;
+        }
+
+        const filteredCountryData = countryData.filter(
+          (obj) => obj.geojson !== null
         );
-        const features = filteredArray.map((obj: CountryT) => obj.geojson);
+        const features = filteredCountryData.map((obj) => obj.geojson);
         const featureCollection: GeoJSON.FeatureCollection = {
           type: "FeatureCollection",
           features: features,
         };
+
+        const randomCommodity =
+          commodityData[Math.floor(Math.random() * commodityData.length)];
+        setSelectedCommodity(randomCommodity);
+        setCommodities(commodityData);
         setWorldGeojson(featureCollection);
-      })
-      .catch((error) => console.error("Error fetching country data:", error))
-      .finally(() => {
-        isCountryDataLoaded = true;
-        if (isCommodityDataLoaded && isCountryDataLoaded) {
-          setIsLoading(false);
-        }
-      });
+
+        const queryString = getQueryString(
+          isShowingProduction,
+          randomCommodity,
+          year
+        );
+
+        const dataUpdateProps: GeoJSONDataUpdateT = {
+          selectedCommodity: randomCommodity,
+          queryString: queryString,
+          worldGeojson: featureCollection,
+          year: year,
+          setGovInfo: setGovInfo,
+          setOtherCountries: setOtherCountries,
+          setWorldTotal: setWorldTotal,
+          setWorldGeojson: setWorldGeojson,
+        };
+
+        const [_, pricesData]: [void, CommodityPriceT[]] = await Promise.all([
+          addDataToGeojson(dataUpdateProps),
+          fetchPriceData(randomCommodity.name),
+        ]);
+
+        setPrices(pricesData);
+        setIsLoading(false);
+        setInitialLoadComplete(true);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
-    const queryString = getQueryString(
-      isShowingProduction,
-      selectedCommodity,
-      year
-    );
-
-    if (selectedCommodity?.name) {
-      let isGovDataLoaded = false;
-      let isResourceDataLoaded = false;
-
+    if (initialLoadComplete && worldGeojson) {
+      const queryString = getQueryString(
+        isShowingProduction,
+        selectedCommodity,
+        year
+      );
       setIsLoading(true);
-      fetchGovInfoData(year, selectedCommodity.name)
-        .then((data: GovInfoT[]) =>
-          data?.length ? setGovInfo(data[0]) : setGovInfo(null)
-        )
-        .catch((error) => console.error("Error fetching gov info data:", error))
-        .finally(() => {
-          isGovDataLoaded = true;
-          if (isGovDataLoaded && isResourceDataLoaded) {
-            setIsLoading(false);
-          }
-        });
 
-      fetch(queryString, {
-        method: "GET",
-      })
-        .then((response) => response.json())
-        .then((data: ProductionReservesT[]) => {
-          const updatedGeoJsonData = {
-            ...worldGeojson,
-          };
-          const totalAmount = data.find(
-            (entry: ProductionReservesT) => entry.country_name === "World total"
-          )?.amount;
-          const otherCountriesAmount = data.find(
-            (entry: ProductionReservesT) =>
-              entry.country_name === "Other countries"
-          )?.amount;
-          let metric = "";
-          updatedGeoJsonData?.features?.forEach((feature: any) => {
-            const countryName = feature.properties.ADMIN;
+      const dataUpdateProps: GeoJSONDataUpdateT = {
+        selectedCommodity: selectedCommodity,
+        queryString: queryString,
+        worldGeojson: worldGeojson,
+        year: year,
+        setGovInfo: setGovInfo,
+        setOtherCountries: setOtherCountries,
+        setWorldTotal: setWorldTotal,
+        setWorldGeojson: setWorldGeojson,
+      };
 
-            const productionCountry = data.find(
-              (entry: ProductionReservesT) => entry.country_name === countryName
-            );
-
-            if (productionCountry && totalAmount) {
-              const percentage = parseFloat(
-                ((productionCountry.amount / totalAmount) * 100).toFixed(2)
-              );
-
-              metric = productionCountry.metric;
-              feature.properties.style = {
-                fillColor: getColor(percentage),
-              };
-              feature.properties.amount = `${productionCountry.amount} ${metric} - ${percentage}%`;
-            } else {
-              feature.properties.style = {
-                fillColor: "white",
-              };
-            }
-          });
-
-          //@ts-ignore
-          setWorldGeojson(updatedGeoJsonData);
-          setOtherCountries(`${otherCountriesAmount} ${metric}`);
-          setWorldTotal(`${totalAmount} ${metric}`);
-        })
-        .catch((error) => console.error("Error fetching country data:", error))
-        .finally(() => {
-          isResourceDataLoaded = true;
-          if (isGovDataLoaded && isResourceDataLoaded) {
-            setIsLoading(false);
-          }
-        });
+      addDataToGeojson(dataUpdateProps).finally(() => setIsLoading(false));
     }
   }, [selectedCommodity, year, isShowingProduction]);
+
+  useEffect(() => {
+    if (initialLoadComplete && selectedCommodity) {
+      setIsLoading(true);
+      fetchPriceData(selectedCommodity.name)
+        .then((data: CommodityPriceT[]) => setPrices(data))
+        .catch((error) => console.error("Error fetching price data:", error))
+        .finally(() => setIsLoading(false));
+    }
+  }, [selectedCommodity]);
 
   const handleChange = (_: any, newValue: any) => {
     setYear(newValue);
@@ -171,90 +174,93 @@ const App = (): JSX.Element => {
 
   return (
     <Fragment>
-      <div style={APP_STYLE.WRAPPER as CSSProperties}>
-        <div style={APP_STYLE.OUTER_BOX}>
-          <div style={APP_STYLE.INNER_BOX}>
-            <Autocomplete
-              sx={{
-                width: "40%",
-                background: BASE_STYLE.COLOR_PALLETE.TEXT,
-                zIndex: 999,
-              }}
-              value={selectedCommodity}
-              onChange={(_event, newValue) => {
-                newValue && setSelectedCommodity(newValue);
-              }}
-              options={commodities.sort((a: CommodityT, b: CommodityT) =>
-                a.name.localeCompare(b.name)
-              )}
-              getOptionLabel={(option) => option.name}
-              renderInput={(params) => (
-                <TextField {...params} label="Select a commodity" />
-              )}
-              renderOption={(props, option) => (
-                <li {...props} style={{ padding: 0 }}>
-                  <div style={APP_STYLE.COMMODITY_BOX}>
-                    <img
-                      src={DOMAIN + "/static/" + option.img_path}
-                      alt={option.name}
-                      style={APP_STYLE.IMAGE}
-                    />
-                    {option.name}
-                  </div>
-                </li>
-              )}
+      {worldGeojson ? (
+        <div style={APP_STYLE.WRAPPER as CSSProperties}>
+          <div style={APP_STYLE.OUTER_BOX}>
+            <div style={APP_STYLE.INNER_BOX}>
+              <Autocomplete
+                sx={{
+                  width: "40%",
+                  background: BASE_STYLE.COLOR_PALLETE.TEXT,
+                  zIndex: 999,
+                }}
+                value={selectedCommodity}
+                onChange={(_event, newValue) => {
+                  newValue && setSelectedCommodity(newValue);
+                }}
+                options={commodities.sort((a: CommodityT, b: CommodityT) =>
+                  a.name.localeCompare(b.name)
+                )}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select a commodity" />
+                )}
+                renderOption={(props, option) => (
+                  <li {...props} style={{ padding: 0 }}>
+                    <div style={APP_STYLE.COMMODITY_BOX}>
+                      <img
+                        src={DOMAIN + "/static/" + option.img_path}
+                        alt={option.name}
+                        style={APP_STYLE.IMAGE}
+                      />
+                      {option.name}
+                    </div>
+                  </li>
+                )}
+              />
+              <Autocomplete
+                sx={{
+                  width: "40%",
+                  background: BASE_STYLE.COLOR_PALLETE.TEXT,
+                  zIndex: 999,
+                }}
+                value={otherViz}
+                onChange={(_event, newValue) => {
+                  newValue && setOtherViz(newValue);
+                }}
+                options={OTHER_VIZ_OPTIONS}
+                renderInput={(params) => (
+                  <TextField {...params} label="Show other visualization" />
+                )}
+              />
+            </div>
+            <Map
+              key={JSON.stringify(worldGeojson)}
+              countries={worldGeojson}
+              selectedCommodity={selectedCommodity}
+              otherCountries={otherCountries}
+              worldTotal={worldTotal}
             />
-            <Autocomplete
+            <Slider
               sx={{
-                width: "40%",
-                background: BASE_STYLE.COLOR_PALLETE.TEXT,
-                zIndex: 999,
+                ...APP_STYLE.SLIDER,
+                "& .MuiSlider-rail": { boxShadow: BASE_STYLE.BOX_SHADOW },
               }}
-              value={otherViz}
-              onChange={(_event, newValue) => {
-                newValue && setOtherViz(newValue);
-              }}
-              options={OTHER_VIZ_OPTIONS}
-              renderInput={(params) => (
-                <TextField {...params} label="Show other visualization" />
-              )}
+              value={year}
+              min={2018}
+              max={2022}
+              marks={MARKS}
+              step={1}
+              onChange={handleChange}
+              valueLabelDisplay="auto"
+              valueLabelFormat={(value) => value.toString()}
+              aria-label="Year Slider"
             />
           </div>
-          <Map
-            key={JSON.stringify(worldGeojson)}
-            countries={worldGeojson}
-            selectedCommodity={selectedCommodity}
-            otherCountries={otherCountries}
-            worldTotal={worldTotal}
+          <Sidebar
+            key={JSON.stringify(govInfo)}
+            commodity={selectedCommodity}
+            govInfo={govInfo}
+            prices={prices}
           />
-          <Slider
-            sx={{
-              ...APP_STYLE.SLIDER,
-              "& .MuiSlider-rail": { boxShadow: BASE_STYLE.BOX_SHADOW },
-            }}
-            value={year}
-            min={2018}
-            max={2022}
-            marks={MARKS}
-            step={1}
-            onChange={handleChange}
-            valueLabelDisplay="auto"
-            valueLabelFormat={(value) => value.toString()}
-            aria-label="Year Slider"
-          />
+          <Dialog open={dialogIsOpen} onClose={() => setDialogIsOpen(false)}>
+            <CountryInformation country={selectedCountry} />
+          </Dialog>
         </div>
-        <Sidebar
-          key={JSON.stringify(govInfo)}
-          commodity={selectedCommodity}
-          govInfo={govInfo}
-        />
-        <Dialog open={dialogIsOpen} onClose={() => setDialogIsOpen(false)}>
-          <CountryInformation country={selectedCountry} />
-        </Dialog>
-      </div>
+      ) : null}
       <Backdrop
         sx={{ background: BASE_STYLE.COLOR_PALLETE.BACKGROUND, zIndex: 1000 }}
-        open={isLoading}
+        open={isLoading || !worldGeojson}
       >
         <div
           style={{

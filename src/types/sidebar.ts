@@ -11,8 +11,9 @@ type PricePlotT = {
 };
 
 type SidebarT = {
-  commodity: CommodityT | undefined;
+  commodity: CommodityT;
   govInfo: GovInfoT | null;
+  prices: CommodityPriceT[] | undefined;
 };
 
 export type { AccordionWrapperT, PricePlotT, SidebarT };

@@ -127,29 +127,40 @@ const Map = ({
             {isShowingProduction ? "Production" : "Reserves"}
           </button>
         </Tooltip>
-        {otherCountries && worldTotal && (
-          <div
-            style={{
-              ...(MAP_STYLE.BOX as CSSProperties),
-              background: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
-              color: BASE_STYLE.COLOR_PALLETE.TEXT,
-            }}
-          >
-            <span style={{ marginRight: "5px" }}>Other Countries:</span>
-            <span
+        {otherCountries &&
+          worldTotal &&
+          (!otherCountries.includes("undefined") ||
+            !worldTotal.includes("undefined")) && (
+            <div
               style={{
-                color: BASE_STYLE.COLOR_PALLETE.ELEMENTS,
-                marginRight: "20px",
+                ...(MAP_STYLE.BOX as CSSProperties),
+                background: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
+                color: BASE_STYLE.COLOR_PALLETE.TEXT,
               }}
             >
-              {otherCountries}
-            </span>
-            <span style={{ marginRight: "5px" }}>World Total:</span>
-            <span style={{ color: BASE_STYLE.COLOR_PALLETE.ELEMENTS }}>
-              {worldTotal}
-            </span>
-          </div>
-        )}
+              {!otherCountries.includes("undefined") && (
+                <Fragment>
+                  <span style={{ marginRight: "5px" }}>Other Countries:</span>
+                  <span
+                    style={{
+                      color: BASE_STYLE.COLOR_PALLETE.ELEMENTS,
+                      marginRight: "20px",
+                    }}
+                  >
+                    {otherCountries}
+                  </span>
+                </Fragment>
+              )}
+              {!worldTotal.includes("undefined") && (
+                <Fragment>
+                  <span style={{ marginRight: "5px" }}>World Total:</span>
+                  <span style={{ color: BASE_STYLE.COLOR_PALLETE.ELEMENTS }}>
+                    {worldTotal}
+                  </span>
+                </Fragment>
+              )}
+            </div>
+          )}
       </MapContainer>
       {popupOpen && selectedCommodity && (
         <Fragment>
