@@ -25,6 +25,7 @@ import { APP_STYLE } from "./styles/app";
 import { BASE_STYLE } from "./styles/base";
 import { DOMAIN, MARKS, OTHER_VIZ_OPTIONS } from "./config";
 import { Backdrop, CircularProgress } from "@mui/material";
+import Forms from "./components/Forms/Forms";
 import { GeoJSONDataUpdateT } from "./types/map";
 
 const App = (): JSX.Element | null => {
@@ -177,53 +178,14 @@ const App = (): JSX.Element | null => {
       {worldGeojson ? (
         <div style={APP_STYLE.WRAPPER as CSSProperties}>
           <div style={APP_STYLE.OUTER_BOX}>
-            <div style={APP_STYLE.INNER_BOX}>
-              <Autocomplete
-                sx={{
-                  width: "40%",
-                  background: BASE_STYLE.COLOR_PALLETE.TEXT,
-                  zIndex: 999,
-                }}
-                value={selectedCommodity}
-                onChange={(_event, newValue) => {
-                  newValue && setSelectedCommodity(newValue);
-                }}
-                options={commodities.sort((a: CommodityT, b: CommodityT) =>
-                  a.name.localeCompare(b.name)
-                )}
-                getOptionLabel={(option) => option.name}
-                renderInput={(params) => (
-                  <TextField {...params} label="Select a commodity" />
-                )}
-                renderOption={(props, option) => (
-                  <li {...props} style={{ padding: 0 }}>
-                    <div style={APP_STYLE.COMMODITY_BOX}>
-                      <img
-                        src={DOMAIN + "/static/" + option.img_path + ".jpg"}
-                        alt={option.name}
-                        style={APP_STYLE.IMAGE}
-                      />
-                      {option.name}
-                    </div>
-                  </li>
-                )}
-              />
-              <Autocomplete
-                sx={{
-                  width: "40%",
-                  background: BASE_STYLE.COLOR_PALLETE.TEXT,
-                  zIndex: 999,
-                }}
-                value={otherViz}
-                onChange={(_event, newValue) => {
-                  newValue && setOtherViz(newValue);
-                }}
-                options={OTHER_VIZ_OPTIONS}
-                renderInput={(params) => (
-                  <TextField {...params} label="Show other visualization" />
-                )}
-              />
-            </div>
+            <Forms
+            commodities={commodities}
+            selectedCommodity={selectedCommodity}
+            setSelectedCommodity={setSelectedCommodity}
+            OTHER_VIZ_OPTIONS={OTHER_VIZ_OPTIONS}
+            otherViz={otherViz}
+            setOtherViz={setOtherViz}
+          />
             <Map
               key={JSON.stringify(worldGeojson)}
               countries={worldGeojson}
