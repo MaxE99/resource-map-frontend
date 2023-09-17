@@ -199,7 +199,7 @@ const App = (): JSX.Element | null => {
                   <li {...props} style={{ padding: 0 }}>
                     <div style={APP_STYLE.COMMODITY_BOX}>
                       <img
-                        src={DOMAIN + "/static/" + option.img_path}
+                        src={DOMAIN + "/static/" + option.img_path + ".jpg"}
                         alt={option.name}
                         style={APP_STYLE.IMAGE}
                       />
