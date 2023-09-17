@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 
 type FormsProps = {
   commodities: CommodityT[];
-  selectedCommodity: CommodityT | undefined;
-  setSelectedCommodity: (arg: CommodityT | undefined) => void;
+  selectedCommodity: CommodityT;
+  setSelectedCommodity: (arg: CommodityT) => void;
   OTHER_VIZ_OPTIONS: string[];
   otherViz: string | undefined;
   setOtherViz: (arg: string | undefined) => void;
@@ -29,25 +29,38 @@ const Forms = ({
     var newValue: string[] = [];
     commodities.map((value) => {
       newValue = [...newValue, value.name];
-      console.log(value.name);
     });
     newValue.sort();
     setCommoditiesStr(newValue);
   }, [commodities]);
 
   useEffect(() => {
-    selectedCommStr
-      ? commodities.map((value) => {
-        value.name === selectedCommStr && setSelectedCommodity(value);
-      })
-      : setSelectedCommodity(undefined);
-  }, [selectedCommStr]);
-
-  useEffect(() => {
     selectedCommodity
       ? setSelectedCommStr(selectedCommodity.name)
       : setSelectedCommStr(undefined);
   }, [selectedCommodity]);
+
+  /*
+    useEffect(() => {
+      selectedCommStr
+        ? commodities.map((value) => {
+            value.name === selectedCommStr && setSelectedCommodity(value);
+          })
+        : setSelectedCommodity({
+            id: 45,
+            name: "Gold",
+            info: "",
+            img_path: "commodity_imgs/gold.jpg",
+            companies: [
+              "Newmont Corporation",
+              "Barrick Gold Corporation",
+              "AngloGold Ashanti Limited",
+              "Polyus",
+              "Kinross Gold Corporation",
+            ],
+          });
+    }, [selectedCommStr]);
+    */
 
   return (
     <div className="forms">
