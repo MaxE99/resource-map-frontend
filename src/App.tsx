@@ -30,6 +30,8 @@ import { APP_STYLE } from "./styles/app";
 import { BASE_STYLE } from "./styles/base";
 import { DOMAIN, MARKS, OTHER_VIZ_OPTIONS } from "./config";
 import { Backdrop, CircularProgress } from "@mui/material";
+import Dropdown from "./components/Dropdown/Dropdown";
+import Forms from "./components/Forms/Forms";
 
 const App = (): JSX.Element => {
   const [selectedCommodity, setSelectedCommodity] = useState<
@@ -41,7 +43,7 @@ const App = (): JSX.Element => {
   const [govInfo, setGovInfo] = useState<GovInfoT | null>(null);
   const [otherCountries, setOtherCountries] = useState<string>();
   const [worldTotal, setWorldTotal] = useState<string>();
-  const [otherViz, setOtherViz] = useState<string>();
+  const [otherViz, setOtherViz] = useState<string | undefined>(undefined);
 
   const {
     selectedCountry,
@@ -68,7 +70,7 @@ const App = (): JSX.Element => {
     fetchCountryData()
       .then((data: CountryT[]) => {
         const filteredArray = data.filter(
-          (obj: CountryT) => obj.geojson !== null
+          (obj: CountryT) => obj.geojson !== null,
         );
         const features = filteredArray.map((obj: CountryT) => obj.geojson);
         const featureCollection: GeoJSON.FeatureCollection = {
@@ -90,7 +92,7 @@ const App = (): JSX.Element => {
     const queryString = getQueryString(
       isShowingProduction,
       selectedCommodity,
-      year
+      year,
     );
 
     if (selectedCommodity?.name) {
@@ -100,7 +102,7 @@ const App = (): JSX.Element => {
       setIsLoading(true);
       fetchGovInfoData(year, selectedCommodity.name)
         .then((data: GovInfoT[]) =>
-          data?.length ? setGovInfo(data[0]) : setGovInfo(null)
+          data?.length ? setGovInfo(data[0]) : setGovInfo(null),
         )
         .catch((error) => console.error("Error fetching gov info data:", error))
         .finally(() => {
@@ -119,23 +121,25 @@ const App = (): JSX.Element => {
             ...worldGeojson,
           };
           const totalAmount = data.find(
-            (entry: ProductionReservesT) => entry.country_name === "World total"
+            (entry: ProductionReservesT) =>
+              entry.country_name === "World total",
           )?.amount;
           const otherCountriesAmount = data.find(
             (entry: ProductionReservesT) =>
-              entry.country_name === "Other countries"
+              entry.country_name === "Other countries",
           )?.amount;
           let metric = "";
           updatedGeoJsonData?.features?.forEach((feature: any) => {
             const countryName = feature.properties.ADMIN;
 
             const productionCountry = data.find(
-              (entry: ProductionReservesT) => entry.country_name === countryName
+              (entry: ProductionReservesT) =>
+                entry.country_name === countryName,
             );
 
             if (productionCountry && totalAmount) {
               const percentage = parseFloat(
-                ((productionCountry.amount / totalAmount) * 100).toFixed(2)
+                ((productionCountry.amount / totalAmount) * 100).toFixed(2),
               );
 
               metric = productionCountry.metric;
@@ -173,7 +177,7 @@ const App = (): JSX.Element => {
     <Fragment>
       <div style={APP_STYLE.WRAPPER as CSSProperties}>
         <div style={APP_STYLE.OUTER_BOX}>
-          <div style={APP_STYLE.INNER_BOX}>
+          {/*
             <Autocomplete
               sx={{
                 width: "40%",
@@ -185,7 +189,7 @@ const App = (): JSX.Element => {
                 newValue && setSelectedCommodity(newValue);
               }}
               options={commodities.sort((a: CommodityT, b: CommodityT) =>
-                a.name.localeCompare(b.name)
+                a.name.localeCompare(b.name),
               )}
               getOptionLabel={(option) => option.name}
               renderInput={(params) => (
@@ -195,7 +199,7 @@ const App = (): JSX.Element => {
                 <li {...props} style={{ padding: 0 }}>
                   <div style={APP_STYLE.COMMODITY_BOX}>
                     <img
-                      src={DOMAIN + "/static/" + option.img_path}
+                      src={DOMAIN + "/static/" + option.img_path + ".jpg"}
                       alt={option.name}
                       style={APP_STYLE.IMAGE}
                     />
@@ -204,6 +208,16 @@ const App = (): JSX.Element => {
                 </li>
               )}
             />
+            */}
+          <Forms
+            commodities={commodities}
+            selectedCommodity={selectedCommodity}
+            setSelectedCommodity={setSelectedCommodity}
+            OTHER_VIZ_OPTIONS={OTHER_VIZ_OPTIONS}
+            otherViz={otherViz}
+            setOtherViz={setOtherViz}
+          />
+          {/*
             <Autocomplete
               sx={{
                 width: "40%",
@@ -219,7 +233,8 @@ const App = (): JSX.Element => {
                 <TextField {...params} label="Show other visualization" />
               )}
             />
-          </div>
+
+            */}
           <Map
             key={JSON.stringify(worldGeojson)}
             countries={worldGeojson}

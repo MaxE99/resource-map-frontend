@@ -4,6 +4,9 @@
   --main-background: #333333; /* or #101046 */
   --main-element: #1277c4; /* or #007afc */
   --main-text: #fff;
+  --light-grey: #666;
+
+  --box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
   /* --main-red: (mui red) */
   /* --main-green: (mui green) */

@@ -53,7 +53,7 @@ const Sidebar = ({ commodity, govInfo }: SidebarT): JSX.Element => {
         <div style={{ padding: "20px", lineHeight: 1.8, textAlign: "justify" }}>
           <div style={SIDEBAR_STYLE.NAME_CONTAINER as CSSProperties}>
             <img
-              src={DOMAIN + "/static/" + commodity.img_path}
+              src={DOMAIN + "/static/" + commodity.img_path + ".jpg"}
               alt={commodity.name + " Image"}
               style={{
                 marginRight: "10px",
