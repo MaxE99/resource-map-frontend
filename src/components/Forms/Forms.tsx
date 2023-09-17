@@ -40,25 +40,27 @@ const Forms = ({
       : setSelectedCommStr(undefined);
   }, [selectedCommodity]);
 
-  useEffect(() => {
-    selectedCommStr
-      ? commodities.map((value) => {
-          value.name === selectedCommStr && setSelectedCommodity(value);
-        })
-      : setSelectedCommodity({
-          id: 45,
-          name: "Gold",
-          info: "",
-          img_path: "commodity_imgs/gold.jpg",
-          companies: [
-            "Newmont Corporation",
-            "Barrick Gold Corporation",
-            "AngloGold Ashanti Limited",
-            "Polyus",
-            "Kinross Gold Corporation",
-          ],
-        });
-  }, [selectedCommStr]);
+  /*
+    useEffect(() => {
+      selectedCommStr
+        ? commodities.map((value) => {
+            value.name === selectedCommStr && setSelectedCommodity(value);
+          })
+        : setSelectedCommodity({
+            id: 45,
+            name: "Gold",
+            info: "",
+            img_path: "commodity_imgs/gold.jpg",
+            companies: [
+              "Newmont Corporation",
+              "Barrick Gold Corporation",
+              "AngloGold Ashanti Limited",
+              "Polyus",
+              "Kinross Gold Corporation",
+            ],
+          });
+    }, [selectedCommStr]);
+    */
 
   return (
     <div className="forms">
