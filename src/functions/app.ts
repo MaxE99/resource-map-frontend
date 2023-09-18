@@ -86,6 +86,7 @@ const addDataToGeojson = async (props: GeoJSONDataUpdateT) => {
           };
           feature.properties.amount = `${productionCountry.amount} ${metric} - ${percentage}%`;
         } else {
+          feature.properties.amount = null;
           feature.properties.style = {
             fillColor: "white",
           };
