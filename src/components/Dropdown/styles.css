@@ -1,0 +1,85 @@
+.dropdown {
+  width: 100%;
+  background-color: var(--main-background);
+  color: var(--main-text);
+  position: relative;
+  border: 1px solid var(--light-grey);
+  border-radius: 4px;
+  box-shadow: var(--box-shadow);
+}
+
+.dropdown-inner {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid var(--main-background);
+  border-radius: 2px;
+  height: 100%;
+  width: 100%;
+  transition: 400ms all ease;
+}
+
+.dropdown-inner:hover {
+  border: 1px solid var(--main-element);
+}
+
+.dropdown-inner-open {
+  border: 1px solid var(--main-element);
+}
+
+.dropdown-options-wrapper {
+  width: 100%;
+  position: absolute;
+  z-index: 2000;
+  background-color: var(--main-background);
+  margin-top: 10px;
+  border: 1px solid var(--light-grey);
+  border-radius: 4px;
+  box-shadow: var(--box-shadow);
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+.dropdown-option {
+  display: flex;
+  transition: 200ms all ease;
+}
+
+.dropdown-option-selected {
+  display: flex;
+  transition: 200ms all ease;
+}
+
+.dropdown-option:hover {
+  background-color: var(--main-element);
+  color: var(--main-background);
+  font-weight: 800;
+}
+
+.dropdown-option-selected:hover {
+  background-color: var(--main-element);
+  color: var(--main-background);
+  font-weight: 800;
+}
+
+.dropdown-open-button {
+  width: auto;
+  aspect-ratio: 1/1;
+  background-color: inherit;
+  color: var(--light-grey);
+}
+
+.dropdown-open-button:hover {
+  color: var(--main-element);
+}
+
+.dropdown-remove-button {
+  width: auto;
+  aspect-ratio: 1/1;
+  background-color: inherit;
+  color: var(--light-grey);
+  transition: 400ms all ease;
+}
+
+.dropdown-remove-button:hover {
+  color: var(--main-element);
+}

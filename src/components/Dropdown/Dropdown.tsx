@@ -1,17 +1,12 @@
 import { useState } from "react";
 import OpenButton from "./OpenButton";
 import RemoveButton from "./RemoveButton";
-import Options from "./Options";
-import "./styles/Dropdown.css";
-
-type DropdownProps = {
-  label: string;
-  setSelected: (arg: string | undefined) => void;
-  selected: string | undefined;
-  options: any;
-};
+import OptionList from "./OptionList";
+import "./styles.css";
+import { DropdownProps } from "./types";
 
 const Dropdown = ({
+  renderRemove,
   label,
   setSelected,
   selected,
@@ -50,6 +45,7 @@ const Dropdown = ({
             }}
           >
             <RemoveButton
+              renderRemove={renderRemove}
               setOpen={setOpen}
               selected={selected}
               setSelected={setSelected}
@@ -59,7 +55,7 @@ const Dropdown = ({
         </div>
       </div>
       {open && (
-        <Options
+        <OptionList
           options={options}
           selected={selected}
           setSelected={setSelected}

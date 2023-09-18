@@ -1,23 +1,20 @@
 import { IoMdClose } from "react-icons/io";
-import "./styles/RemoveButton.css";
-
-type RemoveButtonProps = {
-  setOpen: (arg: boolean) => void;
-  selected: string | undefined;
-  setSelected: (arg: string | undefined) => void;
-};
+import "./styles.css";
+import { RemoveButtonProps } from "./types";
 
 const RemoveButton = ({
+  renderRemove,
   setOpen,
   selected,
   setSelected,
 }: RemoveButtonProps): JSX.Element => {
   return (
     <div style={{ display: "flex" }}>
-      {selected ? (
+      {renderRemove && selected ? (
         <button
           className="dropdown-remove-button"
-          onClick={() => {
+          onClick={(event) => {
+            event.stopPropagation();
             setSelected(undefined);
             setOpen(false);
           }}

@@ -1,10 +1,6 @@
 import { IoIosArrowDown } from "react-icons/io";
-import "./styles/OpenButton.css";
-
-type OpenButtonProps = {
-  open: boolean;
-  setOpen: (arg: boolean) => void;
-};
+import "./styles.css";
+import { OpenButtonProps } from "./types";
 
 const OpenButton = ({ open, setOpen }: OpenButtonProps): JSX.Element => {
   return (
