@@ -53,62 +53,63 @@ const Sidebar = ({ commodity, govInfo, prices }: SidebarT): JSX.Element => {
       >
         {!isAboutUsVisible && !isGuideVisible && !isDataSourcesVisible && (
           <Fragment>
-           <div style={SIDEBAR_STYLE.NAME_CONTAINER as CSSProperties}>
-          <img
-            src={DOMAIN + "/static/" + commodity.img_path + ".jpg"}
-            alt={commodity.name + " Image"}
-            style={{
-              marginRight: "10px",
-              width: "40px",
-              borderRadius: "4px",
-            }}
-          />
-          {commodity.name}
-        </div>
-        {prices && prices.length > 0 && <PricePlot data={prices} />}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px",
-            marginTop: "20px",
-          }}
-        >
-          <Accordion
-            index={1}
-            label="Overview"
-            body={
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: commodity.info
-                    .replace(/\n/g, "<br>")
-                    .replace(/(\s*<br\s*\/?>)+\s*$/, ""),
+            <div style={SIDEBAR_STYLE.NAME_CONTAINER as CSSProperties}>
+              <img
+                src={DOMAIN + "/static/" + commodity.img_path + ".jpg"}
+                alt={commodity.name + " Image"}
+                style={{
+                  marginRight: "10px",
+                  width: "40px",
+                  borderRadius: "4px",
                 }}
               />
-            }
-          ></Accordion>
-          <Accordion
-            index={2}
-            label="Largest Producers"
-            body={
-              <div>
-                {commodity.companies.map((commodity: string) => (
-                  <div key={commodity} style={{ margin: "5px 0 0 10px" }}>
-                    {commodity}
-                  </div>
-                ))}
-              </div>
-            }
-          />
-          {govInfo?.events &&
-            govInfoData.map((item: AccordionWrapperT) => (
+              {commodity.name}
+            </div>
+            {prices && prices.length > 0 && <PricePlot data={prices} />}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "20px",
+                marginTop: "20px",
+              }}
+            >
               <Accordion
-                key={item.index}
-                index={item.index}
-                label={item.summary}
-                body={item.details}
+                index={1}
+                label="Overview"
+                body={
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: commodity.info
+                        .replace(/\n/g, "<br>")
+                        .replace(/(\s*<br\s*\/?>)+\s*$/, ""),
+                    }}
+                  />
+                }
+              ></Accordion>
+              <Accordion
+                index={2}
+                label="Largest Producers"
+                body={
+                  <div>
+                    {commodity.companies.map((commodity: string) => (
+                      <div key={commodity} style={{ margin: "5px 0 0 10px" }}>
+                        {commodity}
+                      </div>
+                    ))}
+                  </div>
+                }
               />
-            ))}
+            </div>
+            {govInfo?.events &&
+              govInfoData.map((item: AccordionWrapperT) => (
+                <Accordion
+                  key={item.index}
+                  index={item.index}
+                  label={item.summary}
+                  body={item.details}
+                />
+              ))}
           </Fragment>
         )}
         {isAboutUsVisible && <AboutUs />}
