@@ -4,7 +4,6 @@ import { FcAbout } from "react-icons/fc";
 import { FaRegNewspaper } from "react-icons/fa";
 
 import PricePlot from "./PricePlot";
-import AccordionWrapper from "./AccordionWrapper";
 import { AccordionWrapperT, SidebarT } from "../../types/sidebar";
 import { SIDEBAR_STYLE } from "../../styles/sidebar";
 import { BASE_STYLE } from "../../styles/base";
@@ -13,6 +12,7 @@ import { DOMAIN } from "../../config";
 import AboutUs from "./AboutUs";
 import Guide from "./Guide";
 import DataSources from "./DataSources";
+import Accordion from "../Accordion/Accordion";
 
 const Sidebar = ({ commodity, govInfo, prices }: SidebarT): JSX.Element => {
   const [isAboutUsVisible, setIsAboutUsVisible] = useState<boolean>(false);
@@ -53,51 +53,62 @@ const Sidebar = ({ commodity, govInfo, prices }: SidebarT): JSX.Element => {
       >
         {!isAboutUsVisible && !isGuideVisible && !isDataSourcesVisible && (
           <Fragment>
-            <div style={SIDEBAR_STYLE.NAME_CONTAINER as CSSProperties}>
-              <img
-                src={DOMAIN + "/static/" + commodity.img_path + ".jpg"}
-                alt={commodity.name + " Image"}
-                style={{
-                  marginRight: "10px",
-                  width: "40px",
-                  borderRadius: "4px",
+           <div style={SIDEBAR_STYLE.NAME_CONTAINER as CSSProperties}>
+          <img
+            src={DOMAIN + "/static/" + commodity.img_path + ".jpg"}
+            alt={commodity.name + " Image"}
+            style={{
+              marginRight: "10px",
+              width: "40px",
+              borderRadius: "4px",
+            }}
+          />
+          {commodity.name}
+        </div>
+        {prices && prices.length > 0 && <PricePlot data={prices} />}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+            marginTop: "20px",
+          }}
+        >
+          <Accordion
+            index={1}
+            label="Overview"
+            body={
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: commodity.info
+                    .replace(/\n/g, "<br>")
+                    .replace(/(\s*<br\s*\/?>)+\s*$/, ""),
                 }}
               />
-              {commodity.name}
-            </div>
-            {prices && prices.length > 0 && <PricePlot data={prices} />}
-            <AccordionWrapper
-              index={1}
-              summary="Overview"
-              details={
-                <div
-                  style={{ margin: "20px 0 0" }}
-                  dangerouslySetInnerHTML={{
-                    __html: commodity.info
-                      .replace(/\n/g, "<br>")
-                      .replace(/(\s*<br\s*\/?>)+\s*$/, ""),
-                  }}
-                ></div>
-              }
-            />
-            <AccordionWrapper
-              index={2}
-              summary="Largest Producers"
-              details={commodity.companies.map((commodity: string) => (
-                <div key={commodity} style={{ margin: "5px 0 0 10px" }}>
-                  {commodity}
-                </div>
-              ))}
-            />
-            {govInfo?.events &&
-              govInfoData.map((item: AccordionWrapperT) => (
-                <AccordionWrapper
-                  key={item.index}
-                  index={item.index}
-                  summary={item.summary}
-                  details={item.details}
-                />
-              ))}
+            }
+          ></Accordion>
+          <Accordion
+            index={2}
+            label="Largest Producers"
+            body={
+              <div>
+                {commodity.companies.map((commodity: string) => (
+                  <div key={commodity} style={{ margin: "5px 0 0 10px" }}>
+                    {commodity}
+                  </div>
+                ))}
+              </div>
+            }
+          />
+          {govInfo?.events &&
+            govInfoData.map((item: AccordionWrapperT) => (
+              <Accordion
+                key={item.index}
+                index={item.index}
+                label={item.summary}
+                body={item.details}
+              />
+            ))}
           </Fragment>
         )}
         {isAboutUsVisible && <AboutUs />}
