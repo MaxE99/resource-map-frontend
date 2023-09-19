@@ -42,20 +42,21 @@ const App = (): JSX.Element | null => {
   });
   const [commodities, setCommodities] = useState<CommodityT[]>([]);
   const [year, setYear] = useState<number>(
-    [2018, 2019, 2020, 2021, 2022][Math.floor(Math.random() * 5)],
+    [2018, 2019, 2020, 2021, 2022][Math.floor(Math.random() * 5)]
   );
   const [worldGeojson, setWorldGeojson] = useState<
     GeoJSON.FeatureCollection | undefined
   >(undefined);
   const [govInfo, setGovInfo] = useState<GovInfoT | null>(null);
   const [otherCountries, setOtherCountries] = useState<string | undefined>(
-    undefined,
+    undefined
   );
   const [worldTotal, setWorldTotal] = useState<string | undefined>(undefined);
   const [otherViz, setOtherViz] = useState<string | undefined>(undefined);
   const [prices, setPrices] = useState<CommodityPriceT[]>([]);
   const [initialLoadComplete, setInitialLoadComplete] =
     useState<boolean>(false);
+  const [noDataFound, setNoDataFound] = useState<boolean>(false);
 
   const {
     selectedCountry,
@@ -81,7 +82,7 @@ const App = (): JSX.Element | null => {
         }
 
         const filteredCountryData = countryData.filter(
-          (obj) => obj.geojson !== null,
+          (obj) => obj.geojson !== null
         );
         const features = filteredCountryData.map((obj) => obj.geojson);
         const featureCollection: GeoJSON.FeatureCollection = {
@@ -98,7 +99,7 @@ const App = (): JSX.Element | null => {
         const queryString = getQueryString(
           isShowingProduction,
           randomCommodity,
-          year,
+          year
         );
 
         const dataUpdateProps: GeoJSONDataUpdateT = {
@@ -110,6 +111,7 @@ const App = (): JSX.Element | null => {
           setOtherCountries: setOtherCountries,
           setWorldTotal: setWorldTotal,
           setWorldGeojson: setWorldGeojson,
+          setNoDataFound: setNoDataFound,
         };
 
         const [_, pricesData]: [void, CommodityPriceT[]] = await Promise.all([
@@ -138,7 +140,7 @@ const App = (): JSX.Element | null => {
       const queryString = getQueryString(
         isShowingProduction,
         selectedCommodity,
-        year,
+        year
       );
       setIsLoading(true);
 
@@ -151,6 +153,7 @@ const App = (): JSX.Element | null => {
         setOtherCountries: setOtherCountries,
         setWorldTotal: setWorldTotal,
         setWorldGeojson: setWorldGeojson,
+        setNoDataFound: setNoDataFound,
       };
 
       addDataToGeojson(dataUpdateProps).finally(() => setIsLoading(false));
@@ -190,6 +193,7 @@ const App = (): JSX.Element | null => {
               selectedCommodity={selectedCommodity}
               otherCountries={otherCountries}
               worldTotal={worldTotal}
+              noDataFound={noDataFound}
             />
             <Slider
               sx={{

@@ -1,0 +1,15 @@
+.noDataFound {
+  padding: 15px 30px;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 400;
+  border-radius: 20px;
+  font-weight: 600;
+  background: var(--main-element);
+  color: var(--main-text);
+  border: 1px solid;
+  text-transform: uppercase;
+}

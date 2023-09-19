@@ -7,6 +7,7 @@ type MapT = {
   selectedCommodity: CommodityT;
   otherCountries: string | undefined;
   worldTotal: string | undefined;
+  noDataFound: boolean;
 };
 
 type ResourcePlotT = {
@@ -24,6 +25,7 @@ type GeoJSONDataUpdateT = {
   setWorldGeojson: Dispatch<
     SetStateAction<GeoJSON.FeatureCollection | undefined>
   >;
+  setNoDataFound: Dispatch<SetStateAction<boolean>>;
 };
 
 export type { MapT, ResourcePlotT, GeoJSONDataUpdateT };

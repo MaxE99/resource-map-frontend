@@ -9,12 +9,15 @@ import { AppContext } from "../AppContextProvider";
 import { MapT } from "../../types/map";
 import { BASE_STYLE } from "../../styles/base";
 import { MAP_STYLE } from "../../styles/map";
+import "../../styles/map.css";
+
 
 const Map = ({
   countries,
   selectedCommodity,
   otherCountries,
   worldTotal,
+  noDataFound,
 }: MapT): JSX.Element => {
   const [popupOpen, setPopupOpen] = useState<boolean>(false);
   const [isFeatureBeingHoveredOver, setIsFeatureBeingHoveredOver] =
@@ -162,6 +165,7 @@ const Map = ({
             </div>
           )}
       </MapContainer>
+      {noDataFound && <div className="noDataFound">No Data Found</div>}
       {popupOpen && selectedCommodity && (
         <Fragment>
           <CountryResourcePopup

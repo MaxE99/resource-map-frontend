@@ -54,6 +54,8 @@ const addDataToGeojson = async (props: GeoJSONDataUpdateT) => {
         ),
       ]);
 
+      !productionReservesData.length && props.setNoDataFound(true);
+
       const govInfo = govInfoData?.length ? govInfoData[0] : null;
 
       const updatedGeoJsonData = { ...props.worldGeojson };
