@@ -26,8 +26,9 @@ const OptionList = ({
   return (
     <div className="dropdown-options-wrapper">
       <ul style={{ padding: "4px 0" }}>
-        {options.map((option: any) => (
+        {options.map((option: any, index: number) => (
           <Option
+            key={index}
             identifier={option.identifier}
             children={option.children}
             selected={selected}
