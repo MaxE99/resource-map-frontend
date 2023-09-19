@@ -1,13 +1,24 @@
-import { CSSProperties } from "react";
+import { CSSProperties, Fragment, useState } from "react";
+import { AiFillQuestionCircle } from "react-icons/ai";
+import { FcAbout } from "react-icons/fc";
+import { FaRegNewspaper } from "react-icons/fa";
 
 import PricePlot from "./PricePlot";
 import { AccordionWrapperT, SidebarT } from "../../types/sidebar";
 import { SIDEBAR_STYLE } from "../../styles/sidebar";
 import { BASE_STYLE } from "../../styles/base";
+import "../../styles/sidebar.css";
 import { DOMAIN } from "../../config";
+import AboutUs from "./AboutUs";
+import Guide from "./Guide";
+import DataSources from "./DataSources";
 import Accordion from "../Accordion/Accordion";
 
 const Sidebar = ({ commodity, govInfo, prices }: SidebarT): JSX.Element => {
+  const [isAboutUsVisible, setIsAboutUsVisible] = useState<boolean>(false);
+  const [isGuideVisible, setIsGuideVisible] = useState<boolean>(false);
+  const [isDataSourcesVisible, setIsDataSourcesVisible] =
+    useState<boolean>(false);
   const govInfoData: AccordionWrapperT[] = [
     {
       index: 3,
@@ -32,8 +43,17 @@ const Sidebar = ({ commodity, govInfo, prices }: SidebarT): JSX.Element => {
         boxShadow: BASE_STYLE.BOX_SHADOW,
       }}
     >
-      <div style={{ padding: "20px", lineHeight: 1.8, textAlign: "justify" }}>
-        <div style={SIDEBAR_STYLE.NAME_CONTAINER as CSSProperties}>
+      <div
+        style={{
+          padding: "20px",
+          lineHeight: 1.8,
+          textAlign: "justify",
+          minHeight: "calc(100vh - 104px)",
+        }}
+      >
+        {!isAboutUsVisible && !isGuideVisible && !isDataSourcesVisible && (
+          <Fragment>
+           <div style={SIDEBAR_STYLE.NAME_CONTAINER as CSSProperties}>
           <img
             src={DOMAIN + "/static/" + commodity.img_path + ".jpg"}
             alt={commodity.name + " Image"}
@@ -89,7 +109,43 @@ const Sidebar = ({ commodity, govInfo, prices }: SidebarT): JSX.Element => {
                 body={item.details}
               />
             ))}
-        </div>
+          </Fragment>
+        )}
+        {isAboutUsVisible && <AboutUs />}
+        {isGuideVisible && <Guide />}
+        {isDataSourcesVisible && <DataSources />}
+      </div>
+      <div className="infoContainer">
+        <button
+          onClick={() => {
+            setIsAboutUsVisible(!isAboutUsVisible);
+            setIsGuideVisible(false);
+            setIsDataSourcesVisible(false);
+          }}
+        >
+          <FcAbout style={{ background: "white" }} />
+          <span>About Us</span>
+        </button>
+        <button
+          onClick={() => {
+            setIsGuideVisible(!isGuideVisible);
+            setIsAboutUsVisible(false);
+            setIsDataSourcesVisible(false);
+          }}
+        >
+          <FaRegNewspaper />
+          <span>Guide</span>
+        </button>
+        <button
+          onClick={() => {
+            setIsDataSourcesVisible(!isDataSourcesVisible);
+            setIsAboutUsVisible(false);
+            setIsGuideVisible(false);
+          }}
+        >
+          <AiFillQuestionCircle />
+          <span>Data Sources</span>
+        </button>
       </div>
     </div>
   );

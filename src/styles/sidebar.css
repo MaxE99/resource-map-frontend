@@ -1,0 +1,32 @@
+.infoContainer {
+  position: sticky;
+  bottom: 0;
+  border-top: 1px solid;
+  padding: 15px 20px;
+  background: rgb(18, 119, 196);
+  display: flex;
+  justify-content: space-between;
+}
+
+.infoContainer button {
+  background: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.infoContainer button span {
+  margin-left: 5px;
+}
+
+.dataSourceLink {
+  display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgb(18, 119, 196);
+  margin-left: 10px;
+}
