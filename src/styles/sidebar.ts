@@ -24,6 +24,7 @@ const SIDEBAR_STYLE = {
     borderRadius: "8px",
     overflowY: "auto",
     border: "1px solid",
+    position: "relative",
   },
   NAME_CONTAINER: {
     fontSize: "30px",
