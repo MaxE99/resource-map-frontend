@@ -79,23 +79,26 @@ const addDataToGeojson = async (props: GeoJSONDataUpdateT) => {
 
         if (
           productionCountry &&
-          productionCountry.amount !== "0" &&
+          Number(productionCountry.amount) !== 0 &&
           totalAmount
         ) {
           metric = productionCountry.metric;
           if (isNaN(Number(productionCountry.amount))) {
             feature.properties.amount = "Unknown Amount";
+            feature.properties.metric = metric;
             feature.properties.style = {
               fillColor: "red",
             };
           } else {
-            const percentage = parseFloat(
+            const share = parseFloat(
               ((productionCountry.amount / totalAmount) * 100).toFixed(2)
             );
             feature.properties.style = {
-              fillColor: getColor(percentage),
+              fillColor: getColor(share),
             };
-            feature.properties.amount = `${productionCountry.amount} ${metric} - ${percentage}%`;
+            feature.properties.amount = productionCountry.amount;
+            feature.properties.metric = metric;
+            feature.properties.share = share;
           }
         } else {
           feature.properties.amount = null;
