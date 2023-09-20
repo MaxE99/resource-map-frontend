@@ -26,7 +26,10 @@ const CountryResourcePopup = ({
 }: CountryResourcePopupT): JSX.Element | null => {
   let amount = null;
   let share = null;
-  if (feature.properties?.amount) {
+  if (
+    feature.properties?.amount &&
+    feature.properties.amount !== "Unknown Amount"
+  ) {
     amount = feature.properties.amount.split("-")[0];
     share = feature.properties.amount.split("-")[1];
   }
@@ -120,19 +123,27 @@ const CountryResourcePopup = ({
         />
       </div>
       {isFeatureBeingHoveredOver ? (
-        share &&
-        amount && (
-          <Fragment>
-            <div style={{ margin: "5px 0" }}>
-              <span style={{ fontWeight: 600 }}>Amount: </span>
-              <span>{amount}</span>
+        <Fragment>
+          {feature.properties?.amount === "Unknown Amount" && (
+            <div style={{ margin: "5px 0", fontWeight: 600, color: "red" }}>
+              Unknown Amount
             </div>
-            <div>
-              <span style={{ fontWeight: 600 }}>Share: </span>
-              <span>{share}</span>
-            </div>
-          </Fragment>
-        )
+          )}
+          {share && amount && (
+            <Fragment>
+              <div style={{ margin: "5px 0" }}>
+                <span style={{ fontWeight: 600 }}>Amount: </span>
+                <span>{amount}</span>
+              </div>
+              {share.trim() !== "undefined%" && share.trim() !== "NaN%" && (
+                <div>
+                  <span style={{ fontWeight: 600 }}>Share: </span>
+                  <span>{share}</span>
+                </div>
+              )}
+            </Fragment>
+          )}
+        </Fragment>
       ) : (
         <Fragment>
           {productionData && productionData?.length > 0 && (

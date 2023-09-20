@@ -77,16 +77,26 @@ const addDataToGeojson = async (props: GeoJSONDataUpdateT) => {
           (entry: ProductionReservesT) => entry.country_name === countryName
         );
 
-        if (productionCountry && totalAmount) {
-          const percentage = parseFloat(
-            ((productionCountry.amount / totalAmount) * 100).toFixed(2)
-          );
-
+        if (
+          productionCountry &&
+          productionCountry.amount !== "0" &&
+          totalAmount
+        ) {
           metric = productionCountry.metric;
-          feature.properties.style = {
-            fillColor: getColor(percentage),
-          };
-          feature.properties.amount = `${productionCountry.amount} ${metric} - ${percentage}%`;
+          if (isNaN(Number(productionCountry.amount))) {
+            feature.properties.amount = "Unknown Amount";
+            feature.properties.style = {
+              fillColor: "red",
+            };
+          } else {
+            const percentage = parseFloat(
+              ((productionCountry.amount / totalAmount) * 100).toFixed(2)
+            );
+            feature.properties.style = {
+              fillColor: getColor(percentage),
+            };
+            feature.properties.amount = `${productionCountry.amount} ${metric} - ${percentage}%`;
+          }
         } else {
           feature.properties.amount = null;
           feature.properties.style = {
@@ -97,8 +107,14 @@ const addDataToGeojson = async (props: GeoJSONDataUpdateT) => {
       props.setGovInfo(govInfo);
       //@ts-ignore
       props.setWorldGeojson(updatedGeoJsonData);
-      props.setOtherCountries(`${otherCountriesAmount} ${metric}`);
-      props.setWorldTotal(`${totalAmount} ${metric}`);
+      props.setOtherCountries(
+        `${
+          otherCountriesAmount !== "nan" ? otherCountriesAmount : undefined
+        } ${metric}`
+      );
+      props.setWorldTotal(
+        `${totalAmount !== "nan" ? totalAmount : undefined} ${metric}`
+      );
     } catch (error) {
       console.error("Error fetching data:", error);
     }
