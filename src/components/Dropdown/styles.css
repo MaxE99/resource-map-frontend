@@ -1,11 +1,12 @@
 .dropdown {
   width: 100%;
   background-color: var(--main-background);
-  color: var(--main-text);
+  color: var(--light-grey);
   position: relative;
   border: 1px solid var(--light-grey);
   border-radius: 4px;
   box-shadow: var(--box-shadow);
+  height: 55px;
 }
 
 .dropdown-inner {
@@ -20,6 +21,7 @@
 
 .dropdown-inner:hover {
   border: 1px solid var(--main-element);
+  color: var(--main-element);
 }
 
 .dropdown-inner-open {
@@ -65,11 +67,7 @@
   width: auto;
   aspect-ratio: 1/1;
   background-color: inherit;
-  color: var(--light-grey);
-}
-
-.dropdown-open-button:hover {
-  color: var(--main-element);
+  color: inherit;
 }
 
 .dropdown-remove-button {

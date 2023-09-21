@@ -1,6 +1,6 @@
 import { CommodityT } from "../../types/api";
 import Dropdown from "../Dropdown/Dropdown";
-import "../../styles/Forms.css";
+import "./styles.css";
 import { useEffect, useState } from "react";
 import { OptionProps } from "../Dropdown/types";
 import { DOMAIN } from "../../config";
@@ -48,11 +48,10 @@ const Forms = ({
                 width={25}
                 style={{
                   borderRadius: "4px",
-                  border: `2px solid ${
-                    commodity.name === selectedCommodity.name
+                  border: `2px solid ${commodity.name === selectedCommodity.name
                       ? "var(--main-element)"
                       : "var(--light-grey)"
-                  }`,
+                    }`,
                 }}
               />
             </div>,
