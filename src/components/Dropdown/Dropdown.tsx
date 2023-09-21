@@ -31,7 +31,7 @@ const Dropdown = ({
               display: "flex",
               alignItems: "center",
               padding: "0 0 0 20px",
-              color: selected ? "inherit" : "var(--light-grey)",
+              color: selected ? "var(--main-text)" : "var(--light-grey)",
             }}
           >
             {selected || label}
