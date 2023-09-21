@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import PricePlot from "./PricePlot";
 import Accordion from "../Accordion/Accordion";
 import { AccordionWrapperProps, ResourceBodyProps } from "./types";
@@ -25,7 +24,12 @@ const ResourceBody = ({
   ];
 
   return (
-    <Fragment>
+    <div
+      style={{
+        lineHeight: 2,
+        letterSpacing: "0.5px",
+      }}
+    >
       <div
         style={{
           display: "flex",
@@ -79,7 +83,7 @@ const ResourceBody = ({
             />
           ))}
       </div>
-    </Fragment>
+    </div>
   );
 };
 

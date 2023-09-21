@@ -11,6 +11,7 @@
 
 .sidebar-head {
   display: flex;
+  color: var(--main-text);
   align-items: center;
   font-size: 30px;
   gap: 20px;
