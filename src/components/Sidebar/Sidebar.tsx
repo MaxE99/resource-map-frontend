@@ -66,8 +66,10 @@ const Sidebar = ({ commodity, govInfo, prices }: SidebarProps): JSX.Element => {
       <div
         style={{
           padding: "20px",
-          lineHeight: 1.8,
           textAlign: "justify",
+          color: "#c2c4d8",
+          lineHeight: 2,
+          letterSpacing: "0.5px",
         }}
       >
         <Fragment>
