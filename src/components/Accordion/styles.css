@@ -39,3 +39,14 @@
 .accordion-head:hover {
   color: var(--main-element);
 }
+
+.accordion-head-chip {
+  height: 24px;
+  width: 24px;
+  background-color: var(--main-element);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  color: var(--main-text);
+}

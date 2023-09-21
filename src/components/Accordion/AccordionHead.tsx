@@ -18,20 +18,7 @@ const AccordionHead = ({
           fontSize: "16px",
         }}
       >
-        <div
-          style={{
-            height: "24px",
-            width: "24px",
-            backgroundColor: "var(--main-element)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "12px",
-            color: "var(--main-text)",
-          }}
-        >
-          {index}
-        </div>
+        {index >= 0 && <div className="accordion-head-chip">{index}</div>}
         <label style={{ color: "var(--main-text)" }}>{label}</label>
       </div>
       <IoIosArrowDown

@@ -1,152 +1,88 @@
-import { CSSProperties, Fragment, useState } from "react";
-import { AiFillQuestionCircle } from "react-icons/ai";
-import { FcAbout } from "react-icons/fc";
-import { FaRegNewspaper } from "react-icons/fa";
-
-import PricePlot from "./PricePlot";
-import { AccordionWrapperT, SidebarT } from "../../types/sidebar";
-import { SIDEBAR_STYLE } from "../../styles/sidebar";
-import { BASE_STYLE } from "../../styles/base";
-import "../../styles/sidebar.css";
+import { Fragment, useState } from "react";
+import { SidebarProps, SidebarSelected } from "./types";
+import { IoBookmarkOutline, IoInformationCircleOutline } from "react-icons/io5";
 import { DOMAIN } from "../../config";
-import AboutUs from "./AboutUs";
-import Guide from "./Guide";
+import SidebarHead from "./SidebarHead";
+import SidebarMenu from "./SidebarMenu";
 import DataSources from "./DataSources";
-import Accordion from "../Accordion/Accordion";
+import ResourceBody from "./ResourceBody";
+import AboutUs from "./AboutUs";
 
-const Sidebar = ({ commodity, govInfo, prices }: SidebarT): JSX.Element => {
-  const [isAboutUsVisible, setIsAboutUsVisible] = useState<boolean>(false);
-  const [isGuideVisible, setIsGuideVisible] = useState<boolean>(false);
-  const [isDataSourcesVisible, setIsDataSourcesVisible] =
-    useState<boolean>(false);
-  const govInfoData: AccordionWrapperT[] = [
-    {
-      index: 3,
-      summary: "Production and Use",
-      details: govInfo?.prod_and_use,
-    },
-    { index: 4, summary: "Recycling", details: govInfo?.recycling },
-    { index: 5, summary: "Events & Trends", details: govInfo?.events },
-    {
-      index: 6,
-      summary: "World Resources",
-      details: govInfo?.world_resources,
-    },
-    { index: 7, summary: "Substitutes", details: govInfo?.substitutes },
-  ];
+const Sidebar = ({ commodity, govInfo, prices }: SidebarProps): JSX.Element => {
+  const [selected, setSelected] = useState<SidebarSelected>("resource");
+
+  const getSidebarHead = (): JSX.Element => {
+    if (selected === "datasource")
+      return (
+        <SidebarHead
+          icon={
+            <IoBookmarkOutline
+              style={{ fontSize: "40px", color: "var(--light-grey)" }}
+            />
+          }
+          label={"Data Sources"}
+        />
+      );
+    if (selected === "about")
+      return (
+        <SidebarHead
+          icon={
+            <IoInformationCircleOutline
+              style={{ fontSize: "40px", color: "var(--light-grey)" }}
+            />
+          }
+          label={"About Us"}
+        />
+      );
+    return (
+      <SidebarHead
+        icon={
+          <img
+            src={DOMAIN + "/static/" + commodity.img_path + ".jpg"}
+            alt={commodity.name + " Image"}
+            width={45}
+            height={45}
+            style={{
+              borderRadius: "4px",
+              border: "2px solid var(--light-grey)",
+            }}
+          />
+        }
+        label={commodity.name}
+      />
+    );
+  };
+
+  const getSidebarBody = (): JSX.Element => {
+    if (selected === "datasource") return <DataSources />;
+    if (selected === "about") return <AboutUs />;
+    return (
+      <ResourceBody commodity={commodity} govInfo={govInfo} prices={prices} />
+    );
+  };
 
   return (
-    <div
-      style={{
-        ...(SIDEBAR_STYLE.WRAPPER as CSSProperties),
-        color: BASE_STYLE.COLOR_PALLETE.TEXT,
-        boxShadow: BASE_STYLE.BOX_SHADOW,
-      }}
-    >
+    <div className="sidebar">
       <div
         style={{
           padding: "20px",
           lineHeight: 1.8,
           textAlign: "justify",
-          minHeight: "calc(100vh - 104px)",
         }}
       >
-        {!isAboutUsVisible && !isGuideVisible && !isDataSourcesVisible && (
-          <Fragment>
-            <div style={SIDEBAR_STYLE.NAME_CONTAINER as CSSProperties}>
-              <img
-                src={DOMAIN + "/static/" + commodity.img_path + ".jpg"}
-                alt={commodity.name + " Image"}
-                style={{
-                  marginRight: "10px",
-                  width: "40px",
-                  borderRadius: "4px",
-                }}
-              />
-              {commodity.name}
-            </div>
-            {prices && prices.length > 0 && <PricePlot data={prices} />}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "20px",
-                marginTop: "20px",
-              }}
-            >
-              <Accordion
-                index={1}
-                label="Overview"
-                body={
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: commodity.info
-                        .replace(/\n/g, "<br>")
-                        .replace(/(\s*<br\s*\/?>)+\s*$/, ""),
-                    }}
-                  />
-                }
-              ></Accordion>
-              <Accordion
-                index={2}
-                label="Largest Producers"
-                body={
-                  <div>
-                    {commodity.companies.map((commodity: string) => (
-                      <div key={commodity} style={{ margin: "5px 0 0 10px" }}>
-                        {commodity}
-                      </div>
-                    ))}
-                  </div>
-                }
-              />
-            </div>
-            {govInfo?.events &&
-              govInfoData.map((item: AccordionWrapperT) => (
-                <Accordion
-                  key={item.index}
-                  index={item.index}
-                  label={item.summary}
-                  body={item.details}
-                />
-              ))}
-          </Fragment>
-        )}
-        {isAboutUsVisible && <AboutUs />}
-        {isGuideVisible && <Guide />}
-        {isDataSourcesVisible && <DataSources />}
-      </div>
-      <div className="infoContainer">
-        <button
-          onClick={() => {
-            setIsAboutUsVisible(!isAboutUsVisible);
-            setIsGuideVisible(false);
-            setIsDataSourcesVisible(false);
-          }}
-        >
-          <FcAbout style={{ background: "white" }} />
-          <span>About Us</span>
-        </button>
-        <button
-          onClick={() => {
-            setIsGuideVisible(!isGuideVisible);
-            setIsAboutUsVisible(false);
-            setIsDataSourcesVisible(false);
-          }}
-        >
-          <FaRegNewspaper />
-          <span>Guide</span>
-        </button>
-        <button
-          onClick={() => {
-            setIsDataSourcesVisible(!isDataSourcesVisible);
-            setIsAboutUsVisible(false);
-            setIsGuideVisible(false);
-          }}
-        >
-          <AiFillQuestionCircle />
-          <span>Data Sources</span>
-        </button>
+        <Fragment>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: "20px",
+            }}
+          >
+            {getSidebarHead()}
+            <SidebarMenu selected={selected} setSelected={setSelected} />
+          </div>
+          {getSidebarBody()}
+        </Fragment>
       </div>
     </div>
   );
