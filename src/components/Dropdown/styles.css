@@ -43,11 +43,13 @@
 
 .dropdown-option {
   display: flex;
+  color: var(--main-text);
   transition: 200ms all ease;
 }
 
 .dropdown-option-selected {
   display: flex;
+  color: var(--main-text);
   transition: 200ms all ease;
 }
 
