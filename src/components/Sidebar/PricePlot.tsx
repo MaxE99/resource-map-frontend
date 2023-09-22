@@ -3,9 +3,12 @@ import { Data } from "plotly.js";
 
 import { CommodityPriceT } from "../../types/api";
 import { BASE_STYLE } from "../../styles/base";
-import { PricePlotT } from "../../types/sidebar";
+import { PricePlotProps } from "./types";
+import { useEffect, useState } from "react";
 
-const PricePlot = ({ data }: PricePlotT) => {
+const PricePlot = ({ data }: PricePlotProps) => {
+  const [key, setKey] = useState<number>(0);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const dates: string[] = data.map((entry: CommodityPriceT) => entry.date);
   const prices: number[] = data.map((entry: CommodityPriceT) => entry.price);
 
@@ -39,8 +42,29 @@ const PricePlot = ({ data }: PricePlotT) => {
     displayModeBar: false,
   };
 
+  const forceRerender = (): void => {
+    setKey(key + 1);
+  };
+
+  const handleResize = (): void => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    forceRerender();
+  }, [windowWidth]);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <Plot
+      key={key}
       style={{ width: "100%" }}
       data={plotData}
       layout={layout}

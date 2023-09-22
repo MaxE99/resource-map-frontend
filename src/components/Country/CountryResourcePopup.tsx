@@ -24,7 +24,6 @@ const CountryResourcePopup = ({
   isFeatureBeingHoveredOver,
   setPopupOpen,
 }: CountryResourcePopupT): JSX.Element | null => {
-  console.log(feature.properties);
   const [productionData, setProductionData] = useState<ProductionReservesT[]>();
   const [reserveData, setReserveData] = useState<ProductionReservesT[]>();
   const { setDialogIsOpen, setIsLoading } = useContext<any>(AppContext);
@@ -40,12 +39,12 @@ const CountryResourcePopup = ({
       fetchProductionData(undefined, commodity.name, feature.properties.ADMIN)
         .then((data: ProductionReservesT[]) => {
           const sortedData = data.sort(
-            (a: ProductionReservesT, b: ProductionReservesT) => a.year - b.year
+            (a: ProductionReservesT, b: ProductionReservesT) => a.year - b.year,
           );
           setProductionData(sortedData);
         })
         .catch((error) =>
-          console.error("Error fetching production data:", error)
+          console.error("Error fetching production data:", error),
         )
         .finally(() => {
           isProductionDataLoaded = true;
@@ -58,7 +57,7 @@ const CountryResourcePopup = ({
       fetchReservesData(undefined, commodity.name, feature.properties.ADMIN)
         .then((data: ProductionReservesT[]) => {
           const sortedData = data.sort(
-            (a: ProductionReservesT, b: ProductionReservesT) => a.year - b.year
+            (a: ProductionReservesT, b: ProductionReservesT) => a.year - b.year,
           );
           setReserveData(sortedData);
         })
