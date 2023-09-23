@@ -90,6 +90,7 @@ const Map = ({
           height: "75vh",
           borderRadius: "8px",
           boxShadow: BASE_STYLE.BOX_SHADOW,
+          border: `1px solid ${BASE_STYLE.COLOR_PALLETE.LIGHT_GREY}`,
         }}
         center={[30, 0]}
         minZoom={2}
