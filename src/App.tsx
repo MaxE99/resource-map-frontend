@@ -42,14 +42,14 @@ const App = (): JSX.Element | null => {
   });
   const [commodities, setCommodities] = useState<CommodityT[]>([]);
   const [year, setYear] = useState<number>(
-    [2018, 2019, 2020, 2021, 2022][Math.floor(Math.random() * 5)],
+    [2018, 2019, 2020, 2021, 2022][Math.floor(Math.random() * 5)]
   );
   const [worldGeojson, setWorldGeojson] = useState<
     GeoJSON.FeatureCollection | undefined
   >(undefined);
   const [govInfo, setGovInfo] = useState<GovInfoT | null>(null);
   const [otherCountries, setOtherCountries] = useState<string | undefined>(
-    undefined,
+    undefined
   );
   const [worldTotal, setWorldTotal] = useState<string | undefined>(undefined);
   const [otherViz, setOtherViz] = useState<string | undefined>(undefined);
@@ -82,7 +82,7 @@ const App = (): JSX.Element | null => {
         }
 
         const filteredCountryData = countryData.filter(
-          (obj) => obj.geojson !== null,
+          (obj) => obj.geojson !== null
         );
         const features = filteredCountryData.map((obj) => obj.geojson);
         const featureCollection: GeoJSON.FeatureCollection = {
@@ -99,7 +99,7 @@ const App = (): JSX.Element | null => {
         const queryString = getQueryString(
           isShowingProduction,
           randomCommodity,
-          year,
+          year
         );
 
         const dataUpdateProps: GeoJSONDataUpdateT = {
@@ -140,7 +140,7 @@ const App = (): JSX.Element | null => {
       const queryString = getQueryString(
         isShowingProduction,
         selectedCommodity,
-        year,
+        year
       );
       setIsLoading(true);
 
@@ -217,7 +217,17 @@ const App = (): JSX.Element | null => {
             govInfo={govInfo}
             prices={prices}
           />
-          <Dialog open={dialogIsOpen} onClose={() => setDialogIsOpen(false)}>
+          <Dialog
+            sx={{
+              "& .MuiDialog-paperScrollPaper": {
+                maxWidth: "90%",
+                width: "800px",
+                height: "calc(100% - 64px)",
+              },
+            }}
+            open={dialogIsOpen}
+            onClose={() => setDialogIsOpen(false)}
+          >
             <CountryInformation country={selectedCountry} />
           </Dialog>
         </div>

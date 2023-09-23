@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { CommodityT, CountryT } from "./api";
+import { CommodityT } from "./api";
 
 type CountryResourcePopupT = {
   feature: GeoJSON.Feature;
@@ -9,7 +9,7 @@ type CountryResourcePopupT = {
 };
 
 type CountryInformationT = {
-  country: CountryT;
+  country: GeoJSON.Feature;
 };
 
 export type { CountryResourcePopupT, CountryInformationT };

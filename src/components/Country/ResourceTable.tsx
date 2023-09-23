@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,38 +7,31 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Slider from "@mui/material/Slider";
 import Paper from "@mui/material/Paper";
+import { CountryInformationT } from "../../types/country";
+import { MARKS } from "../../config";
+import { APP_STYLE } from "../../styles/app";
+import { fetchProductionData } from "../../functions/api";
+import { ProductionReservesT } from "../../types/api";
 
-const headers = [
-  "Resource",
-  "Production",
-  "Reserves",
-  "Import",
-  "Export",
-  "% of Exports",
-];
+const headers = ["Resource", "Amount", "Share", "Rank"];
 
-const data = [
-  {
-    Resource: "Resource 1",
-    Production: 1000,
-    Reserves: 500,
-    Import: 200,
-    Export: 300,
-    PercentageOfExports: 30,
-  },
-  {
-    Resource: "Resource 2",
-    Production: 1500,
-    Reserves: 800,
-    Import: 250,
-    Export: 400,
-    PercentageOfExports: 40,
-  },
-  // Add more data rows as needed
-];
+const ResourceTable = ({ country }: CountryInformationT): JSX.Element => {
+  const [year, setYear] = useState<number>(2018);
+  const [countryProductionData, setCountryProductionData] = useState<
+    ProductionReservesT[]
+  >([]);
 
-const ResourceTable = (): JSX.Element => {
-  const [year, setYear] = useState(2023); // Initial year
+  useEffect(() => {
+    fetchProductionData(year, undefined, country.properties?.ADMIN)
+      .then((data: ProductionReservesT[]) =>
+        setCountryProductionData(
+          data
+            .filter((d) => !isNaN(Number(d.amount)) && Number(d.amount) !== 0)
+            .sort((a, b) => a.commodity_name.localeCompare(b.commodity_name))
+        )
+      )
+      .catch(() => console.error("Production could not be fetched!"));
+  }, []);
 
   const handleYearChange = (_: any, newValue: any) => {
     setYear(newValue);
@@ -46,36 +39,57 @@ const ResourceTable = (): JSX.Element => {
 
   return (
     <div>
-      <TableContainer component={Paper}>
+      <TableContainer
+        component={Paper}
+        sx={{ boxShadow: "none", border: "1px solid rgba(224, 224, 224, 1)" }}
+      >
         <Table>
           <TableHead>
             <TableRow>
               {headers.map((header) => (
-                <TableCell key={header}>{header}</TableCell>
+                <TableCell sx={{ textAlign: "center" }} key={header}>
+                  {header}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row, index) => (
-              <TableRow key={index}>
-                <TableCell>{row.Resource}</TableCell>
-                <TableCell>{row.Production}</TableCell>
-                <TableCell>{row.Reserves}</TableCell>
-                <TableCell>{row.Import}</TableCell>
-                <TableCell>{row.Export}</TableCell>
-                <TableCell>{row.PercentageOfExports}%</TableCell>
+            {countryProductionData.map((row, index) => (
+              <TableRow sx={{ textAlign: "center" }} key={index}>
+                <TableCell sx={{ textAlign: "center" }}>
+                  {row.commodity_name}
+                </TableCell>
+                <TableCell sx={{ textAlign: "center" }}>
+                  {row.amount} {row.metric}
+                </TableCell>
+                <TableCell sx={{ textAlign: "center" }}>
+                  {!isNaN(Number(row.share)) && Number(row.share) !== 0
+                    ? Number(row.share).toFixed(2)
+                    : "/"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "center" }}>{row.rank}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
       <Slider
+        color="secondary"
+        sx={{
+          ...APP_STYLE,
+          width: "97.5%",
+          margin: "5px 10px 20px",
+          height: "10px",
+        }}
         value={year}
-        min={2000}
-        max={2030}
+        min={2018}
+        max={2022}
+        marks={MARKS}
+        step={1}
         onChange={handleYearChange}
         valueLabelDisplay="auto"
-        valueLabelFormat={(value) => `Year: ${value}`}
+        valueLabelFormat={(value) => value.toString()}
+        aria-label="Year Slider"
       />
     </div>
   );

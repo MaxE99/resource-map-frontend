@@ -23,8 +23,11 @@ type ProductionReservesT = {
   commodity: string;
   note: string | null;
   metric: string;
-  amount: number;
-  country_name?: string;
+  amount: string;
+  country_name: string;
+  commodity_name: string;
+  share: number;
+  rank: number;
 };
 
 type GovInfoT = {
