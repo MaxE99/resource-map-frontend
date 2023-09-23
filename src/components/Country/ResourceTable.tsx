@@ -64,7 +64,7 @@ const ResourceTable = ({ country }: CountryInformationT): JSX.Element => {
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
                   {!isNaN(Number(row.share)) && Number(row.share) !== 0
-                    ? Number(row.share).toFixed(2)
+                    ? Number(row.share).toFixed(2) + " %"
                     : "/"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>{row.rank}</TableCell>

@@ -4,6 +4,7 @@ import { slugify } from "../../functions/country";
 import { COUNTRY_STYLE } from "../../styles/country";
 import { DOMAIN } from "../../config";
 import { FormControlLabel, Switch } from "@mui/material";
+import ImportExportTreemap from "./ImportExportTable";
 
 const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
   return (
@@ -13,7 +14,11 @@ const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
           src={
             DOMAIN + `/static/flags/${slugify(country?.properties?.ADMIN)}.png`
           }
-          style={{ height: "50px", marginRight: "10px" }}
+          style={{
+            height: "50px",
+            marginRight: "10px",
+            border: "1px solid rgba(224, 224, 224, 1)",
+          }}
         />
         <div className="countryNameBox" style={{ fontSize: "45px" }}>
           {country.properties?.ADMIN}
@@ -30,6 +35,24 @@ const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
         />
       </div>
       <ResourceTable country={country} />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: "20px",
+        }}
+      >
+        <div style={{ fontSize: "20px", margin: "10px 0", fontWeight: 600 }}>
+          Import/Export Table:
+        </div>
+        <FormControlLabel
+          style={{ fontWeight: 600, marginRight: 0 }}
+          control={<Switch color="secondary" defaultChecked />}
+          label="Exports"
+        />
+      </div>
+      <ImportExportTreemap country={country} />
+
       {/* <div>Commodity Imports Tree Map:</div>
       <div>Commodity Exports Tree Map:</div>
       <div>GDP Chart:</div>
