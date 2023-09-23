@@ -42,3 +42,7 @@ body {
 .productionSwitch:hover {
   background: var(--main-element) !important;
 }
+
+.leaflet-container {
+  background-color: var(--main-background) !important;
+}

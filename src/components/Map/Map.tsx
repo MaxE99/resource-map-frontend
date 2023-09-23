@@ -11,7 +11,6 @@ import { BASE_STYLE } from "../../styles/base";
 import { MAP_STYLE } from "../../styles/map";
 import "../../styles/map.css";
 
-
 const Map = ({
   countries,
   selectedCommodity,
@@ -98,13 +97,7 @@ const Map = ({
         bounds={bounds}
         maxBoundsViscosity={1.0}
       >
-        <TileLayer
-          maxZoom={10}
-          maxNativeZoom={19}
-          noWrap={true}
-          attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <TileLayer maxZoom={10} maxNativeZoom={19} noWrap={true} url="" />
         {countries && (
           <GeoJSON
             onEachFeature={onEachCountryFeature}

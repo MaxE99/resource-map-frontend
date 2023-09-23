@@ -1,4 +1,4 @@
-import PricePlot from "./PricePlot";
+import PricePlot from "../PricePlot/PricePlot";
 import Accordion from "../Accordion/Accordion";
 import { AccordionWrapperProps, ResourceBodyProps } from "./types";
 
@@ -37,7 +37,7 @@ const ResourceBody = ({
           alignItems: "center",
         }}
       >
-        {prices && prices.length > 0 && <PricePlot data={prices} />}
+        <PricePlot data={prices} />
       </div>
       <div
         style={{
