@@ -44,9 +44,10 @@ type GovInfoT = {
 type ImportExportT = {
   id: number;
   year: number;
-  country: string;
+  country_name: string;
   amount: number;
   share: number;
+  commodity_name: string;
 };
 
 type CommodityPriceT = {

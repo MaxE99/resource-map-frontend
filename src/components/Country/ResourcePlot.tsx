@@ -36,6 +36,7 @@ const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
 
   const config = {
     displayModeBar: false,
+    responsive: true,
   };
 
   return (
