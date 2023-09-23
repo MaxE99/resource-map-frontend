@@ -40,6 +40,8 @@ const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
           display: "flex",
           justifyContent: "space-between",
           marginTop: "20px",
+          position: "relative",
+          zIndex: 1,
         }}
       >
         <div style={{ fontSize: "20px", margin: "10px 0", fontWeight: 600 }}>
