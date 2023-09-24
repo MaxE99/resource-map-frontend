@@ -138,7 +138,22 @@ const ResourceTable = ({
                       ? Number(row.share).toFixed(2) + " %"
                       : "/"}
                   </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{row.rank}</TableCell>
+                  <TableCell
+                    sx={{
+                      textAlign: "center",
+                      fontWeight: row.rank <= 3 ? 600 : "normal",
+                      backgroundColor:
+                        row.rank === 1
+                          ? "gold"
+                          : row.rank === 2
+                          ? "silver"
+                          : row.rank === 3
+                          ? "#CD7F32"
+                          : "transparent",
+                    }}
+                  >
+                    {row.rank}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
