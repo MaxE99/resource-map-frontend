@@ -74,11 +74,20 @@ const ImportExportBalance = ({ country }: CountryInformationT): JSX.Element => {
               (data) => data.total_exports - data.total_imports
             ),
       showlegend: false,
+      marker: {
+        color: importExportBalance.map((data) => {
+          const balance =
+            totalOrCommodityBalance === "Commodity Trade Balance"
+              ? data.total_commodity_exports - data.total_commodity_imports
+              : data.total_exports - data.total_imports;
+          return balance >= 0 ? "green" : "red"; // Set color to green for positive, red for negative
+        }),
+      },
     },
   ];
 
   const layout = {
-    margin: { t: 10, r: 20, b: 35, l: 25 },
+    margin: { t: 10, r: 20, b: 35, l: 30 },
   };
 
   const config = {
@@ -116,13 +125,13 @@ const ImportExportBalance = ({ country }: CountryInformationT): JSX.Element => {
             sx={{ fontSize: "12px", padding: "8px 12px", fontWeight: 600 }}
             value="Commodity Trade Balance"
           >
-            Commodity Trade Balance
+            Commodity
           </ToggleButton>
           <ToggleButton
             sx={{ fontSize: "12px", padding: "8px 12px", fontWeight: 600 }}
             value="Total Trade Balance"
           >
-            Total Trade Balance
+            Total
           </ToggleButton>
         </ToggleButtonGroup>
       </div>
