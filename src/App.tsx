@@ -201,6 +201,8 @@ const App = (): JSX.Element | null => {
           />
           <Slider
             sx={{
+              ...APP_STYLE.SLIDER,
+              "& .MuiSlider-rail": { boxShadow: BASE_STYLE.BOX_SHADOW },
               zIndex: 1000,
               "& .MuiDialog-paperScrollPaper": {
                 maxWidth: "90%",
