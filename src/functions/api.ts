@@ -6,6 +6,7 @@ import {
   GovInfoT,
   ImportExportT,
   CommodityPriceT,
+  ImportExportBalanceT,
 } from "../types/api";
 
 async function fetchData<T>(
@@ -132,6 +133,14 @@ const fetchExportData = async (
 const fetchPriceData = (commodity: string): Promise<CommodityPriceT[]> =>
   fetchData<CommodityPriceT[]>(API.PRICES, new URLSearchParams({ commodity }));
 
+const fetchImportExportBalanceData = (
+  country: string
+): Promise<ImportExportBalanceT[]> =>
+  fetchData<ImportExportBalanceT[]>(
+    API.BALANCE,
+    new URLSearchParams({ country })
+  );
+
 export {
   fetchCountryData,
   fetchCommodityData,
@@ -141,4 +150,5 @@ export {
   fetchImportData,
   fetchExportData,
   fetchPriceData,
+  fetchImportExportBalanceData,
 };

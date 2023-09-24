@@ -5,6 +5,7 @@ import { COUNTRY_STYLE } from "../../styles/country";
 import { DOMAIN } from "../../config";
 import ImportExportTreemap from "./ImportExportTreemap";
 import { useState } from "react";
+import ImportExportBalance from "./ImportExportBalance";
 
 const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
   const [isImportExportLoaded, setIsImportExportLoaded] =
@@ -39,12 +40,9 @@ const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
         isProductionReservesLoaded={isProductionReservesLoaded}
         setIsImportExportLoaded={setIsImportExportLoaded}
       />
-      {/* <div>Commodity Imports Tree Map:</div>
-      <div>Commodity Exports Tree Map:</div>
-      <div>GDP Chart:</div>
+      <ImportExportBalance country={country} />
+      {/*<div>GDP Chart:</div>
       <div>Resources as % of GDP Chart:</div>
-      <div>Ranking: Resource Imports:</div>
-      <div>Ranking: Resource Exports:</div>
       <div>Ranking: Resource Dependency:</div> */}
       {/* <div>Ease of Doing Business Index: {country.ease_of_biz}</div>
       <div>Income Group: {country.income_group}</div> */}

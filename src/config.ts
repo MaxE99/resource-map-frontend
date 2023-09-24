@@ -11,6 +11,7 @@ const API = {
   IMPORTS: DOMAIN + "api/imports",
   EXPORTS: DOMAIN + "api/exports",
   PRICES: DOMAIN + "api/prices",
+  BALANCE: DOMAIN + "api/balance",
 } as const;
 
 const MARKS: MarksT[] = [

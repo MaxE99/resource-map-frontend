@@ -58,6 +58,16 @@ type CommodityPriceT = {
   price: number;
 };
 
+type ImportExportBalanceT = {
+  id: number;
+  year: number;
+  country: string;
+  total_impmorts: number;
+  total_exports: number;
+  total_commodity_imports: number;
+  total_commodity_exports: number;
+};
+
 export type {
   CountryT,
   CommodityT,
@@ -65,4 +75,5 @@ export type {
   GovInfoT,
   ImportExportT,
   CommodityPriceT,
+  ImportExportBalanceT,
 };
