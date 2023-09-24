@@ -62,7 +62,7 @@ type ImportExportBalanceT = {
   id: number;
   year: number;
   country: string;
-  total_impmorts: number;
+  total_imports: number;
   total_exports: number;
   total_commodity_imports: number;
   total_commodity_exports: number;
