@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,35 +10,98 @@ import Paper from "@mui/material/Paper";
 import { CountryInformationT } from "../../types/country";
 import { MARKS } from "../../config";
 import { APP_STYLE } from "../../styles/app";
-import { fetchProductionData } from "../../functions/api";
+import { fetchProductionData, fetchReservesData } from "../../functions/api";
 import { ProductionReservesT } from "../../types/api";
+import { AppContext } from "../AppContextProvider";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 const headers = ["Resource", "Amount", "Share", "Rank"];
 
 const ResourceTable = ({ country }: CountryInformationT): JSX.Element => {
-  const [year, setYear] = useState<number>(2018);
+  const [year, setYear] = useState<number>(2021);
   const [countryProductionData, setCountryProductionData] = useState<
     ProductionReservesT[]
   >([]);
+  const [dataType, setDataType] = useState<"production" | "reserves">(
+    "production"
+  );
+  const { setIsLoading } = useContext<any>(AppContext);
 
   useEffect(() => {
-    fetchProductionData(year, undefined, country.properties?.ADMIN)
-      .then((data: ProductionReservesT[]) =>
-        setCountryProductionData(
-          data
-            .filter((d) => !isNaN(Number(d.amount)) && Number(d.amount) !== 0)
-            .sort((a, b) => a.commodity_name.localeCompare(b.commodity_name))
-        )
-      )
-      .catch(() => console.error("Production could not be fetched!"));
-  }, []);
+    setIsLoading(true);
+    const fetchData = async () => {
+      try {
+        const data = await (dataType === "production"
+          ? fetchProductionData(year, undefined, country.properties?.ADMIN)
+          : fetchReservesData(year, undefined, country.properties?.ADMIN));
+
+        const filteredData = data
+          .filter((d) => !isNaN(Number(d.amount)) && Number(d.amount) !== 0)
+          .sort((a, b) => a.commodity_name.localeCompare(b.commodity_name));
+        setCountryProductionData(filteredData);
+      } catch (error) {
+        console.error("Production could not be fetched!", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [year, dataType]);
 
   const handleYearChange = (_: any, newValue: any) => {
     setYear(newValue);
   };
 
+  const handleChange = (
+    _: React.MouseEvent<HTMLElement>,
+    newDataType: "production" | "reserves"
+  ) => {
+    setDataType(newDataType);
+  };
+
   return (
-    <div>
+    <Fragment>
+      <div
+        style={{
+          display: "flex",
+          position: "relative",
+          marginBottom: "10px",
+        }}
+      >
+        <div
+          style={{
+            fontSize: "20px",
+            fontWeight: 600,
+            position: "absolute",
+            bottom: 0,
+          }}
+        >
+          <span>{year}</span>
+          <span style={{ textTransform: "uppercase", marginLeft: "4px" }}>
+            {dataType}
+          </span>
+        </div>
+        <ToggleButtonGroup
+          color="secondary"
+          value={dataType}
+          exclusive
+          onChange={handleChange}
+          sx={{ marginLeft: "auto" }}
+        >
+          <ToggleButton
+            sx={{ fontSize: "12px", padding: "8px 12px", fontWeight: 600 }}
+            value="production"
+          >
+            Production
+          </ToggleButton>
+          <ToggleButton
+            sx={{ fontSize: "12px", padding: "8px 12px", fontWeight: 600 }}
+            value="reserves"
+          >
+            Reserves
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </div>
       <TableContainer
         component={Paper}
         sx={{ boxShadow: "none", border: "1px solid rgba(224, 224, 224, 1)" }}
@@ -91,7 +154,7 @@ const ResourceTable = ({ country }: CountryInformationT): JSX.Element => {
         valueLabelFormat={(value) => value.toString()}
         aria-label="Year Slider"
       />
-    </div>
+    </Fragment>
   );
 };
 

@@ -46,3 +46,8 @@ body {
 .leaflet-container {
   background-color: var(--main-background) !important;
 }
+
+/* otherwise the leaflet icon has zIndex of 1000 and is overlapping popups */
+.leaflet-bottom {
+  z-index: 100;
+}
