@@ -1,11 +1,16 @@
+.sidebar-wrapper {
+  width: 32.5%;
+  height: calc(100vh - 60px);
+  position: relative;
+  border-radius: 8px;
+  border: 2px solid var(--light-grey);
+}
+
 .sidebar {
   color: var(--main-text);
   box-shadow: var(--box-shadow);
-  width: 32.5%;
-  height: calc(100vh - 60px);
-  border-radius: 8px;
   overflow-y: auto;
-  border: 2px solid var(--light-grey);
+  height: 100%;
   position: relative;
 }
 

@@ -7,8 +7,15 @@ import SidebarMenu from "./SidebarMenu";
 import DataSources from "./DataSources";
 import ResourceBody from "./ResourceBody";
 import AboutUs from "./AboutUs";
+import Backdrop from "../Backdrop/Backdrop";
+import LoadingProgress from "../LoadingProgress/LoadingProgress";
 
-const Sidebar = ({ commodity, govInfo, prices }: SidebarProps): JSX.Element => {
+const Sidebar = ({
+  commodity,
+  govInfo,
+  prices,
+  isLoading,
+}: SidebarProps): JSX.Element => {
   const [selected, setSelected] = useState<SidebarSelected>("resource");
 
   const getSidebarHead = (): JSX.Element => {
@@ -62,28 +69,47 @@ const Sidebar = ({ commodity, govInfo, prices }: SidebarProps): JSX.Element => {
   };
 
   return (
-    <div className="sidebar">
-      <div
-        style={{
-          padding: "20px",
-          textAlign: "justify",
-          color: "#c2c4d8",
-        }}
-      >
-        <Fragment>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginBottom: "20px",
-            }}
-          >
-            {getSidebarHead()}
-            <SidebarMenu selected={selected} setSelected={setSelected} />
-          </div>
-          {getSidebarBody()}
-        </Fragment>
+    <div className="sidebar-wrapper">
+      <div className="sidebar">
+        <div
+          style={{
+            padding: "20px",
+            textAlign: "justify",
+            color: "#c2c4d8",
+          }}
+        >
+          <Fragment>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: "20px",
+              }}
+            >
+              {getSidebarHead()}
+              <SidebarMenu selected={selected} setSelected={setSelected} />
+            </div>
+            {getSidebarBody()}
+          </Fragment>
+        </div>
       </div>
+      {isLoading && (
+        <Backdrop
+          children={[
+            <div
+              style={{
+                display: "flex",
+                height: "100%",
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <LoadingProgress />
+            </div>,
+          ]}
+        />
+      )}
     </div>
   );
 };
