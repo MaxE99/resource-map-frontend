@@ -21,8 +21,7 @@ import {
 } from "./functions/api";
 import { APP_STYLE } from "./styles/app";
 import { BASE_STYLE } from "./styles/base";
-import { DOMAIN, MARKS, OTHER_VIZ_OPTIONS } from "./config";
-import { Backdrop, CircularProgress } from "@mui/material";
+import { MARKS, OTHER_VIZ_OPTIONS } from "./config";
 import Forms from "./components/Forms/Forms";
 import { GeoJSONDataUpdateT } from "./types/map";
 
@@ -42,14 +41,14 @@ const App = (): JSX.Element | null => {
   });
   const [commodities, setCommodities] = useState<CommodityT[]>([]);
   const [year, setYear] = useState<number>(
-    [2018, 2019, 2020, 2021, 2022][Math.floor(Math.random() * 5)]
+    [2018, 2019, 2020, 2021, 2022][Math.floor(Math.random() * 5)],
   );
   const [worldGeojson, setWorldGeojson] = useState<
     GeoJSON.FeatureCollection | undefined
   >(undefined);
   const [govInfo, setGovInfo] = useState<GovInfoT | null>(null);
   const [otherCountries, setOtherCountries] = useState<string | undefined>(
-    undefined
+    undefined,
   );
   const [worldTotal, setWorldTotal] = useState<string | undefined>(undefined);
   const [otherViz, setOtherViz] = useState<string | undefined>(undefined);
@@ -57,13 +56,13 @@ const App = (): JSX.Element | null => {
   const [initialLoadComplete, setInitialLoadComplete] =
     useState<boolean>(false);
   const [noDataFound, setNoDataFound] = useState<boolean>(false);
+  const [isSidebarLoading, setIsSidebarLoading] = useState<boolean>(false);
 
   const {
     selectedCountry,
     isShowingProduction,
     dialogIsOpen,
     setDialogIsOpen,
-    isLoading,
     setIsLoading,
   } = useContext<any>(AppContext);
 
@@ -82,7 +81,7 @@ const App = (): JSX.Element | null => {
         }
 
         const filteredCountryData = countryData.filter(
-          (obj) => obj.geojson !== null
+          (obj) => obj.geojson !== null,
         );
         const features = filteredCountryData.map((obj) => obj.geojson);
         const featureCollection: GeoJSON.FeatureCollection = {
@@ -99,7 +98,7 @@ const App = (): JSX.Element | null => {
         const queryString = getQueryString(
           isShowingProduction,
           randomCommodity,
-          year
+          year,
         );
 
         const dataUpdateProps: GeoJSONDataUpdateT = {
@@ -140,7 +139,7 @@ const App = (): JSX.Element | null => {
       const queryString = getQueryString(
         isShowingProduction,
         selectedCommodity,
-        year
+        year,
       );
       setIsLoading(true);
 
@@ -162,11 +161,11 @@ const App = (): JSX.Element | null => {
 
   useEffect(() => {
     if (initialLoadComplete && selectedCommodity) {
-      setIsLoading(true);
+      setIsSidebarLoading(true);
       fetchPriceData(selectedCommodity.name)
         .then((data: CommodityPriceT[]) => setPrices(data))
         .catch((error) => console.error("Error fetching price data:", error))
-        .finally(() => setIsLoading(false));
+        .finally(() => setIsSidebarLoading(false));
     }
   }, [selectedCommodity]);
 
@@ -216,6 +215,7 @@ const App = (): JSX.Element | null => {
             commodity={selectedCommodity}
             govInfo={govInfo}
             prices={prices}
+            isLoading={isSidebarLoading}
           />
           <Dialog
             sx={{
@@ -232,29 +232,6 @@ const App = (): JSX.Element | null => {
           </Dialog>
         </div>
       ) : null}
-      <Backdrop
-        sx={{ background: BASE_STYLE.COLOR_PALLETE.BACKGROUND, zIndex: 1000 }}
-        open={isLoading || !worldGeojson}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <img
-            src={DOMAIN + "/static/test-logo.jpg"}
-            style={{
-              borderRadius: "8px",
-              width: "150px",
-              marginBottom: "20px",
-            }}
-          ></img>
-          <CircularProgress color="secondary" />
-        </div>
-      </Backdrop>
     </Fragment>
   );
 };

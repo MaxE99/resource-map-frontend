@@ -107,7 +107,7 @@ const PricePlot = ({ data }: PricePlotProps): JSX.Element => {
       {!data ||
         (data.length < 1 && (
           <div style={{ position: "absolute" }}>
-            <NoDataChip />
+            <NoDataChip label="price" />
           </div>
         ))}
     </div>

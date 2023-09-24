@@ -1,0 +1,11 @@
+.no-data-chip {
+  display: flex;
+  justify-content: center;
+  color: var(--main-text);
+  border-radius: 4px;
+  background-color: var(--light-grey);
+  border: 1px solid var(--main-text);
+  padding: 6px 12px;
+  font-size: 20px;
+  text-transform: uppercase;
+}
