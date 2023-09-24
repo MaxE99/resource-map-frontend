@@ -60,8 +60,9 @@ const ImportExportTreemap = ({ country }: CountryInformationT): JSX.Element => {
       type: "treemap",
       textinfo: "label",
       textposition: "middle center",
+      hovertemplate: "<b>%{label}</b><br>$ %{value}<br>",
+      name: "",
       textfont: { size: 20, color: "#FFFFFF" },
-      outsidetextfont: { display: "none" },
       marker: {
         line: { width: 1, color: "black" },
       },

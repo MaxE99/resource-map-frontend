@@ -51,3 +51,8 @@ body {
 .leaflet-bottom {
   z-index: 100;
 }
+
+/* removes border around parent container in treemap */
+.treemap .cursor-pointer:first-of-type path:first-of-type {
+  display: none;
+}
