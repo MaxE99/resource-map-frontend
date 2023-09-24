@@ -3,7 +3,6 @@
 import { API } from "../config";
 import { CommodityT, ProductionReservesT } from "../types/api";
 import { GeoJSONDataUpdateT } from "../types/map";
-import { fetchGovInfoData } from "./api";
 
 const getColor = (percentage: number) => {
   // Calculate the darkness based on the percentage (0% => 70, 100% => 0)
@@ -19,7 +18,7 @@ const getColor = (percentage: number) => {
 const getQueryString = (
   isShowingProduction: boolean,
   selectedCommodity: CommodityT | undefined,
-  year: number | undefined
+  year: number | undefined,
 ): string => {
   let queryString = "";
   if (isShowingProduction) {
@@ -47,25 +46,23 @@ const getQueryString = (
 const addDataToGeojson = async (props: GeoJSONDataUpdateT) => {
   if (props.selectedCommodity?.name) {
     try {
-      const [govInfoData, productionReservesData] = await Promise.all([
-        fetchGovInfoData(props.year, props.selectedCommodity.name),
+      const [productionReservesData] = await Promise.all([
         fetch(props.queryString, { method: "GET" }).then((response) =>
-          response.json()
+          response.json(),
         ),
       ]);
 
       !productionReservesData.length && props.setNoDataFound(true);
 
-      const govInfo = govInfoData?.length ? govInfoData[0] : null;
-
       const updatedGeoJsonData = { ...props.worldGeojson };
 
       const totalAmount = productionReservesData.find(
-        (entry: ProductionReservesT) => entry.country_name === "World total"
+        (entry: ProductionReservesT) => entry.country_name === "World total",
       )?.amount;
 
       const otherCountriesAmount = productionReservesData.find(
-        (entry: ProductionReservesT) => entry.country_name === "Other countries"
+        (entry: ProductionReservesT) =>
+          entry.country_name === "Other countries",
       )?.amount;
 
       let metric = "";
@@ -74,7 +71,7 @@ const addDataToGeojson = async (props: GeoJSONDataUpdateT) => {
         const countryName = feature.properties.ADMIN;
 
         const productionCountry = productionReservesData.find(
-          (entry: ProductionReservesT) => entry.country_name === countryName
+          (entry: ProductionReservesT) => entry.country_name === countryName,
         );
 
         if (
@@ -91,7 +88,7 @@ const addDataToGeojson = async (props: GeoJSONDataUpdateT) => {
             };
           } else {
             const share = parseFloat(
-              ((productionCountry.amount / totalAmount) * 100).toFixed(2)
+              ((productionCountry.amount / totalAmount) * 100).toFixed(2),
             );
             feature.properties.style = {
               fillColor: getColor(share),
@@ -107,16 +104,15 @@ const addDataToGeojson = async (props: GeoJSONDataUpdateT) => {
           };
         }
       });
-      props.setGovInfo(govInfo);
       //@ts-ignore
       props.setWorldGeojson(updatedGeoJsonData);
       props.setOtherCountries(
         `${
           otherCountriesAmount !== "nan" ? otherCountriesAmount : undefined
-        } ${metric}`
+        } ${metric}`,
       );
       props.setWorldTotal(
-        `${totalAmount !== "nan" ? totalAmount : undefined} ${metric}`
+        `${totalAmount !== "nan" ? totalAmount : undefined} ${metric}`,
       );
     } catch (error) {
       console.error("Error fetching data:", error);

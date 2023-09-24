@@ -17,6 +17,7 @@ import { addDataToGeojson, getQueryString } from "./functions/app";
 import {
   fetchCommodityData,
   fetchCountryData,
+  fetchGovInfoData,
   fetchPriceData,
 } from "./functions/api";
 import { APP_STYLE } from "./styles/app";
@@ -40,15 +41,13 @@ const App = (): JSX.Element | null => {
     ],
   });
   const [commodities, setCommodities] = useState<CommodityT[]>([]);
-  const [year, setYear] = useState<number>(
-    [2018, 2019, 2020, 2021, 2022][Math.floor(Math.random() * 5)]
-  );
+  const [year, setYear] = useState<number>(2022);
   const [worldGeojson, setWorldGeojson] = useState<
     GeoJSON.FeatureCollection | undefined
   >(undefined);
   const [govInfo, setGovInfo] = useState<GovInfoT | null>(null);
   const [otherCountries, setOtherCountries] = useState<string | undefined>(
-    undefined
+    undefined,
   );
   const [worldTotal, setWorldTotal] = useState<string | undefined>(undefined);
   const [otherViz, setOtherViz] = useState<string | undefined>(undefined);
@@ -81,7 +80,7 @@ const App = (): JSX.Element | null => {
         }
 
         const filteredCountryData = countryData.filter(
-          (obj) => obj.geojson !== null
+          (obj) => obj.geojson !== null,
         );
         const features = filteredCountryData.map((obj) => obj.geojson);
         const featureCollection: GeoJSON.FeatureCollection = {
@@ -98,7 +97,7 @@ const App = (): JSX.Element | null => {
         const queryString = getQueryString(
           isShowingProduction,
           randomCommodity,
-          year
+          year,
         );
 
         const dataUpdateProps: GeoJSONDataUpdateT = {
@@ -139,7 +138,7 @@ const App = (): JSX.Element | null => {
       const queryString = getQueryString(
         isShowingProduction,
         selectedCommodity,
-        year
+        year,
       );
       setIsLoading(true);
 
@@ -160,14 +159,21 @@ const App = (): JSX.Element | null => {
   }, [selectedCommodity, year, isShowingProduction]);
 
   useEffect(() => {
-    if (initialLoadComplete && selectedCommodity) {
+    const fetchSidebarData = async () => {
       setIsSidebarLoading(true);
-      fetchPriceData(selectedCommodity.name)
-        .then((data: CommodityPriceT[]) => setPrices(data))
-        .catch((error) => console.error("Error fetching price data:", error))
+      await Promise.all([
+        fetchGovInfoData(year, selectedCommodity.name).then(
+          (data: GovInfoT[]) => setGovInfo(data?.length ? data[0] : null),
+        ),
+        fetchPriceData(selectedCommodity.name).then((data: CommodityPriceT[]) =>
+          setPrices(data),
+        ),
+      ])
+        .catch((error) => console.error("Error fetching sidebar data:", error))
         .finally(() => setIsSidebarLoading(false));
-    }
-  }, [selectedCommodity]);
+    };
+    fetchSidebarData();
+  }, [year, selectedCommodity]);
 
   const handleChange = (_: any, newValue: any) => {
     setYear(newValue);
@@ -175,63 +181,61 @@ const App = (): JSX.Element | null => {
 
   return (
     <Fragment>
-      {worldGeojson && (
-        <div style={APP_STYLE.WRAPPER as CSSProperties}>
-          <div style={APP_STYLE.OUTER_BOX}>
-            <Forms
-              commodities={commodities}
-              selectedCommodity={selectedCommodity}
-              setSelectedCommodity={setSelectedCommodity}
-              OTHER_VIZ_OPTIONS={OTHER_VIZ_OPTIONS}
-              otherViz={otherViz}
-              setOtherViz={setOtherViz}
-            />
-            <Map
-              key={JSON.stringify(worldGeojson)}
-              countries={worldGeojson}
-              selectedCommodity={selectedCommodity}
-              otherCountries={otherCountries}
-              worldTotal={worldTotal}
-              noDataFound={noDataFound}
-            />
-            <Slider
-              sx={{
-                ...APP_STYLE.SLIDER,
-                "& .MuiSlider-rail": { boxShadow: BASE_STYLE.BOX_SHADOW },
-              }}
-              value={year}
-              min={2018}
-              max={2022}
-              marks={MARKS}
-              step={1}
-              onChange={handleChange}
-              valueLabelDisplay="auto"
-              valueLabelFormat={(value) => value.toString()}
-              aria-label="Year Slider"
-            />
-          </div>
-          <Sidebar
-            key={JSON.stringify(govInfo)}
-            commodity={selectedCommodity}
-            govInfo={govInfo}
-            prices={prices}
-            isLoading={isSidebarLoading}
+      <div style={APP_STYLE.WRAPPER as CSSProperties}>
+        <div style={APP_STYLE.OUTER_BOX}>
+          <Forms
+            commodities={commodities}
+            selectedCommodity={selectedCommodity}
+            setSelectedCommodity={setSelectedCommodity}
+            OTHER_VIZ_OPTIONS={OTHER_VIZ_OPTIONS}
+            otherViz={otherViz}
+            setOtherViz={setOtherViz}
           />
-          <Dialog
+          <Map
+            key={JSON.stringify(worldGeojson)}
+            countries={worldGeojson}
+            selectedCommodity={selectedCommodity}
+            otherCountries={otherCountries}
+            worldTotal={worldTotal}
+            noDataFound={noDataFound}
+          />
+          <Slider
             sx={{
-              "& .MuiDialog-paperScrollPaper": {
-                maxWidth: "90%",
-                width: "800px",
-                height: "calc(100% - 64px)",
-              },
+              ...APP_STYLE.SLIDER,
+              "& .MuiSlider-rail": { boxShadow: BASE_STYLE.BOX_SHADOW },
             }}
-            open={dialogIsOpen}
-            onClose={() => setDialogIsOpen(false)}
-          >
-            <CountryInformation country={selectedCountry} />
-          </Dialog>
+            value={year}
+            min={2018}
+            max={2022}
+            marks={MARKS}
+            step={1}
+            onChange={handleChange}
+            valueLabelDisplay="auto"
+            valueLabelFormat={(value) => value.toString()}
+            aria-label="Year Slider"
+          />
         </div>
-      )}
+        <Sidebar
+          key={JSON.stringify(govInfo)}
+          commodity={selectedCommodity}
+          govInfo={govInfo}
+          prices={prices}
+          isLoading={isSidebarLoading}
+        />
+        <Dialog
+          sx={{
+            "& .MuiDialog-paperScrollPaper": {
+              maxWidth: "90%",
+              width: "800px",
+              height: "calc(100% - 64px)",
+            },
+          }}
+          open={dialogIsOpen}
+          onClose={() => setDialogIsOpen(false)}
+        >
+          <CountryInformation country={selectedCountry} />
+        </Dialog>
+      </div>
     </Fragment>
   );
 };

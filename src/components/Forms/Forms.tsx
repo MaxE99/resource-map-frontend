@@ -48,10 +48,11 @@ const Forms = ({
                 width={25}
                 style={{
                   borderRadius: "4px",
-                  border: `2px solid ${commodity.name === selectedCommodity.name
+                  border: `2px solid ${
+                    commodity.name === selectedCommodity.name
                       ? "var(--main-element)"
                       : "var(--light-grey)"
-                    }`,
+                  }`,
                 }}
               />
             </div>,
@@ -78,6 +79,10 @@ const Forms = ({
     );
     newValue && setSelectedCommodity(newValue);
   }, [selectedCommId]);
+
+  useEffect(() => {
+    setSelectedCommId(selectedCommodity.name);
+  }, [selectedCommodity]);
 
   return (
     <div className="forms">
