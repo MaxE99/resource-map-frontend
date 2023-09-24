@@ -219,6 +219,7 @@ const App = (): JSX.Element | null => {
           />
           <Dialog
             sx={{
+              zIndex: 1000,
               "& .MuiDialog-paperScrollPaper": {
                 maxWidth: "90%",
                 width: "800px",

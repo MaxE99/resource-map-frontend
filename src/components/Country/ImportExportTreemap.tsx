@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useState } from "react";
 import Slider from "@mui/material/Slider";
-import { CountryInformationT } from "../../types/country";
+import { ImportExportTreemapT } from "../../types/country";
 import { APP_STYLE } from "../../styles/app";
 import { fetchExportData, fetchImportData } from "../../functions/api";
 import { ImportExportT } from "../../types/api";
@@ -10,20 +10,26 @@ import Plot from "react-plotly.js";
 import { IMPORT_EXPORT_MARKS } from "../../config";
 import { AppContext } from "../AppContextProvider";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import NoDataChip from "../NoDataChip/NoDataChip";
 
-const ImportExportTreemap = ({ country }: CountryInformationT): JSX.Element => {
-  const [importExportSelection, setImportExportSelection] = useState<
-    "import" | "export"
-  >("export");
+const ImportExportTreemap = ({
+  country,
+  setIsImportExportLoaded,
+  isProductionReservesLoaded,
+}: ImportExportTreemapT): JSX.Element => {
+  const [importOrExport, setImportOrExport] = useState<"import" | "export">(
+    "export"
+  );
   const [year, setYear] = useState<number>(2021);
   const [importExportData, setImportExportData] = useState<ImportExportT[]>([]);
   const { setIsLoading } = useContext<any>(AppContext);
 
   useEffect(() => {
+    setIsImportExportLoaded(false);
     setIsLoading(true);
     const fetchData = async () => {
       try {
-        const data = await (importExportSelection === "import"
+        const data = await (importOrExport === "import"
           ? fetchImportData(year, undefined, country.properties?.ADMIN)
           : fetchExportData(year, undefined, country.properties?.ADMIN));
 
@@ -35,11 +41,12 @@ const ImportExportTreemap = ({ country }: CountryInformationT): JSX.Element => {
       } catch (error) {
         console.error("Import/Export data could not be fetched!");
       } finally {
-        setIsLoading(false);
+        setIsImportExportLoaded(true);
+        isProductionReservesLoaded && setIsLoading(false);
       }
     };
     fetchData();
-  }, [year, importExportSelection]);
+  }, [year, importOrExport]);
 
   const handleYearChange = (_: any, newValue: any) => {
     setYear(newValue);
@@ -47,9 +54,9 @@ const ImportExportTreemap = ({ country }: CountryInformationT): JSX.Element => {
 
   const handleImportExportChange = (
     _: React.MouseEvent<HTMLElement>,
-    newImportExportSelection: "import" | "export"
+    newSelection: "import" | "export"
   ) => {
-    setImportExportSelection(newImportExportSelection);
+    setImportOrExport(newSelection);
   };
 
   const data: any = [
@@ -97,12 +104,12 @@ const ImportExportTreemap = ({ country }: CountryInformationT): JSX.Element => {
             Commodity
           </span>
           <span style={{ textTransform: "uppercase", marginLeft: "4px" }}>
-            {importExportSelection}
+            {importOrExport}
           </span>
         </div>
         <ToggleButtonGroup
           color="secondary"
-          value={importExportSelection}
+          value={importOrExport}
           exclusive
           onChange={handleImportExportChange}
           sx={{ marginLeft: "auto" }}
@@ -121,21 +128,26 @@ const ImportExportTreemap = ({ country }: CountryInformationT): JSX.Element => {
           </ToggleButton>
         </ToggleButtonGroup>
       </div>
-      <Plot
-        style={{ marginTop: "-35px", marginLeft: "-10px" }}
-        data={data}
-        layout={{
-          width: 780,
-          height: 780,
-          margin: {
-            l: 0,
-            r: 0,
-            t: 0,
-            b: 0,
-          },
-        }}
-        config={config}
-      />
+      {importExportData.length ? (
+        <Plot
+          style={{ marginTop: "-35px", marginLeft: "-10px" }}
+          data={data}
+          layout={{
+            width: 780,
+            height: 780,
+            margin: {
+              l: 0,
+              r: 0,
+              t: 0,
+              b: 0,
+            },
+          }}
+          config={config}
+        />
+      ) : (
+        <NoDataChip label={importOrExport} />
+      )}
+
       <Slider
         color="secondary"
         sx={{

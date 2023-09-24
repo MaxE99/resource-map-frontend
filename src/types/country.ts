@@ -12,4 +12,21 @@ type CountryInformationT = {
   country: GeoJSON.Feature;
 };
 
-export type { CountryResourcePopupT, CountryInformationT };
+type ResourceTableT = {
+  country: GeoJSON.Feature;
+  isImportExportLoaded: boolean;
+  setIsProductionReservesLoaded: Dispatch<SetStateAction<boolean>>;
+};
+
+type ImportExportTreemapT = {
+  country: GeoJSON.Feature;
+  isProductionReservesLoaded: boolean;
+  setIsImportExportLoaded: Dispatch<SetStateAction<boolean>>;
+};
+
+export type {
+  CountryResourcePopupT,
+  CountryInformationT,
+  ResourceTableT,
+  ImportExportTreemapT,
+};
