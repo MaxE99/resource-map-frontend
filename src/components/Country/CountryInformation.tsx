@@ -4,8 +4,14 @@ import { slugify } from "../../functions/country";
 import { COUNTRY_STYLE } from "../../styles/country";
 import { DOMAIN } from "../../config";
 import ImportExportTreemap from "./ImportExportTreemap";
+import { useState } from "react";
 
 const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
+  const [isImportExportLoaded, setIsImportExportLoaded] =
+    useState<boolean>(false);
+  const [isProductionReservesLoaded, setIsProductionReservesLoaded] =
+    useState<boolean>(false);
+
   return (
     <div style={{ padding: "20px" }}>
       <div style={COUNTRY_STYLE.COUNTRY_NAME_BOX}>
@@ -23,8 +29,16 @@ const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
           {country.properties?.ADMIN}
         </div>
       </div>
-      <ResourceTable country={country} />
-      <ImportExportTreemap country={country} />
+      <ResourceTable
+        country={country}
+        isImportExportLoaded={isImportExportLoaded}
+        setIsProductionReservesLoaded={setIsProductionReservesLoaded}
+      />
+      <ImportExportTreemap
+        country={country}
+        isProductionReservesLoaded={isProductionReservesLoaded}
+        setIsImportExportLoaded={setIsImportExportLoaded}
+      />
       {/* <div>Commodity Imports Tree Map:</div>
       <div>Commodity Exports Tree Map:</div>
       <div>GDP Chart:</div>
