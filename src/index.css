@@ -46,7 +46,20 @@ body {
 /* otherwise the leaflet icon has zIndex of 1000 and is overlapping popups */
 .leaflet-bottom {
   z-index: 100;
-  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  right: unset;
+  bottom: 20px;
+}
+
+.leaflet-bottom .leaflet-control {
+  background: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.leaflet-bottom .leaflet-control a {
+  color: var(--main-element);
 }
 
 /* removes border around parent container in treemap */
