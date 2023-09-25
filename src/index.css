@@ -67,6 +67,6 @@ body {
   display: none;
 }
 
-.MuiToggleButtonGroup-grouped {
+.mapToggle .MuiToggleButtonGroup-grouped {
   color: var(--main-text) !important;
 }

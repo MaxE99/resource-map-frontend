@@ -108,6 +108,7 @@ const Map = ({
         )}
         <ToggleButtonGroup
           color="secondary"
+          className="mapToggle"
           value={isShowingProduction ? "Production" : "Reserves"}
           exclusive
           onChange={() => setIsShowingProduction(!isShowingProduction)}
