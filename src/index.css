@@ -39,10 +39,6 @@ body {
   color: var(--main-element);
 }
 
-.productionSwitch:hover {
-  background: var(--main-element) !important;
-}
-
 .leaflet-container {
   background-color: var(--main-background) !important;
 }
@@ -50,9 +46,14 @@ body {
 /* otherwise the leaflet icon has zIndex of 1000 and is overlapping popups */
 .leaflet-bottom {
   z-index: 100;
+  top: 0;
 }
 
 /* removes border around parent container in treemap */
 .treemap .cursor-pointer:first-of-type path:first-of-type {
   display: none;
+}
+
+.MuiToggleButtonGroup-grouped {
+  color: var(--main-text) !important;
 }

@@ -1,6 +1,6 @@
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
-import { Backdrop, Tooltip } from "@mui/material";
+import { Backdrop, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { CSSProperties, Fragment, useContext, useState } from "react";
 import { Path } from "leaflet";
 
@@ -106,24 +106,43 @@ const Map = ({
             style={getFeatureStyle}
           />
         )}
-
-        <Tooltip
-          style={{ zIndex: 998 }}
-          title={isShowingProduction ? "Show Reserves" : "Show Production"}
-          placement="right"
+        <ToggleButtonGroup
+          color="secondary"
+          value={isShowingProduction ? "Production" : "Reserves"}
+          exclusive
+          onChange={() => setIsShowingProduction(!isShowingProduction)}
+          sx={{
+            position: "absolute",
+            bottom: "20px",
+            right: "20px",
+            "& .Mui-selected": {
+              backgroundColor: `${BASE_STYLE.COLOR_PALLETE.ELEMENTS} !important`,
+            },
+          }}
         >
-          <button
-            style={{
-              ...(MAP_STYLE.SWITCH as CSSProperties),
-              background: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
-              color: BASE_STYLE.COLOR_PALLETE.TEXT,
+          <ToggleButton
+            sx={{
+              fontSize: "12px",
+              padding: "8px 12px",
+              fontWeight: 600,
+              border: `1px solid ${BASE_STYLE.COLOR_PALLETE.TEXT}`,
             }}
-            className="productionSwitch"
-            onClick={() => setIsShowingProduction(!isShowingProduction)}
+            value="Production"
           >
-            {isShowingProduction ? "Production" : "Reserves"}
-          </button>
-        </Tooltip>
+            Production
+          </ToggleButton>
+          <ToggleButton
+            sx={{
+              fontSize: "12px",
+              padding: "8px 12px",
+              fontWeight: 600,
+              border: `1px solid ${BASE_STYLE.COLOR_PALLETE.TEXT}`,
+            }}
+            value="Reserves"
+          >
+            Reserves
+          </ToggleButton>
+        </ToggleButtonGroup>
         {otherCountries &&
           worldTotal &&
           (!otherCountries.includes("undefined") ||
