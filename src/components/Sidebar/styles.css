@@ -86,3 +86,7 @@
   color: rgb(18, 119, 196);
   margin-left: 10px;
 }
+
+.sidebar-datasource-link:hover {
+  text-decoration: underline;
+}

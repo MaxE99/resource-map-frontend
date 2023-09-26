@@ -10,18 +10,23 @@ const DataSources = (): JSX.Element => {
         flexDirection: "column",
         marginTop: "20px",
         gap: "20px",
+        lineHeight: 2,
+        letterSpacing: "0.5px",
       }}
     >
       <Accordion
         index={-1}
         label="Commodity Data"
         body={
-          <a
-            href="https://pubs.usgs.gov/periodicals/"
-            className="sidebar-datasource-link"
-          >
-            https://pubs.usgs.gov/periodicals/
-          </a>
+          <Fragment>
+            <div>U.S. Gov Geological Survey Data:</div>
+            <a
+              href="https://pubs.usgs.gov/periodicals/"
+              className="sidebar-datasource-link"
+            >
+              https://pubs.usgs.gov/periodicals/
+            </a>
+          </Fragment>
         }
       />
       <Accordion
@@ -29,12 +34,14 @@ const DataSources = (): JSX.Element => {
         label="Import Export Data"
         body={
           <Fragment>
+            <div>UN Comtrade Database:</div>
             <a
               href="https://comtradeplus.un.org/"
               className="sidebar-datasource-link"
             >
               https://comtradeplus.un.org/
             </a>
+            <div>IMF Macroeconomic Data:</div>
             <a href="https://data.imf.org/" className="sidebar-datasource-link">
               https://data.imf.org/
             </a>
@@ -45,24 +52,30 @@ const DataSources = (): JSX.Element => {
         index={-1}
         label="Price Data"
         body={
-          <a
-            href="https://fred.stlouisfed.org/categories/32217"
-            className="sidebar-datasource-link"
-          >
-            https://fred.stlouisfed.org/categories/32217
-          </a>
+          <Fragment>
+            <div>St. Louis FRED Economic Data:</div>
+            <a
+              href="https://fred.stlouisfed.org/categories/32217"
+              className="sidebar-datasource-link"
+            >
+              https://fred.stlouisfed.org/categories/32217
+            </a>
+          </Fragment>
         }
       />
       <Accordion
         index={-1}
         label="Other Information"
         body={
-          <a
-            href="https://datahub.io/core/geo-countries"
-            className="sidebar-datasource-link"
-          >
-            https://datahub.io/core/geo-countries
-          </a>
+          <Fragment>
+            <div>Map Data:</div>
+            <a
+              href="https://datahub.io/core/geo-countries"
+              className="sidebar-datasource-link"
+            >
+              https://datahub.io/core/geo-countries
+            </a>
+          </Fragment>
         }
       />
       <Accordion
@@ -265,6 +278,13 @@ const DataSources = (): JSX.Element => {
               className="sidebar-datasource-link"
             >
               https://images-of-elements.com/
+            </a>
+            <div>Flags:</div>
+            <a
+              href="https://github.com/hampusborgos/country-flags/tree/main"
+              className="sidebar-datasource-link"
+            >
+              https://github.com/hampusborgos/country-flags/tree/main
             </a>
           </Fragment>
         }
