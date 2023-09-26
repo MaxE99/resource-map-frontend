@@ -6,6 +6,7 @@ import Plot from "react-plotly.js";
 import NoDataChip from "../NoDataChip/NoDataChip";
 
 const PricePlot = ({ data }: PricePlotProps): JSX.Element => {
+  const [hoverInfoText, setHoverInfoText] = useState<string>("");
   const [key, setKey] = useState<number>(0);
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const dates: string[] = data
@@ -23,6 +24,7 @@ const PricePlot = ({ data }: PricePlotProps): JSX.Element => {
       fill: "tozeroy",
       mode: "lines",
       line: { color: "#1277c4" },
+      hoverinfo: "none",
     },
   ];
 
@@ -88,6 +90,24 @@ const PricePlot = ({ data }: PricePlotProps): JSX.Element => {
     };
   }, []);
 
+  const handleHover = (event: any) => {
+    const points = event.points;
+    if (points.length > 0) {
+      const infotext = points.map((point: any) => {
+        return `${JSON.stringify(point.x).substring(1, 8)}: $ ${point.y.toFixed(
+          2
+        )}`;
+      });
+      setHoverInfoText(infotext.join("<br/>"));
+    } else {
+      setHoverInfoText("");
+    }
+  };
+
+  const handleUnhover = (): void => {
+    setHoverInfoText("");
+  };
+
   return (
     <div
       style={{
@@ -103,6 +123,8 @@ const PricePlot = ({ data }: PricePlotProps): JSX.Element => {
         data={plotData}
         layout={data && data.length ? layout : emptyLayout}
         config={data && data.length ? config : emptyConfig}
+        onHover={handleHover}
+        onUnhover={handleUnhover}
       />
       {!data ||
         (data.length < 1 && (
@@ -110,6 +132,23 @@ const PricePlot = ({ data }: PricePlotProps): JSX.Element => {
             <NoDataChip label="price" />
           </div>
         ))}
+      {hoverInfoText && (
+        <div
+          id="hoverinfo"
+          style={{
+            position: "absolute",
+            whiteSpace: "nowrap",
+            background: "var(--main-element)",
+            padding: "4px 12px",
+            top: "70px",
+            fontSize: "12px",
+            borderRadius: "4px",
+            border: "1px solid",
+            color: "white",
+          }}
+          dangerouslySetInnerHTML={{ __html: hoverInfoText }}
+        ></div>
+      )}
     </div>
   );
 };
