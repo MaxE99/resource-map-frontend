@@ -11,9 +11,6 @@ const MAP_STYLE = {
     fontSize: "15px",
   },
   BOX: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
     padding: "20px",
     zIndex: 998,
     borderTopRightRadius: "20px",
