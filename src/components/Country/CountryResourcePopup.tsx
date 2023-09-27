@@ -137,22 +137,26 @@ const CountryResourcePopup = ({
         </Fragment>
       ) : (
         <Fragment>
-          {productionData && productionData?.length > 0 && (
-            <Fragment>
-              <div style={{ marginTop: "10px", fontWeight: 600 }}>
-                Production By Year In {productionData[0].metric}:
-              </div>
-              <ResourcePlot data={productionData} />
-            </Fragment>
-          )}
-          {reserveData && reserveData?.length > 0 && (
-            <Fragment>
-              <div style={{ marginTop: "20px", fontWeight: 600 }}>
-                Reserves By Year In {reserveData[0].metric}:
-              </div>
-              <ResourcePlot data={reserveData} />
-            </Fragment>
-          )}
+          {productionData &&
+            productionData?.length > 0 &&
+            productionData.every((item) => !isNaN(Number(item.amount))) && (
+              <Fragment>
+                <div style={{ marginTop: "10px", fontWeight: 600 }}>
+                  Production By Year In {productionData[0].metric}:
+                </div>
+                <ResourcePlot data={productionData} />
+              </Fragment>
+            )}
+          {reserveData &&
+            reserveData?.length > 0 &&
+            reserveData.every((item) => !isNaN(Number(item.amount))) && (
+              <Fragment>
+                <div style={{ marginTop: "20px", fontWeight: 600 }}>
+                  Reserves By Year In {reserveData[0].metric}:
+                </div>
+                <ResourcePlot data={reserveData} />
+              </Fragment>
+            )}
         </Fragment>
       )}
 

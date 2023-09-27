@@ -4,10 +4,12 @@ import { Data } from "plotly.js";
 import { ProductionReservesT } from "../../types/api";
 import { BASE_STYLE } from "../../styles/base";
 import { ResourcePlotT } from "../../types/map";
+import { useState } from "react";
 
 const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
+  const [hoverInfoText, setHoverInfoText] = useState<string>("");
   const dates: number[] = data.map((entry: ProductionReservesT) => entry.year);
-  const amounts: number[] = data.map(
+  const amounts: string[] = data.map(
     (entry: ProductionReservesT) => entry.amount
   );
 
@@ -19,19 +21,20 @@ const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
       fill: "tozeroy",
       mode: "lines",
       line: { color: BASE_STYLE.COLOR_PALLETE.ELEMENTS },
+      hoverinfo: "none",
     },
   ];
 
   const layout = {
     xaxis: {
       showgrid: false,
-      ticklen: 15,
+      ticklen: 5,
       dtick: 1,
     },
     yaxis: {
-      ticklen: 15,
+      ticklen: 5,
     },
-    margin: { t: 0, r: 60, b: 35, l: 55 },
+    margin: { t: 10, r: 15, b: 25, l: 35 },
   };
 
   const config = {
@@ -39,16 +42,42 @@ const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
     responsive: true,
   };
 
+  const handleHover = (event: any) => {
+    const points = event.points;
+    if (points.length > 0) {
+      const infotext = points.map((point: any) => {
+        return `${point.x}: $ ${point.y.toFixed(2)}`;
+      });
+      setHoverInfoText(infotext.join("<br/>"));
+    } else {
+      setHoverInfoText("");
+    }
+  };
+
+  const handleUnhover = (): void => {
+    setHoverInfoText("");
+  };
+
   return (
-    <Plot
-      style={{
-        width: "400px",
-        height: "300px",
-      }}
-      data={plotData}
-      layout={layout}
-      config={config}
-    />
+    <div className="plotWrapper">
+      <Plot
+        style={{
+          width: "400px",
+          height: "300px",
+        }}
+        data={plotData}
+        layout={layout}
+        config={config}
+        onHover={handleHover}
+        onUnhover={handleUnhover}
+      />
+      {hoverInfoText && (
+        <div
+          className="hoverInfoText"
+          dangerouslySetInnerHTML={{ __html: hoverInfoText }}
+        ></div>
+      )}
+    </div>
   );
 };
 

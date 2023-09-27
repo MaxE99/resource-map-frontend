@@ -109,14 +109,7 @@ const PricePlot = ({ data }: PricePlotProps): JSX.Element => {
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <div className="plotWrapper">
       <Plot
         key={key}
         style={{ width: "100%" }}
@@ -134,18 +127,7 @@ const PricePlot = ({ data }: PricePlotProps): JSX.Element => {
         ))}
       {hoverInfoText && (
         <div
-          id="hoverinfo"
-          style={{
-            position: "absolute",
-            whiteSpace: "nowrap",
-            background: "var(--main-element)",
-            padding: "4px 12px",
-            top: "70px",
-            fontSize: "12px",
-            borderRadius: "4px",
-            border: "1px solid",
-            color: "white",
-          }}
+          className="hoverInfoText"
           dangerouslySetInnerHTML={{ __html: hoverInfoText }}
         ></div>
       )}

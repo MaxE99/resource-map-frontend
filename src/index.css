@@ -70,3 +70,23 @@ body {
 .mapToggle .MuiToggleButtonGroup-grouped {
   color: var(--main-text) !important;
 }
+
+.hoverInfoText {
+  position: absolute;
+  white-space: nowrap;
+  background: var(--main-element);
+  padding: 4px 12px;
+  top: 70;
+  font-size: 12px;
+  border-radius: 4px;
+  border: 1px solid;
+  color: white;
+}
+
+.plotWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
