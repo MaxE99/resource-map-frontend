@@ -90,3 +90,7 @@ body {
   align-items: center;
   position: relative;
 }
+
+.aboutUsHeader {
+  margin: 20px 0 5px;
+}
