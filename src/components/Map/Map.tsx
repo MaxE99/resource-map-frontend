@@ -11,6 +11,7 @@ import { BASE_STYLE } from "../../styles/base";
 import { MAP_STYLE } from "../../styles/map";
 import "../../styles/map.css";
 import CountryBalancePopup from "../Country/CountryBalancePopup";
+import NoDataChip from "../NoDataChip/NoDataChip";
 
 const Map = ({
   countries,
@@ -197,7 +198,11 @@ const Map = ({
           </div>
         )}
       </MapContainer>
-      {noDataFound && <div className="noDataFound">No Data Found</div>}
+      {noDataFound && (
+        <div className="map-chip-container">
+          <NoDataChip label="" />
+        </div>
+      )}
       {popupOpen && selectedCommodity && (
         <Fragment>
           {isBalanceModeSelected ? (
@@ -224,7 +229,7 @@ const Map = ({
               zIndex: 401,
             }}
             open={popupOpen && !isFeatureBeingHoveredOver}
-          ></Backdrop>
+          />
         </Fragment>
       )}
     </div>
