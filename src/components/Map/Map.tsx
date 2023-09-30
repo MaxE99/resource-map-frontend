@@ -87,6 +87,8 @@ const Map = ({
     });
   };
 
+  console.log(noDataFound);
+
   return (
     <div style={{ position: "relative" }}>
       <MapContainer
