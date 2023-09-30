@@ -8,6 +8,12 @@ type CountryResourcePopupT = {
   setPopupOpen: Dispatch<SetStateAction<boolean>>;
 };
 
+type CountryBalancePopupT = {
+  feature: GeoJSON.Feature;
+  isFeatureBeingHoveredOver: boolean;
+  setPopupOpen: Dispatch<SetStateAction<boolean>>;
+};
+
 type CountryInformationT = {
   country: GeoJSON.Feature;
 };
@@ -29,4 +35,5 @@ export type {
   CountryInformationT,
   ResourceTableT,
   ImportExportTreemapT,
+  CountryBalancePopupT,
 };

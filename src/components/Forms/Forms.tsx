@@ -1,31 +1,32 @@
 import { CommodityT } from "../../types/api";
 import Dropdown from "../Dropdown/Dropdown";
 import "./styles.css";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { OptionProps } from "../Dropdown/types";
 import { DOMAIN } from "../../config";
+import FormButton from "./FormButton";
+import BalanceIcon from "@mui/icons-material/Balance";
+import ShieldIcon from "@mui/icons-material/Shield";
+import { BASE_STYLE } from "../../styles/base";
 
 type FormsProps = {
   commodities: CommodityT[];
   selectedCommodity: CommodityT;
-  setSelectedCommodity: (arg: CommodityT) => void;
-  OTHER_VIZ_OPTIONS: string[];
-  otherViz: string | undefined;
-  setOtherViz: (arg: string | undefined) => void;
+  isBalanceModeSelected: boolean;
+  setSelectedCommodity: Dispatch<SetStateAction<CommodityT>>;
+  setIsBalanceModeSelected: Dispatch<SetStateAction<boolean>>;
 };
 
 const Forms = ({
   commodities,
   selectedCommodity,
+  isBalanceModeSelected,
   setSelectedCommodity,
-  OTHER_VIZ_OPTIONS,
-  otherViz,
-  setOtherViz,
+  setIsBalanceModeSelected,
 }: FormsProps): JSX.Element => {
   const [commodityOptions, setCommodityOptions] = useState<OptionProps[]>([]);
-  const [vizOptions, setVizOptions] = useState<OptionProps[]>([]);
   const [selectedCommId, setSelectedCommId] = useState<string | undefined>(
-    selectedCommodity.name,
+    selectedCommodity.name
   );
 
   useEffect(() => {
@@ -58,24 +59,13 @@ const Forms = ({
             </div>,
           ],
         };
-      }),
+      })
     );
   }, [commodities, selectedCommodity]);
 
   useEffect(() => {
-    setVizOptions(
-      OTHER_VIZ_OPTIONS.map((vizOption): OptionProps => {
-        return {
-          identifier: vizOption,
-          children: [],
-        };
-      }),
-    );
-  }, [OTHER_VIZ_OPTIONS]);
-
-  useEffect(() => {
     const newValue: CommodityT | undefined = commodities.find(
-      (commodity) => commodity.name === selectedCommId,
+      (commodity) => commodity.name === selectedCommId
     );
     newValue && setSelectedCommodity(newValue);
   }, [selectedCommId]);
@@ -94,18 +84,31 @@ const Forms = ({
             if (a.identifier > b.identifier) return 1;
             if (a.identifier < b.identifier) return -1;
             return 0;
-          },
+          }
         )}
         selected={selectedCommId}
         setSelected={setSelectedCommId}
       />
-      <Dropdown
-        renderRemove={true}
-        label="Show other visualization"
-        options={vizOptions}
-        selected={otherViz}
-        setSelected={setOtherViz}
-      />
+      <div style={{ display: "flex" }}>
+        <FormButton
+          label="Show commodity trade balance"
+          icon={
+            <BalanceIcon
+              sx={{ height: "40px", color: BASE_STYLE.COLOR_PALLETE.TEXT }}
+            />
+          }
+          isSelected={isBalanceModeSelected}
+          setState={setIsBalanceModeSelected}
+        />
+        <FormButton
+          label="Show commodity strongholds"
+          icon={
+            <ShieldIcon
+              sx={{ height: "40px", color: BASE_STYLE.COLOR_PALLETE.TEXT }}
+            />
+          }
+        />
+      </div>
     </div>
   );
 };

@@ -8,6 +8,7 @@ type MapT = {
   otherCountries: string | undefined;
   worldTotal: string | undefined;
   noDataFound: boolean;
+  isBalanceModeSelected: boolean;
 };
 
 type ResourcePlotT = {

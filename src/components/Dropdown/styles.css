@@ -1,5 +1,4 @@
 .dropdown {
-  width: 100%;
   background-color: var(--main-background);
   color: var(--light-grey);
   position: relative;
@@ -7,6 +6,7 @@
   border-radius: 4px;
   box-shadow: var(--box-shadow);
   height: 55px;
+  width: 50%;
 }
 
 .dropdown-inner {
@@ -22,6 +22,10 @@
 .dropdown-inner:hover {
   border: 1px solid var(--main-element);
   color: var(--main-element);
+}
+
+.button-inner:hover {
+  border: 1px solid var(--main-text);
 }
 
 .dropdown-inner-open {

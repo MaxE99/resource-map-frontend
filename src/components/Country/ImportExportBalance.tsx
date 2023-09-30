@@ -19,7 +19,7 @@ const ImportExportBalance = ({ country }: CountryInformationT): JSX.Element => {
   useEffect(() => {
     if (country.properties?.ADMIN) {
       setIsLoading(true);
-      fetchImportExportBalanceData(country.properties.ADMIN)
+      fetchImportExportBalanceData(undefined, country.properties.ADMIN)
         .then((data: ImportExportBalanceT[]) => setImportExportBalance(data))
         .catch(() =>
           console.error("Could not fetch import export balance data!")

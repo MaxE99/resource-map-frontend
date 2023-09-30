@@ -134,12 +134,18 @@ const fetchPriceData = (commodity: string): Promise<CommodityPriceT[]> =>
   fetchData<CommodityPriceT[]>(API.PRICES, new URLSearchParams({ commodity }));
 
 const fetchImportExportBalanceData = (
-  country: string
-): Promise<ImportExportBalanceT[]> =>
-  fetchData<ImportExportBalanceT[]>(
-    API.BALANCE,
-    new URLSearchParams({ country })
-  );
+  year?: number,
+  country?: string
+): Promise<ImportExportBalanceT[]> => {
+  const queryParams = new URLSearchParams();
+  if (year !== undefined) {
+    queryParams.append("year", year.toString());
+  }
+  if (country !== undefined) {
+    queryParams.append("country", country);
+  }
+  return fetchData<ImportExportBalanceT[]>(API.BALANCE, queryParams);
+};
 
 export {
   fetchCountryData,

@@ -12,19 +12,27 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import CountryInformation from "./components/Country/CountryInformation";
 import { AppContext } from "./components/AppContextProvider";
 import Map from "./components/Map/Map";
-import { CommodityPriceT, CommodityT, GovInfoT } from "./types/api";
+import {
+  CommodityPriceT,
+  CommodityT,
+  GovInfoT,
+  ImportExportBalanceT,
+} from "./types/api";
 import { addDataToGeojson, getQueryString } from "./functions/app";
 import {
   fetchCommodityData,
   fetchCountryData,
   fetchGovInfoData,
+  fetchImportExportBalanceData,
   fetchPriceData,
 } from "./functions/api";
 import { APP_STYLE } from "./styles/app";
 import { BASE_STYLE } from "./styles/base";
-import { MARKS, OTHER_VIZ_OPTIONS } from "./config";
+import { IMPORT_EXPORT_MARKS, MARKS } from "./config";
 import Forms from "./components/Forms/Forms";
 import { GeoJSONDataUpdateT } from "./types/map";
+import LoadingProgress from "./components/LoadingProgress/LoadingProgress";
+import Backdrop from "./components/Backdrop/Backdrop";
 
 const App = (): JSX.Element | null => {
   const [selectedCommodity, setSelectedCommodity] = useState<CommodityT>({
@@ -47,20 +55,24 @@ const App = (): JSX.Element | null => {
   >(undefined);
   const [govInfo, setGovInfo] = useState<GovInfoT | null>(null);
   const [otherCountries, setOtherCountries] = useState<string | undefined>(
-    undefined,
+    undefined
   );
   const [worldTotal, setWorldTotal] = useState<string | undefined>(undefined);
-  const [otherViz, setOtherViz] = useState<string | undefined>(undefined);
   const [prices, setPrices] = useState<CommodityPriceT[]>([]);
   const [initialLoadComplete, setInitialLoadComplete] =
     useState<boolean>(false);
   const [noDataFound, setNoDataFound] = useState<boolean>(false);
   const [isSidebarLoading, setIsSidebarLoading] = useState<boolean>(false);
+  const [isBalanceModeSelected, setIsBalanceModeSelected] =
+    useState<boolean>(false);
+  // const [isStrongholdModeSelected, setIsStrongholdModeSelected] =
+  //   useState<boolean>(false);
 
   const {
     selectedCountry,
     isShowingProduction,
     dialogIsOpen,
+    isLoading,
     setDialogIsOpen,
     setIsLoading,
   } = useContext<any>(AppContext);
@@ -80,7 +92,7 @@ const App = (): JSX.Element | null => {
         }
 
         const filteredCountryData = countryData.filter(
-          (obj) => obj.geojson !== null,
+          (obj) => obj.geojson !== null
         );
         const features = filteredCountryData.map((obj) => obj.geojson);
         const featureCollection: GeoJSON.FeatureCollection = {
@@ -97,7 +109,7 @@ const App = (): JSX.Element | null => {
         const queryString = getQueryString(
           isShowingProduction,
           randomCommodity,
-          year,
+          year
         );
 
         const dataUpdateProps: GeoJSONDataUpdateT = {
@@ -135,38 +147,67 @@ const App = (): JSX.Element | null => {
 
   useEffect(() => {
     if (initialLoadComplete && worldGeojson) {
-      const queryString = getQueryString(
-        isShowingProduction,
-        selectedCommodity,
-        year,
-      );
       setIsLoading(true);
+      if (isBalanceModeSelected) {
+        fetchImportExportBalanceData(year, undefined)
+          .then((data) => {
+            const updatedGeoJsonData = { ...worldGeojson };
+            updatedGeoJsonData?.features?.forEach((feature: any) => {
+              const countryName = feature.properties.ADMIN;
 
-      const dataUpdateProps: GeoJSONDataUpdateT = {
-        selectedCommodity: selectedCommodity,
-        queryString: queryString,
-        worldGeojson: worldGeojson,
-        year: year,
-        setGovInfo: setGovInfo,
-        setOtherCountries: setOtherCountries,
-        setWorldTotal: setWorldTotal,
-        setWorldGeojson: setWorldGeojson,
-        setNoDataFound: setNoDataFound,
-      };
-
-      addDataToGeojson(dataUpdateProps).finally(() => setIsLoading(false));
+              const countryBalance = data.find(
+                (entry: ImportExportBalanceT) =>
+                  entry.country_name === countryName
+              );
+              if (countryBalance) {
+                feature.properties.total_commodity_imports =
+                  countryBalance.total_commodity_imports;
+                feature.properties.total_commodity_exports =
+                  countryBalance.total_commodity_exports;
+                feature.properties.style = {
+                  fillColor:
+                    Number(countryBalance.total_commodity_exports) >
+                    Number(countryBalance.total_commodity_imports)
+                      ? "green"
+                      : "red",
+                };
+              }
+            });
+            //@ts-ignore
+            setWorldGeojson(updatedGeoJsonData);
+          })
+          .finally(() => setIsLoading(false));
+      } else {
+        const queryString = getQueryString(
+          isShowingProduction,
+          selectedCommodity,
+          year
+        );
+        const dataUpdateProps: GeoJSONDataUpdateT = {
+          selectedCommodity: selectedCommodity,
+          queryString: queryString,
+          worldGeojson: worldGeojson,
+          year: year,
+          setGovInfo: setGovInfo,
+          setOtherCountries: setOtherCountries,
+          setWorldTotal: setWorldTotal,
+          setWorldGeojson: setWorldGeojson,
+          setNoDataFound: setNoDataFound,
+        };
+        addDataToGeojson(dataUpdateProps).finally(() => setIsLoading(false));
+      }
     }
-  }, [selectedCommodity, year, isShowingProduction]);
+  }, [selectedCommodity, year, isShowingProduction, isBalanceModeSelected]);
 
   useEffect(() => {
     const fetchSidebarData = async () => {
       setIsSidebarLoading(true);
       await Promise.all([
         fetchGovInfoData(year, selectedCommodity.name).then(
-          (data: GovInfoT[]) => setGovInfo(data?.length ? data[0] : null),
+          (data: GovInfoT[]) => setGovInfo(data?.length ? data[0] : null)
         ),
         fetchPriceData(selectedCommodity.name).then((data: CommodityPriceT[]) =>
-          setPrices(data),
+          setPrices(data)
         ),
       ])
         .catch((error) => console.error("Error fetching sidebar data:", error))
@@ -186,19 +227,38 @@ const App = (): JSX.Element | null => {
           <Forms
             commodities={commodities}
             selectedCommodity={selectedCommodity}
+            isBalanceModeSelected={isBalanceModeSelected}
             setSelectedCommodity={setSelectedCommodity}
-            OTHER_VIZ_OPTIONS={OTHER_VIZ_OPTIONS}
-            otherViz={otherViz}
-            setOtherViz={setOtherViz}
+            setIsBalanceModeSelected={setIsBalanceModeSelected}
           />
-          <Map
-            key={JSON.stringify(worldGeojson)}
-            countries={worldGeojson}
-            selectedCommodity={selectedCommodity}
-            otherCountries={otherCountries}
-            worldTotal={worldTotal}
-            noDataFound={noDataFound}
-          />
+          <div style={{ position: "relative" }}>
+            <Map
+              key={JSON.stringify(worldGeojson)}
+              countries={worldGeojson}
+              selectedCommodity={selectedCommodity}
+              otherCountries={otherCountries}
+              worldTotal={worldTotal}
+              noDataFound={noDataFound}
+              isBalanceModeSelected={isBalanceModeSelected}
+            />
+            {isLoading && (
+              <Backdrop
+                children={[
+                  <div
+                    style={{
+                      display: "flex",
+                      height: "100%",
+                      width: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <LoadingProgress />
+                  </div>,
+                ]}
+              />
+            )}
+          </div>
           <Slider
             sx={{
               ...APP_STYLE.SLIDER,
@@ -211,9 +271,9 @@ const App = (): JSX.Element | null => {
               },
             }}
             value={year}
-            min={2018}
-            max={2022}
-            marks={MARKS}
+            min={isBalanceModeSelected ? 1995 : 2018}
+            max={isBalanceModeSelected ? 2021 : 2022}
+            marks={isBalanceModeSelected ? IMPORT_EXPORT_MARKS : MARKS}
             step={1}
             onChange={handleChange}
             valueLabelDisplay="auto"

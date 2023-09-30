@@ -61,7 +61,7 @@ type CommodityPriceT = {
 type ImportExportBalanceT = {
   id: number;
   year: number;
-  country: string;
+  country_name: string;
   total_imports: number;
   total_exports: number;
   total_commodity_imports: number;

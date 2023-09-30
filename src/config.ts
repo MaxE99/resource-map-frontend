@@ -148,14 +148,4 @@ const IMPORT_EXPORT_MARKS: MarksT[] = [
   },
 ];
 
-const OTHER_VIZ_OPTIONS: string[] = [
-  "Commodity Export Dependency",
-  "Commodity Import Depdency",
-  "High Potential For Increasing Resource Revenue",
-  "Resource Import/Export Balance",
-  "Total Resource Imports in $",
-  "Total Resource Exports in $",
-  "Control Over Resources",
-];
-
-export { API, DOMAIN, MARKS, OTHER_VIZ_OPTIONS, IMPORT_EXPORT_MARKS };
+export { API, DOMAIN, MARKS, IMPORT_EXPORT_MARKS };

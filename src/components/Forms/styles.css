@@ -5,3 +5,26 @@
   margin-bottom: 30px;
   gap: 40px;
 }
+
+.formButton {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 55px;
+  height: 55px;
+  position: relative;
+  border: 1px solid;
+  border-radius: 4px;
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+}
+
+.formButton .outerDiv {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  padding: 1px;
+  justify-content: center;
+  align-items: "center";
+}

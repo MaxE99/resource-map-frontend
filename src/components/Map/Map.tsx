@@ -10,6 +10,7 @@ import { MapT } from "../../types/map";
 import { BASE_STYLE } from "../../styles/base";
 import { MAP_STYLE } from "../../styles/map";
 import "../../styles/map.css";
+import CountryBalancePopup from "../Country/CountryBalancePopup";
 
 const Map = ({
   countries,
@@ -17,6 +18,7 @@ const Map = ({
   otherCountries,
   worldTotal,
   noDataFound,
+  isBalanceModeSelected,
 }: MapT): JSX.Element => {
   const [popupOpen, setPopupOpen] = useState<boolean>(false);
   const [isFeatureBeingHoveredOver, setIsFeatureBeingHoveredOver] =
@@ -50,6 +52,7 @@ const Map = ({
 
   const onEachCountryFeature = (feature: GeoJSON.Feature, layer: Path) => {
     let featureIsBeingClickedOn = false;
+
     layer.on({
       click: () => {
         if (selectedCommodity) {
@@ -106,99 +109,114 @@ const Map = ({
             style={getFeatureStyle}
           />
         )}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            width: "100%",
-            height: "80px",
-            borderTop: `1px solid ${BASE_STYLE.COLOR_PALLETE.LIGHT_GREY}`,
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          {otherCountries &&
-            worldTotal &&
-            (!otherCountries.includes("undefined") ||
-              !worldTotal.includes("undefined")) && (
-              <div
-                style={{
-                  ...(MAP_STYLE.BOX as CSSProperties),
-                  color: BASE_STYLE.COLOR_PALLETE.TEXT,
-                }}
-              >
-                {!otherCountries.includes("undefined") && (
-                  <Fragment>
-                    <span style={{ marginRight: "5px" }}>Other Countries:</span>
-                    <span
-                      style={{
-                        color: BASE_STYLE.COLOR_PALLETE.ELEMENTS,
-                        marginRight: "20px",
-                      }}
-                    >
-                      {otherCountries}
-                    </span>
-                  </Fragment>
-                )}
-                {!worldTotal.includes("undefined") && (
-                  <Fragment>
-                    <span style={{ marginRight: "5px" }}>World Total:</span>
-                    <span style={{ color: BASE_STYLE.COLOR_PALLETE.ELEMENTS }}>
-                      {worldTotal}
-                    </span>
-                  </Fragment>
-                )}
-              </div>
-            )}
-          <ToggleButtonGroup
-            color="secondary"
-            className="mapToggle"
-            value={isShowingProduction ? "Production" : "Reserves"}
-            exclusive
-            onChange={() => setIsShowingProduction(!isShowingProduction)}
-            sx={{
-              padding: "20px",
-              marginLeft: "auto",
-              "& .Mui-selected": {
-                backgroundColor: `${BASE_STYLE.COLOR_PALLETE.ELEMENTS} !important`,
-              },
+        {!isBalanceModeSelected && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              width: "100%",
+              height: "80px",
+              borderTop: `1px solid ${BASE_STYLE.COLOR_PALLETE.LIGHT_GREY}`,
+              display: "flex",
+              alignItems: "center",
             }}
           >
-            <ToggleButton
+            {otherCountries &&
+              worldTotal &&
+              (!otherCountries.includes("undefined") ||
+                !worldTotal.includes("undefined")) && (
+                <div
+                  style={{
+                    ...(MAP_STYLE.BOX as CSSProperties),
+                    color: BASE_STYLE.COLOR_PALLETE.TEXT,
+                  }}
+                >
+                  {!otherCountries.includes("undefined") && (
+                    <Fragment>
+                      <span style={{ marginRight: "5px" }}>
+                        Other Countries:
+                      </span>
+                      <span
+                        style={{
+                          color: BASE_STYLE.COLOR_PALLETE.ELEMENTS,
+                          marginRight: "20px",
+                        }}
+                      >
+                        {otherCountries}
+                      </span>
+                    </Fragment>
+                  )}
+                  {!worldTotal.includes("undefined") && (
+                    <Fragment>
+                      <span style={{ marginRight: "5px" }}>World Total:</span>
+                      <span
+                        style={{ color: BASE_STYLE.COLOR_PALLETE.ELEMENTS }}
+                      >
+                        {worldTotal}
+                      </span>
+                    </Fragment>
+                  )}
+                </div>
+              )}
+            <ToggleButtonGroup
+              color="secondary"
+              className="mapToggle"
+              value={isShowingProduction ? "Production" : "Reserves"}
+              exclusive
+              onChange={() => setIsShowingProduction(!isShowingProduction)}
               sx={{
-                fontSize: "12px",
-                padding: "8px 12px",
-                fontWeight: 600,
-                border: `1px solid ${BASE_STYLE.COLOR_PALLETE.TEXT}`,
+                padding: "20px",
+                marginLeft: "auto",
+                "& .Mui-selected": {
+                  backgroundColor: `${BASE_STYLE.COLOR_PALLETE.ELEMENTS} !important`,
+                },
               }}
-              value="Production"
             >
-              Production
-            </ToggleButton>
-            <ToggleButton
-              sx={{
-                fontSize: "12px",
-                padding: "8px 12px",
-                fontWeight: 600,
-                border: `1px solid ${BASE_STYLE.COLOR_PALLETE.TEXT}`,
-              }}
-              value="Reserves"
-            >
-              Reserves
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
+              <ToggleButton
+                sx={{
+                  fontSize: "12px",
+                  padding: "8px 12px",
+                  fontWeight: 600,
+                  border: `1px solid ${BASE_STYLE.COLOR_PALLETE.TEXT}`,
+                }}
+                value="Production"
+              >
+                Production
+              </ToggleButton>
+              <ToggleButton
+                sx={{
+                  fontSize: "12px",
+                  padding: "8px 12px",
+                  fontWeight: 600,
+                  border: `1px solid ${BASE_STYLE.COLOR_PALLETE.TEXT}`,
+                }}
+                value="Reserves"
+              >
+                Reserves
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </div>
+        )}
       </MapContainer>
       {noDataFound && <div className="noDataFound">No Data Found</div>}
       {popupOpen && selectedCommodity && (
         <Fragment>
-          <CountryResourcePopup
-            key={JSON.stringify(selectedCountry)}
-            feature={selectedCountry}
-            commodity={selectedCommodity}
-            setPopupOpen={setPopupOpen}
-            isFeatureBeingHoveredOver={isFeatureBeingHoveredOver}
-          />
+          {isBalanceModeSelected ? (
+            <CountryBalancePopup
+              key={JSON.stringify(selectedCountry)}
+              feature={selectedCountry}
+              setPopupOpen={setPopupOpen}
+              isFeatureBeingHoveredOver={isFeatureBeingHoveredOver}
+            />
+          ) : (
+            <CountryResourcePopup
+              key={JSON.stringify(selectedCountry)}
+              feature={selectedCountry}
+              commodity={selectedCommodity}
+              setPopupOpen={setPopupOpen}
+              isFeatureBeingHoveredOver={isFeatureBeingHoveredOver}
+            />
+          )}
           <Backdrop
             sx={{
               position: "absolute",
