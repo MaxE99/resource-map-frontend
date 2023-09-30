@@ -130,7 +130,7 @@ const CountryResourcePopup = ({
                 </div>
                 <div>
                   <span style={{ fontWeight: 600 }}>Share: </span>
-                  <span>{feature.properties.share}%</span>
+                  <span>{Number(feature.properties.share).toFixed(2)}%</span>
                 </div>
               </Fragment>
             )}
