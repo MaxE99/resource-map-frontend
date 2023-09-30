@@ -1,30 +1,30 @@
 import Plot from "react-plotly.js";
-import { CountryInformationT } from "../../types/country";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { fetchImportExportBalanceData } from "../../functions/api";
 import { ImportExportBalanceT } from "../../types/api";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { AppContext } from "../AppContextProvider";
 import NoDataChip from "../NoDataChip/NoDataChip";
+import { ImportExportBalanceProps } from "../../types/country";
 
-const ImportExportBalance = ({ country }: CountryInformationT): JSX.Element => {
+const ImportExportBalance = ({
+  country,
+  setIsBalanceLoaded,
+}: ImportExportBalanceProps): JSX.Element => {
   const [totalOrCommodityBalance, setTotalOrCommodityBalance] = useState<
     "Commodity Trade Balance" | "Total Trade Balance"
   >("Commodity Trade Balance");
   const [importExportBalance, setImportExportBalance] = useState<
     ImportExportBalanceT[]
   >([]);
-  const { setIsLoading } = useContext<any>(AppContext);
 
   useEffect(() => {
     if (country.properties?.ADMIN) {
-      setIsLoading(true);
       fetchImportExportBalanceData(undefined, country.properties.ADMIN)
         .then((data: ImportExportBalanceT[]) => setImportExportBalance(data))
         .catch(() =>
           console.error("Could not fetch import export balance data!")
         )
-        .finally(() => setIsLoading(false));
+        .finally(() => setIsBalanceLoaded(true));
     }
   }, []);
 

@@ -295,6 +295,7 @@ const App = (): JSX.Element | null => {
               maxWidth: "90%",
               width: "800px",
               height: "calc(100% - 64px)",
+              overflow: isLoading ? "hidden" : "auto",
             },
           }}
           open={dialogIsOpen}

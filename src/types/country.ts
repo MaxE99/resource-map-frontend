@@ -20,14 +20,17 @@ type CountryInformationT = {
 
 type ResourceTableT = {
   country: GeoJSON.Feature;
-  isImportExportLoaded: boolean;
   setIsProductionReservesLoaded: Dispatch<SetStateAction<boolean>>;
 };
 
 type ImportExportTreemapT = {
   country: GeoJSON.Feature;
-  isProductionReservesLoaded: boolean;
   setIsImportExportLoaded: Dispatch<SetStateAction<boolean>>;
+};
+
+type ImportExportBalanceProps = {
+  country: GeoJSON.Feature;
+  setIsBalanceLoaded: Dispatch<SetStateAction<boolean>>;
 };
 
 export type {
@@ -36,4 +39,5 @@ export type {
   ResourceTableT,
   ImportExportTreemapT,
   CountryBalancePopupT,
+  ImportExportBalanceProps,
 };

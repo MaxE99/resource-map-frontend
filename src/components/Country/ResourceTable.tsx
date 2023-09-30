@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,7 +12,6 @@ import { MARKS } from "../../config";
 import { APP_STYLE } from "../../styles/app";
 import { fetchProductionData, fetchReservesData } from "../../functions/api";
 import { ProductionReservesT } from "../../types/api";
-import { AppContext } from "../AppContextProvider";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import NoDataChip from "../NoDataChip/NoDataChip";
 
@@ -20,7 +19,6 @@ const headers = ["Resource", "Amount", "Share", "Rank"];
 
 const ResourceTable = ({
   country,
-  isImportExportLoaded,
   setIsProductionReservesLoaded,
 }: ResourceTableT): JSX.Element => {
   const [year, setYear] = useState<number>(2021);
@@ -30,11 +28,9 @@ const ResourceTable = ({
   const [productionOrReserves, setProductionOrReserves] = useState<
     "production" | "reserves"
   >("production");
-  const { setIsLoading } = useContext<any>(AppContext);
 
   useEffect(() => {
     setIsProductionReservesLoaded(false);
-    setIsLoading(true);
     const fetchData = async () => {
       try {
         const data = await (productionOrReserves === "production"
@@ -49,7 +45,6 @@ const ResourceTable = ({
         console.error("Production could not be fetched!", error);
       } finally {
         setIsProductionReservesLoaded(true);
-        isImportExportLoaded && setIsLoading(false);
       }
     };
     fetchData();

@@ -1,6 +1,6 @@
 // https://plotly.com/javascript/reference/treemap/#treemap-texttemplate
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Slider from "@mui/material/Slider";
 import { ImportExportTreemapT } from "../../types/country";
 import { APP_STYLE } from "../../styles/app";
@@ -8,25 +8,21 @@ import { fetchExportData, fetchImportData } from "../../functions/api";
 import { ImportExportT } from "../../types/api";
 import Plot from "react-plotly.js";
 import { IMPORT_EXPORT_MARKS } from "../../config";
-import { AppContext } from "../AppContextProvider";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import NoDataChip from "../NoDataChip/NoDataChip";
 
 const ImportExportTreemap = ({
   country,
   setIsImportExportLoaded,
-  isProductionReservesLoaded,
 }: ImportExportTreemapT): JSX.Element => {
   const [importOrExport, setImportOrExport] = useState<"import" | "export">(
     "export"
   );
   const [year, setYear] = useState<number>(2021);
   const [importExportData, setImportExportData] = useState<ImportExportT[]>([]);
-  const { setIsLoading } = useContext<any>(AppContext);
 
   useEffect(() => {
     setIsImportExportLoaded(false);
-    setIsLoading(true);
     const fetchData = async () => {
       try {
         const data = await (importOrExport === "import"
@@ -42,7 +38,6 @@ const ImportExportTreemap = ({
         console.error("Import/Export data could not be fetched!");
       } finally {
         setIsImportExportLoaded(true);
-        isProductionReservesLoaded && setIsLoading(false);
       }
     };
     fetchData();
