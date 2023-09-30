@@ -100,3 +100,7 @@ body {
 .leaflet-pane {
   margin-top: 40px;
 }
+
+.leaflet-control-zoom {
+  display: none;
+}
