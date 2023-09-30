@@ -95,7 +95,6 @@ const Map = ({
           boxShadow: BASE_STYLE.BOX_SHADOW,
           border: `2px solid ${BASE_STYLE.COLOR_PALLETE.LIGHT_GREY}`,
         }}
-        center={[30, 0]}
         minZoom={2}
         maxZoom={5}
         bounds={bounds}

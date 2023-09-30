@@ -95,3 +95,8 @@ body {
 .aboutUsHeader {
   margin: 20px 0 5px;
 }
+
+/* centering of map container is not functioning anymore since removing osm */
+.leaflet-pane {
+  margin-top: 40px;
+}
