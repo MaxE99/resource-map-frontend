@@ -245,6 +245,7 @@ const App = (): JSX.Element | null => {
               <Backdrop
                 children={[
                   <div
+                    key="loading"
                     style={{
                       display: "flex",
                       height: "100%",

@@ -22,6 +22,7 @@ const Sidebar = ({
     if (selected === "datasource")
       return (
         <SidebarHead
+          key="datasource"
           icon={
             <IoBookmarkOutline
               style={{ fontSize: "40px", color: "var(--light-grey)" }}
@@ -33,6 +34,7 @@ const Sidebar = ({
     if (selected === "about")
       return (
         <SidebarHead
+          key="about"
           icon={
             <IoInformationCircleOutline
               style={{ fontSize: "40px", color: "var(--light-grey)" }}
@@ -43,6 +45,7 @@ const Sidebar = ({
       );
     return (
       <SidebarHead
+        key="default"
         icon={
           <img
             src={DOMAIN + "/static/" + commodity.img_path + ".jpg"}
@@ -97,6 +100,7 @@ const Sidebar = ({
         <Backdrop
           children={[
             <div
+              key="loading"
               style={{
                 display: "flex",
                 height: "100%",

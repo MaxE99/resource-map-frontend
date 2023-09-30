@@ -10,7 +10,7 @@ const LoadingProgress = (): JSX.Element => {
           cy="44"
           r="20.2"
           fill="none"
-          stroke-width="3.6"
+          strokeWidth="3.6"
         ></circle>
       </svg>
     </span>

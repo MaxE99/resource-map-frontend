@@ -91,6 +91,7 @@ const Forms = ({
       />
       <div style={{ display: "flex" }}>
         <FormButton
+          key="balance"
           label="Show commodity trade balance"
           icon={
             <BalanceIcon
@@ -101,12 +102,15 @@ const Forms = ({
           setState={setIsBalanceModeSelected}
         />
         <FormButton
+          key="strongholds"
           label="Show commodity strongholds"
           icon={
             <ShieldIcon
               sx={{ height: "40px", color: BASE_STYLE.COLOR_PALLETE.TEXT }}
             />
           }
+          isSelected={isBalanceModeSelected}
+          setState={setIsBalanceModeSelected}
         />
       </div>
     </div>
