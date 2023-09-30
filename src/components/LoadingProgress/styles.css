@@ -1,4 +1,6 @@
 .loading-progress {
+  position: relative;
+  z-index: 401;
   display: inline-block;
   width: 4rem;
   height: 4rem;
