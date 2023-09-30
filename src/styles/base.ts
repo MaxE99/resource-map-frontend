@@ -18,7 +18,7 @@ const BASE_STYLE = {
     TEXT: "#fff",
     LIGHT_GREY: "#666",
   },
-  BOX_SHADOW: "0 -2px 10px rgba(0, 0, 0, 1)",
+  BOX_SHADOW: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
 };
 
 export { BASE_STYLE, THEME };
