@@ -252,6 +252,8 @@ const App = (): JSX.Element | null => {
                       width: "100%",
                       justifyContent: "center",
                       alignItems: "center",
+                      position: "relative",
+                      zIndex: 500,
                     }}
                   >
                     <LoadingProgress />
