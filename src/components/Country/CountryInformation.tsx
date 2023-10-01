@@ -13,9 +13,9 @@ import { AppContext } from "../AppContextProvider";
 const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
   const [isCountryInfoLoading, setIsCountryInfoLoading] =
     useState<boolean>(true);
-  const [isImportExportLoaded, setIsImportExportLoaded] =
-    useState<boolean>(false);
   const [isProductionReservesLoaded, setIsProductionReservesLoaded] =
+    useState<boolean>(false);
+  const [isImportExportLoaded, setIsImportExportLoaded] =
     useState<boolean>(false);
   const [isBalanceLoaded, setIsBalanceLoaded] = useState<boolean>(false);
 
@@ -55,12 +55,14 @@ const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
         />
         <ImportExportTreemap
           country={country}
+          isImportExportLoaded={isImportExportLoaded}
           setIsImportExportLoaded={setIsImportExportLoaded}
         />
         <ImportExportBalance
           country={country}
           setIsBalanceLoaded={setIsBalanceLoaded}
         />
+
         {/*<div>GDP Chart:</div>
       <div>Resources as % of GDP Chart:</div>
       <div>Ranking: Resource Dependency:</div> */}

@@ -25,6 +25,7 @@ type ResourceTableT = {
 
 type ImportExportTreemapT = {
   country: GeoJSON.Feature;
+  isImportExportLoaded: boolean;
   setIsImportExportLoaded: Dispatch<SetStateAction<boolean>>;
 };
 

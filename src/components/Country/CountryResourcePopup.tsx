@@ -73,6 +73,7 @@ const CountryResourcePopup = ({
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      setIsLoading(false);
     };
   }, []);
 

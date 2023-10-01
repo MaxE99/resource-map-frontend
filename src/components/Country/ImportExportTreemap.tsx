@@ -9,7 +9,6 @@ import { ImportExportT } from "../../types/api";
 import Plot from "react-plotly.js";
 import { IMPORT_EXPORT_MARKS } from "../../config";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import NoDataChip from "../NoDataChip/NoDataChip";
 
 const ImportExportTreemap = ({
   country,
@@ -140,7 +139,14 @@ const ImportExportTreemap = ({
           config={config}
         />
       ) : (
-        <NoDataChip label={importOrExport} />
+        <div
+          style={{
+            width: "760px",
+            height: "760px",
+            border: "1px solid rgba(224, 224, 224, 1)",
+            borderRadius: "4px",
+          }}
+        ></div>
       )}
 
       <Slider

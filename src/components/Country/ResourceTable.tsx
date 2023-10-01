@@ -13,7 +13,6 @@ import { APP_STYLE } from "../../styles/app";
 import { fetchProductionData, fetchReservesData } from "../../functions/api";
 import { ProductionReservesT } from "../../types/api";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import NoDataChip from "../NoDataChip/NoDataChip";
 
 const headers = ["Resource", "Amount", "Share", "Rank"];
 
@@ -155,7 +154,22 @@ const ResourceTable = ({
           </Table>
         </TableContainer>
       ) : (
-        <NoDataChip label={productionOrReserves} />
+        <TableContainer
+          component={Paper}
+          sx={{ boxShadow: "none", border: "1px solid rgba(224, 224, 224, 1)" }}
+        >
+          <Table>
+            <TableBody>
+              {new Array(6).fill(null).map((_, index) => (
+                <TableRow key={index}>
+                  <TableCell colSpan={4} sx={{ height: 48 }}>
+                    {/* Empty cell */}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
       <Slider
         color="secondary"
