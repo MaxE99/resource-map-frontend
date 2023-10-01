@@ -10,10 +10,20 @@ const PricePlot = ({ data }: PricePlotProps): JSX.Element => {
   const [key, setKey] = useState<number>(0);
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const dates: string[] = data
-    ? data.map((entry: CommodityPriceT) => entry.date)
+    ? data
+        .sort(
+          (a: CommodityPriceT, b: CommodityPriceT) =>
+            new Date(a.date).getTime() - new Date(b.date).getTime()
+        )
+        .map((entry: CommodityPriceT) => entry.date)
     : [];
   const prices: number[] = data
-    ? data.map((entry: CommodityPriceT) => entry.price)
+    ? data
+        .sort(
+          (a: CommodityPriceT, b: CommodityPriceT) =>
+            new Date(a.date).getTime() - new Date(b.date).getTime()
+        )
+        .map((entry: CommodityPriceT) => entry.price)
     : [];
 
   const plotData: Data[] = [
