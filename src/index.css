@@ -104,3 +104,17 @@ body {
 .leaflet-control-zoom {
   display: none;
 }
+
+.circle {
+  z-index: 1000;
+  background: rgb(18, 119, 196);
+  border-radius: 50%;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  color: white;
+  border: 1px solid;
+  padding: 5px 0;
+}

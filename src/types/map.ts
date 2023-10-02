@@ -9,6 +9,7 @@ type MapT = {
   worldTotal: string | undefined;
   noDataFound: boolean;
   isBalanceModeSelected: boolean;
+  isStrongholdModeSelected: boolean;
 };
 
 type ResourcePlotT = {

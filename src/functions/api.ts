@@ -147,6 +147,12 @@ const fetchImportExportBalanceData = (
   return fetchData<ImportExportBalanceT[]>(API.BALANCE, queryParams);
 };
 
+const fetchStrongholdData = (year: number): Promise<ProductionReservesT[]> =>
+  fetchData<ProductionReservesT[]>(
+    API.STRONGHOLD,
+    new URLSearchParams({ year: year.toString() })
+  );
+
 export {
   fetchCountryData,
   fetchCommodityData,
@@ -157,4 +163,5 @@ export {
   fetchExportData,
   fetchPriceData,
   fetchImportExportBalanceData,
+  fetchStrongholdData,
 };

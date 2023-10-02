@@ -25,6 +25,7 @@ import {
   fetchGovInfoData,
   fetchImportExportBalanceData,
   fetchPriceData,
+  fetchStrongholdData,
 } from "./functions/api";
 import { APP_STYLE } from "./styles/app";
 import { BASE_STYLE } from "./styles/base";
@@ -65,8 +66,8 @@ const App = (): JSX.Element | null => {
   const [isSidebarLoading, setIsSidebarLoading] = useState<boolean>(false);
   const [isBalanceModeSelected, setIsBalanceModeSelected] =
     useState<boolean>(false);
-  // const [isStrongholdModeSelected, setIsStrongholdModeSelected] =
-  //   useState<boolean>(false);
+  const [isStrongholdModeSelected, setIsStrongholdModeSelected] =
+    useState<boolean>(false);
 
   const {
     selectedCountry,
@@ -146,6 +147,9 @@ const App = (): JSX.Element | null => {
   }, []);
 
   useEffect(() => {
+    if (isBalanceModeSelected || isStrongholdModeSelected) {
+      setNoDataFound(false);
+    }
     if (initialLoadComplete && worldGeojson) {
       setIsLoading(true);
       if (isBalanceModeSelected) {
@@ -177,6 +181,24 @@ const App = (): JSX.Element | null => {
             setWorldGeojson(updatedGeoJsonData);
           })
           .finally(() => setIsLoading(false));
+      } else if (isStrongholdModeSelected) {
+        fetchStrongholdData(year)
+          .then((data) => {
+            const updatedGeoJsonData = { ...worldGeojson };
+            updatedGeoJsonData?.features?.forEach((feature: any) => {
+              const countryName = feature.properties.ADMIN;
+
+              const countryStrongholds = data.filter(
+                (stronghold) => stronghold.country_name === countryName
+              );
+              if (countryStrongholds.length) {
+                feature.properties.strongholds = countryStrongholds;
+              }
+            });
+            //@ts-ignore
+            setWorldGeojson(updatedGeoJsonData);
+          })
+          .finally(() => setIsLoading(false));
       } else {
         const queryString = getQueryString(
           isShowingProduction,
@@ -197,7 +219,13 @@ const App = (): JSX.Element | null => {
         addDataToGeojson(dataUpdateProps).finally(() => setIsLoading(false));
       }
     }
-  }, [selectedCommodity, year, isShowingProduction, isBalanceModeSelected]);
+  }, [
+    selectedCommodity,
+    year,
+    isShowingProduction,
+    isBalanceModeSelected,
+    isStrongholdModeSelected,
+  ]);
 
   useEffect(() => {
     const fetchSidebarData = async () => {
@@ -228,8 +256,10 @@ const App = (): JSX.Element | null => {
             commodities={commodities}
             selectedCommodity={selectedCommodity}
             isBalanceModeSelected={isBalanceModeSelected}
+            isStrongholdModeSelected={isStrongholdModeSelected}
             setSelectedCommodity={setSelectedCommodity}
             setIsBalanceModeSelected={setIsBalanceModeSelected}
+            setIsStrongholdModeSelected={setIsStrongholdModeSelected}
           />
           <div style={{ position: "relative" }}>
             <Map
@@ -240,6 +270,7 @@ const App = (): JSX.Element | null => {
               worldTotal={worldTotal}
               noDataFound={noDataFound}
               isBalanceModeSelected={isBalanceModeSelected}
+              isStrongholdModeSelected={isStrongholdModeSelected}
             />
             {isLoading && (
               <Backdrop

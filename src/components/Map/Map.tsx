@@ -1,8 +1,8 @@
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import { Backdrop, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { CSSProperties, Fragment, useContext, useState } from "react";
-import { Path } from "leaflet";
+import { LatLngBounds, LatLngExpression, Path } from "leaflet";
 
 import CountryResourcePopup from "../Country/CountryResourcePopup";
 import { AppContext } from "../AppContextProvider";
@@ -12,6 +12,8 @@ import { MAP_STYLE } from "../../styles/map";
 import "../../styles/map.css";
 import CountryBalancePopup from "../Country/CountryBalancePopup";
 import NoDataChip from "../NoDataChip/NoDataChip";
+import L from "leaflet";
+import { calculatePolygonCentroid } from "../../functions/app";
 
 const Map = ({
   countries,
@@ -20,6 +22,7 @@ const Map = ({
   worldTotal,
   noDataFound,
   isBalanceModeSelected,
+  isStrongholdModeSelected,
 }: MapT): JSX.Element => {
   const [popupOpen, setPopupOpen] = useState<boolean>(false);
   const [isFeatureBeingHoveredOver, setIsFeatureBeingHoveredOver] =
@@ -33,11 +36,6 @@ const Map = ({
     selectedCountry,
     setSelectedCountry,
   } = useContext<any>(AppContext);
-
-  const bounds: [[number, number], [number, number]] = [
-    [-90, -180],
-    [90, 180],
-  ];
 
   const getFeatureStyle = (feature: any) => {
     return {
@@ -96,9 +94,11 @@ const Map = ({
           boxShadow: BASE_STYLE.BOX_SHADOW,
           border: `2px solid ${BASE_STYLE.COLOR_PALLETE.LIGHT_GREY}`,
         }}
+        center={[0, 0]}
+        zoom={2}
         minZoom={2}
         maxZoom={5}
-        bounds={bounds}
+        maxBounds={new LatLngBounds([-90, -180], [90, 180])}
         maxBoundsViscosity={1.0}
       >
         <TileLayer maxZoom={10} maxNativeZoom={19} noWrap={true} url="" />
@@ -109,6 +109,58 @@ const Map = ({
             style={getFeatureStyle}
           />
         )}
+        {isStrongholdModeSelected &&
+          //@ts-ignore
+          countries.features.map((feature: any) => {
+            const strongholdCount = feature.properties?.strongholds?.length;
+            if (strongholdCount) {
+              const customIcon = L.divIcon({
+                className: "custom-marker",
+                html: `<div class="circle">${strongholdCount}</div>`,
+                iconSize: [30, 30],
+              });
+              let cords = [30, 30];
+              if (feature.geometry.type === "Polygon") {
+                cords = calculatePolygonCentroid(feature.geometry.coordinates);
+              } else if (feature.geometry.type === "MultiPolygon") {
+                const indexOfLargest = feature.geometry.coordinates.reduce(
+                  (
+                    maxIndex: number,
+                    arr: [number, number],
+                    currentIndex: number,
+                    arrays: [number, number][]
+                  ) =>
+                    arr.length > arrays[maxIndex].length
+                      ? currentIndex
+                      : maxIndex,
+                  0
+                );
+                cords = calculatePolygonCentroid(
+                  feature.geometry.coordinates[indexOfLargest]
+                );
+              }
+              return (
+                <Marker
+                  key={JSON.stringify(feature)}
+                  position={cords as LatLngExpression}
+                  icon={customIcon}
+                >
+                  <Popup>
+                    <b>{feature?.properties?.strongholds[0].country_name}</b>
+                    <br />
+                    {feature?.properties?.strongholds.map((stronghold: any) => (
+                      <Fragment>
+                        <b>{stronghold.commodity_name}:</b>
+                        <b> {Number(stronghold.share).toFixed(2)}%</b>
+                        <br />
+                      </Fragment>
+                    ))}
+                  </Popup>
+                </Marker>
+              );
+            }
+            return null;
+          })}
         {!isBalanceModeSelected && (
           <div
             style={{

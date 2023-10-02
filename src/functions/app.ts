@@ -118,4 +118,29 @@ const addDataToGeojson = async (props: GeoJSONDataUpdateT) => {
   }
 };
 
-export { getColor, getQueryString, addDataToGeojson };
+const calculatePolygonCentroid = (polygonCoordinates: any) => {
+  if (!polygonCoordinates || polygonCoordinates.length === 0) {
+    return [0, 0];
+  }
+
+  let totalX = 0;
+  let totalY = 0;
+  let numPoints = 0;
+
+  polygonCoordinates.forEach(([coords]: any) => {
+    if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
+      totalX += Number(coords[1]);
+      totalY += Number(coords[0]);
+      numPoints++;
+    }
+  });
+
+  if (numPoints > 0) {
+    const centroidX = totalX / numPoints;
+    const centroidY = totalY / numPoints;
+    return [centroidX, centroidY];
+  }
+  return [0, 0];
+};
+
+export { getColor, getQueryString, addDataToGeojson, calculatePolygonCentroid };

@@ -8,6 +8,7 @@ type FormButtonT = {
   icon: JSX.Element;
   isSelected: boolean;
   setState: Dispatch<SetStateAction<boolean>>;
+  setOtherButtonState: Dispatch<SetStateAction<boolean>>;
 };
 
 const FormButton = ({
@@ -15,6 +16,7 @@ const FormButton = ({
   icon,
   isSelected,
   setState,
+  setOtherButtonState,
 }: FormButtonT): JSX.Element => {
   return (
     <Tooltip title={isSelected ? "Going back to commodity selection" : label}>
@@ -28,7 +30,10 @@ const FormButton = ({
             ? BASE_STYLE.COLOR_PALLETE.TEXT
             : BASE_STYLE.COLOR_PALLETE.LIGHT_GREY,
         }}
-        onClick={() => setState(!isSelected)}
+        onClick={() => {
+          setState(!isSelected);
+          setOtherButtonState(false);
+        }}
       >
         <div className="outerDiv">
           <div

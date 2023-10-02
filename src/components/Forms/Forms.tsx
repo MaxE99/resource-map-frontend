@@ -13,16 +13,20 @@ type FormsProps = {
   commodities: CommodityT[];
   selectedCommodity: CommodityT;
   isBalanceModeSelected: boolean;
+  isStrongholdModeSelected: boolean;
   setSelectedCommodity: Dispatch<SetStateAction<CommodityT>>;
   setIsBalanceModeSelected: Dispatch<SetStateAction<boolean>>;
+  setIsStrongholdModeSelected: Dispatch<SetStateAction<boolean>>;
 };
 
 const Forms = ({
   commodities,
   selectedCommodity,
   isBalanceModeSelected,
+  isStrongholdModeSelected,
   setSelectedCommodity,
   setIsBalanceModeSelected,
+  setIsStrongholdModeSelected,
 }: FormsProps): JSX.Element => {
   const [commodityOptions, setCommodityOptions] = useState<OptionProps[]>([]);
   const [selectedCommId, setSelectedCommId] = useState<string | undefined>(
@@ -100,6 +104,7 @@ const Forms = ({
           }
           isSelected={isBalanceModeSelected}
           setState={setIsBalanceModeSelected}
+          setOtherButtonState={setIsStrongholdModeSelected}
         />
         <FormButton
           key="strongholds"
@@ -109,8 +114,9 @@ const Forms = ({
               sx={{ height: "40px", color: BASE_STYLE.COLOR_PALLETE.TEXT }}
             />
           }
-          isSelected={isBalanceModeSelected}
-          setState={setIsBalanceModeSelected}
+          isSelected={isStrongholdModeSelected}
+          setState={setIsStrongholdModeSelected}
+          setOtherButtonState={setIsBalanceModeSelected}
         />
       </div>
     </div>
