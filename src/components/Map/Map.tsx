@@ -1,5 +1,5 @@
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, Marker } from "react-leaflet";
 import { Backdrop, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { CSSProperties, Fragment, useContext, useState } from "react";
 import { LatLngBounds, LatLngExpression, Path } from "leaflet";
@@ -14,6 +14,8 @@ import CountryBalancePopup from "../Country/CountryBalancePopup";
 import NoDataChip from "../NoDataChip/NoDataChip";
 import L from "leaflet";
 import { calculatePolygonCentroid } from "../../functions/app";
+import CountryStrongholdPopup from "../Country/CountryStrongholdPopup";
+import { ProductionReservesT } from "../../types/api";
 
 const Map = ({
   countries,
@@ -30,6 +32,9 @@ const Map = ({
   const [hoveredFeature, setHoveredFeature] = useState<
     GeoJSON.Feature | undefined
   >(undefined);
+  const [selectedStrongholds, setSelectedStrongholds] = useState<
+    ProductionReservesT[]
+  >([]);
   const {
     isShowingProduction,
     setIsShowingProduction,
@@ -111,7 +116,7 @@ const Map = ({
         )}
         {isStrongholdModeSelected &&
           //@ts-ignore
-          countries.features.map((feature: any) => {
+          countries?.features.map((feature: any) => {
             const strongholdCount = feature.properties?.strongholds?.length;
             if (strongholdCount) {
               const customIcon = L.divIcon({
@@ -144,19 +149,13 @@ const Map = ({
                   key={JSON.stringify(feature)}
                   position={cords as LatLngExpression}
                   icon={customIcon}
-                >
-                  <Popup>
-                    <b>{feature?.properties?.strongholds[0].country_name}</b>
-                    <br />
-                    {feature?.properties?.strongholds.map((stronghold: any) => (
-                      <Fragment>
-                        <b>{stronghold.commodity_name}:</b>
-                        <b> {Number(stronghold.share).toFixed(2)}%</b>
-                        <br />
-                      </Fragment>
-                    ))}
-                  </Popup>
-                </Marker>
+                  eventHandlers={{
+                    click: () => {
+                      setSelectedStrongholds(feature.properties.strongholds),
+                        setPopupOpen(true);
+                    },
+                  }}
+                />
               );
             }
             return null;
@@ -264,6 +263,13 @@ const Map = ({
               feature={selectedCountry}
               setPopupOpen={setPopupOpen}
               isFeatureBeingHoveredOver={isFeatureBeingHoveredOver}
+            />
+          ) : isStrongholdModeSelected && selectedStrongholds.length ? (
+            <CountryStrongholdPopup
+              key={JSON.stringify(selectedStrongholds)}
+              strongholds={selectedStrongholds}
+              setSelectedStrongholds={setSelectedStrongholds}
+              setPopupOpen={setPopupOpen}
             />
           ) : (
             <CountryResourcePopup

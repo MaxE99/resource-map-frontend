@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { CommodityT } from "./api";
+import { CommodityT, ProductionReservesT } from "./api";
 
 type CountryResourcePopupT = {
   feature: GeoJSON.Feature;
@@ -34,6 +34,12 @@ type ImportExportBalanceProps = {
   setIsBalanceLoaded: Dispatch<SetStateAction<boolean>>;
 };
 
+type CountryStrongholdT = {
+  strongholds: ProductionReservesT[];
+  setSelectedStrongholds: Dispatch<SetStateAction<ProductionReservesT[]>>;
+  setPopupOpen: Dispatch<SetStateAction<boolean>>;
+};
+
 export type {
   CountryResourcePopupT,
   CountryInformationT,
@@ -41,4 +47,5 @@ export type {
   ImportExportTreemapT,
   CountryBalancePopupT,
   ImportExportBalanceProps,
+  CountryStrongholdT,
 };
