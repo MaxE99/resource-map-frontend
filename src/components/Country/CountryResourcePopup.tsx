@@ -129,10 +129,12 @@ const CountryResourcePopup = ({
                     {feature.properties.amount} {feature.properties.metric}
                   </span>
                 </div>
-                <div>
-                  <span style={{ fontWeight: 600 }}>Share: </span>
-                  <span>{Number(feature.properties.share).toFixed(2)}%</span>
-                </div>
+                {!isNaN(Number(feature.properties.share)) && (
+                  <div>
+                    <span style={{ fontWeight: 600 }}>Share: </span>
+                    <span>{Number(feature.properties.share).toFixed(2)}%</span>
+                  </div>
+                )}
               </Fragment>
             )}
         </Fragment>
