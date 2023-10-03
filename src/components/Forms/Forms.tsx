@@ -8,9 +8,9 @@ import FormButton from "./FormButton";
 import BalanceIcon from "@mui/icons-material/Balance";
 import ShieldIcon from "@mui/icons-material/Shield";
 import { BASE_STYLE } from "../../styles/base";
+import { COMMODITIES_DATA } from "../../start-data";
 
 type FormsProps = {
-  commodities: CommodityT[];
   selectedCommodity: CommodityT;
   isBalanceModeSelected: boolean;
   isStrongholdModeSelected: boolean;
@@ -20,7 +20,6 @@ type FormsProps = {
 };
 
 const Forms = ({
-  commodities,
   selectedCommodity,
   isBalanceModeSelected,
   isStrongholdModeSelected,
@@ -35,7 +34,7 @@ const Forms = ({
 
   useEffect(() => {
     setCommodityOptions(
-      commodities.map((commodity): OptionProps => {
+      COMMODITIES_DATA.map((commodity): OptionProps => {
         return {
           identifier: commodity.name,
           children: [
@@ -65,10 +64,10 @@ const Forms = ({
         };
       })
     );
-  }, [commodities, selectedCommodity]);
+  }, [selectedCommodity]);
 
   useEffect(() => {
-    const newValue: CommodityT | undefined = commodities.find(
+    const newValue: CommodityT | undefined = COMMODITIES_DATA.find(
       (commodity) => commodity.name === selectedCommId
     );
     newValue && setSelectedCommodity(newValue);

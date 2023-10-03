@@ -4,6 +4,7 @@ import {
   useContext,
   CSSProperties,
   Fragment,
+  useRef,
 } from "react";
 import Slider from "@mui/material/Slider";
 import Dialog from "@mui/material/Dialog";
@@ -17,11 +18,10 @@ import {
   CommodityT,
   GovInfoT,
   ImportExportBalanceT,
+  ProductionReservesT,
 } from "./types/api";
-import { addDataToGeojson, getQueryString } from "./functions/app";
+import { addDataToGeojson, getColor, getQueryString } from "./functions/app";
 import {
-  fetchCommodityData,
-  fetchCountryData,
   fetchGovInfoData,
   fetchImportExportBalanceData,
   fetchPriceData,
@@ -34,34 +34,38 @@ import Forms from "./components/Forms/Forms";
 import { GeoJSONDataUpdateT } from "./types/map";
 import LoadingProgress from "./components/LoadingProgress/LoadingProgress";
 import Backdrop from "./components/Backdrop/Backdrop";
+import {
+  DEFAULT_COMMODITIES,
+  COUNTRIES_DATA,
+  DefaultCommodityT,
+} from "./start-data";
 
 const App = (): JSX.Element | null => {
-  const [selectedCommodity, setSelectedCommodity] = useState<CommodityT>({
-    id: 45,
-    name: "Gold",
-    info: "",
-    img_path: "commodity_imgs/gold.jpg",
-    companies: [
-      "Newmont Corporation",
-      "Barrick Gold Corporation",
-      "AngloGold Ashanti Limited",
-      "Polyus",
-      "Kinross Gold Corporation",
-    ],
-  });
-  const [commodities, setCommodities] = useState<CommodityT[]>([]);
-  const [year, setYear] = useState<number>(2022);
+  const randomCommodity = useRef<DefaultCommodityT>(
+    DEFAULT_COMMODITIES[Math.floor(Math.random() * 10)]
+  );
+  const [selectedCommodity, setSelectedCommodity] = useState<CommodityT>(
+    randomCommodity.current.commodity
+  );
+  const [year, setYear] = useState<number>(
+    randomCommodity.current.gov_info.year
+  );
+  const [govInfo, setGovInfo] = useState<GovInfoT | null>(
+    randomCommodity.current.gov_info
+  );
+  const [prices, setPrices] = useState<CommodityPriceT[]>(
+    randomCommodity.current.prices
+  );
+  const [initialLoadComplete, setInitialLoadComplete] =
+    useState<boolean>(false);
   const [worldGeojson, setWorldGeojson] = useState<
     GeoJSON.FeatureCollection | undefined
   >(undefined);
-  const [govInfo, setGovInfo] = useState<GovInfoT | null>(null);
+
   const [otherCountries, setOtherCountries] = useState<string | undefined>(
     undefined
   );
   const [worldTotal, setWorldTotal] = useState<string | undefined>(undefined);
-  const [prices, setPrices] = useState<CommodityPriceT[]>([]);
-  const [initialLoadComplete, setInitialLoadComplete] =
-    useState<boolean>(false);
   const [noDataFound, setNoDataFound] = useState<boolean>(false);
   const [isSidebarLoading, setIsSidebarLoading] = useState<boolean>(false);
   const [isBalanceModeSelected, setIsBalanceModeSelected] =
@@ -77,74 +81,6 @@ const App = (): JSX.Element | null => {
     setDialogIsOpen,
     setIsLoading,
   } = useContext<any>(AppContext);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchData = async () => {
-      try {
-        const [commodityData, countryData] = await Promise.all([
-          fetchCommodityData(),
-          fetchCountryData(),
-        ]);
-
-        if (!isMounted) {
-          return;
-        }
-
-        const filteredCountryData = countryData.filter(
-          (obj) => obj.geojson !== null
-        );
-        const features = filteredCountryData.map((obj) => obj.geojson);
-        const featureCollection: GeoJSON.FeatureCollection = {
-          type: "FeatureCollection",
-          features: features,
-        };
-
-        const randomCommodity =
-          commodityData[Math.floor(Math.random() * commodityData.length)];
-        setSelectedCommodity(randomCommodity);
-        setCommodities(commodityData);
-        setWorldGeojson(featureCollection);
-
-        const queryString = getQueryString(
-          isShowingProduction,
-          randomCommodity,
-          year
-        );
-
-        const dataUpdateProps: GeoJSONDataUpdateT = {
-          selectedCommodity: randomCommodity,
-          queryString: queryString,
-          worldGeojson: featureCollection,
-          year: year,
-          setGovInfo: setGovInfo,
-          setOtherCountries: setOtherCountries,
-          setWorldTotal: setWorldTotal,
-          setWorldGeojson: setWorldGeojson,
-          setNoDataFound: setNoDataFound,
-        };
-
-        const [_, pricesData]: [void, CommodityPriceT[]] = await Promise.all([
-          addDataToGeojson(dataUpdateProps),
-          fetchPriceData(randomCommodity.name),
-        ]);
-
-        setPrices(pricesData);
-        setIsLoading(false);
-        setInitialLoadComplete(true);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   useEffect(() => {
     if (isBalanceModeSelected || isStrongholdModeSelected) {
@@ -228,21 +164,96 @@ const App = (): JSX.Element | null => {
   ]);
 
   useEffect(() => {
-    const fetchSidebarData = async () => {
-      setIsSidebarLoading(true);
-      await Promise.all([
-        fetchGovInfoData(year, selectedCommodity.name).then(
-          (data: GovInfoT[]) => setGovInfo(data?.length ? data[0] : null)
-        ),
-        fetchPriceData(selectedCommodity.name).then((data: CommodityPriceT[]) =>
-          setPrices(data)
-        ),
-      ])
-        .catch((error) => console.error("Error fetching sidebar data:", error))
-        .finally(() => setIsSidebarLoading(false));
-    };
-    fetchSidebarData();
+    if (initialLoadComplete) {
+      const fetchSidebarData = async () => {
+        setIsSidebarLoading(true);
+        await Promise.all([
+          fetchGovInfoData(year, selectedCommodity.name).then(
+            (data: GovInfoT[]) => setGovInfo(data?.length ? data[0] : null)
+          ),
+          fetchPriceData(selectedCommodity.name).then(
+            (data: CommodityPriceT[]) => setPrices(data)
+          ),
+        ])
+          .catch((error) =>
+            console.error("Error fetching sidebar data:", error)
+          )
+          .finally(() => setIsSidebarLoading(false));
+      };
+      fetchSidebarData();
+    }
   }, [year, selectedCommodity]);
+
+  useEffect(() => {
+    if (!initialLoadComplete) {
+      const updatedGeoJsonData = { ...COUNTRIES_DATA };
+
+      const totalAmount = randomCommodity.current.production.find(
+        (entry: ProductionReservesT) => entry.country_name === "World total"
+      )?.amount;
+
+      const otherCountriesAmount = randomCommodity.current.production.find(
+        (entry: ProductionReservesT) => entry.country_name === "Other countries"
+      )?.amount;
+
+      let metric = "";
+
+      updatedGeoJsonData?.features?.forEach((feature: any) => {
+        const countryName = feature.properties.ADMIN;
+
+        const productionCountry = randomCommodity.current.production.find(
+          (entry: ProductionReservesT) => entry.country_name === countryName
+        );
+
+        if (
+          productionCountry &&
+          Number(productionCountry.amount) !== 0 &&
+          totalAmount
+        ) {
+          metric = productionCountry.metric;
+          if (isNaN(Number(productionCountry.amount))) {
+            feature.properties.amount = "Unknown Amount";
+            feature.properties.metric = metric;
+            feature.properties.style = {
+              fillColor: "red",
+            };
+          } else {
+            const share = parseFloat(
+              //@ts-ignore
+              ((productionCountry.amount / totalAmount) * 100).toFixed(2)
+            );
+            feature.properties.style = {
+              fillColor: getColor(share),
+            };
+            feature.properties.amount = productionCountry.amount;
+            feature.properties.metric = metric;
+            feature.properties.share = share;
+          }
+        } else {
+          feature.properties.amount = null;
+          feature.properties.style = {
+            fillColor: "white",
+          };
+        }
+      });
+      //@ts-ignore
+      setWorldGeojson(updatedGeoJsonData);
+      setOtherCountries(
+        `${
+          otherCountriesAmount !== "nan" ? otherCountriesAmount : undefined
+        } ${metric}`
+      );
+      setWorldTotal(
+        `${totalAmount !== "nan" ? totalAmount : undefined} ${metric}`
+      );
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    // if directly set in the starter useEffect hook, it causes API calls from the other two useEffect hooks.
+    worldGeojson && setInitialLoadComplete(true);
+  }, [worldGeojson]);
 
   const handleChange = (_: any, newValue: any) => {
     setYear(newValue);
@@ -253,7 +264,6 @@ const App = (): JSX.Element | null => {
       <div style={APP_STYLE.WRAPPER as CSSProperties}>
         <div style={APP_STYLE.OUTER_BOX}>
           <Forms
-            commodities={commodities}
             selectedCommodity={selectedCommodity}
             isBalanceModeSelected={isBalanceModeSelected}
             isStrongholdModeSelected={isStrongholdModeSelected}

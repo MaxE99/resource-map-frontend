@@ -19,21 +19,19 @@ type CommodityT = {
 type ProductionReservesT = {
   id: number;
   year: number;
-  country: string;
-  commodity: string;
   note: string | null;
   metric: string;
   amount: string;
   country_name: string;
   commodity_name: string;
-  share: number;
-  rank: number;
+  share: string | null;
+  rank: number | null;
 };
 
 type GovInfoT = {
   id: number;
   year: number;
-  commodity: string;
+  commodity: number;
   prod_and_use: string;
   recycling: string;
   events: string;
@@ -52,10 +50,10 @@ type ImportExportT = {
 
 type CommodityPriceT = {
   id: number;
-  commodity: string;
+  commodity: number;
   description: string;
   date: string;
-  price: number;
+  price: string;
 };
 
 type ImportExportBalanceT = {
