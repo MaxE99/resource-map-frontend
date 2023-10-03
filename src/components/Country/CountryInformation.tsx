@@ -52,6 +52,7 @@ const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
         </div>
         <ResourceTable
           country={country}
+          isProductionReservesLoaded={isProductionReservesLoaded}
           setIsProductionReservesLoaded={setIsProductionReservesLoaded}
         />
         <ImportExportTreemap

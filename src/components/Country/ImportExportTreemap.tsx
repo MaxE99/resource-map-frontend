@@ -9,9 +9,11 @@ import { ImportExportT } from "../../types/api";
 import Plot from "react-plotly.js";
 import { IMPORT_EXPORT_MARKS } from "../../config";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import NoDataChip from "../NoDataChip/NoDataChip";
 
 const ImportExportTreemap = ({
   country,
+  isImportExportLoaded,
   setIsImportExportLoaded,
 }: ImportExportTreemapT): JSX.Element => {
   const [importOrExport, setImportOrExport] = useState<"import" | "export">(
@@ -138,6 +140,8 @@ const ImportExportTreemap = ({
           }}
           config={config}
         />
+      ) : isImportExportLoaded ? (
+        <NoDataChip label={importOrExport} />
       ) : (
         <div
           style={{

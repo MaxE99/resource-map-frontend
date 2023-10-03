@@ -20,6 +20,7 @@ type CountryInformationT = {
 
 type ResourceTableT = {
   country: GeoJSON.Feature;
+  isProductionReservesLoaded: boolean;
   setIsProductionReservesLoaded: Dispatch<SetStateAction<boolean>>;
 };
 

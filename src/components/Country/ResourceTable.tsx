@@ -13,11 +13,13 @@ import { APP_STYLE } from "../../styles/app";
 import { fetchProductionData, fetchReservesData } from "../../functions/api";
 import { ProductionReservesT } from "../../types/api";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import NoDataChip from "../NoDataChip/NoDataChip";
 
 const headers = ["Resource", "Amount", "Share", "Rank"];
 
 const ResourceTable = ({
   country,
+  isProductionReservesLoaded,
   setIsProductionReservesLoaded,
 }: ResourceTableT): JSX.Element => {
   const [year, setYear] = useState<number>(2021);
@@ -153,6 +155,8 @@ const ResourceTable = ({
             </TableBody>
           </Table>
         </TableContainer>
+      ) : isProductionReservesLoaded ? (
+        <NoDataChip label={productionOrReserves} />
       ) : (
         <TableContainer
           component={Paper}
