@@ -1,6 +1,7 @@
-import PricePlot from "../PricePlot/PricePlot";
+import PricePlot from "../Plots/PricePlot";
 import Accordion from "../Accordion/Accordion";
-import { AccordionWrapperProps, ResourceBodyProps } from "./types";
+import { ResourceBodyProps } from "./types";
+import { AccordionWrapperProps } from "../Accordion/types";
 
 const ResourceBody = ({
   prices,
@@ -59,7 +60,7 @@ const ResourceBody = ({
               }}
             />
           }
-        ></Accordion>
+        />
         <Accordion
           index={2}
           label="Largest Producers"

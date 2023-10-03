@@ -81,7 +81,7 @@ body {
   font-size: 12px;
   border-radius: 4px;
   border: 1px solid;
-  color: white;
+  color: var(--main-text);
 }
 
 .plotWrapper {
@@ -114,7 +114,52 @@ body {
   justify-content: center;
   align-items: center;
   font-weight: 600;
-  color: white;
+  color: var(--main-text);
   border: 2px solid;
   padding: 4px 0;
+}
+
+.mainSlider {
+  margin-top: 30px !important;
+  color: var(--main-element) !important;
+  height: 10px !important;
+}
+
+.mainSlider .MuiSlider-markLabel {
+  color: var(--main-element) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  margin-top: 5px !important;
+  z-index: 1000 !important;
+}
+
+.mainSlider .MuiSlider-markLabel:first-of-type {
+  left: 1% !important;
+}
+
+.mainSlider .MuiSlider-markLabel:last-of-type {
+  right: 99% !important;
+}
+
+.mainSlider .MuiSlider-rail {
+  box-shadow: var(--box-shadow) !important;
+}
+
+.mainSlider .MuiDialog-paperScrollPaper {
+  max-width: 90% !important;
+  width: 800px !important;
+  height: calc(100% - 64px) !important;
+}
+
+.mainWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 30px 30px 0;
+}
+
+.mainOuterBox {
+  width: 65%;
+  height: calc(100vh - 60px);
+  display: block;
 }

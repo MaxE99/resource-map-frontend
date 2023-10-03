@@ -1,22 +1,14 @@
-import {
-  useContext,
-  useEffect,
-  useState,
-  Fragment,
-  CSSProperties,
-} from "react";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { useContext, useEffect, useState, Fragment } from "react";
 
-import ResourcePlot from "./ResourcePlot";
+import ResourcePlot from "../Plots/ResourcePlot";
 import { AppContext } from "../AppContextProvider";
-import { CountryResourcePopupT } from "../../types/country";
-import { ProductionReservesT } from "../../types/api";
-import { COUNTRY_STYLE } from "../../styles/country";
-import { BASE_STYLE } from "../../styles/base";
-import { fetchProductionData, fetchReservesData } from "../../functions/api";
-import { DOMAIN } from "../../config";
-import { slugify } from "../../functions/country";
-import { MAP_STYLE } from "../../styles/map";
+import { CountryResourcePopupT } from "./types";
+import { ProductionReservesT } from "../../utils/types/api";
+import CountryHeader from "./CountryHeader";
+import {
+  fetchProductionData,
+  fetchReservesData,
+} from "../../utils/functions/api";
 
 const CountryResourcePopup = ({
   feature,
@@ -26,7 +18,7 @@ const CountryResourcePopup = ({
 }: CountryResourcePopupT): JSX.Element | null => {
   const [productionData, setProductionData] = useState<ProductionReservesT[]>();
   const [reserveData, setReserveData] = useState<ProductionReservesT[]>();
-  const { setDialogIsOpen, setIsLoading } = useContext<any>(AppContext);
+  const { setIsLoading } = useContext<any>(AppContext);
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
 
   useEffect(() => {
@@ -78,7 +70,7 @@ const CountryResourcePopup = ({
 
   const handleClickOutside = (event: MouseEvent) => {
     const targetElement = event.target as Element;
-    if (!targetElement.closest(".countryResourcePopup")) {
+    if (!targetElement.closest(".countryPopup")) {
       setPopupOpen(false); // Close the popup when clicked outside
       setIsLoading(false); // needed so that if something inside the popup loads at the moment is not keeping the map in a loading state
     }
@@ -86,33 +78,12 @@ const CountryResourcePopup = ({
 
   return dataHasLoaded || isFeatureBeingHoveredOver ? (
     <div
-      className="countryResourcePopup"
+      className="countryPopup"
       style={{
-        ...(MAP_STYLE.POPUP as CSSProperties),
         top: isFeatureBeingHoveredOver ? "80%" : "50%",
       }}
     >
-      <div
-        style={COUNTRY_STYLE.COUNTRY_NAME_BOX}
-        onClick={() => setDialogIsOpen(true)}
-      >
-        <img
-          src={
-            DOMAIN + `/static/flags/${slugify(feature?.properties?.ADMIN)}.png`
-          }
-          style={{ height: "25px", marginRight: "5px" }}
-        />
-        <div className="countryNameBox" style={{ fontSize: "30px" }}>
-          {feature?.properties?.ADMIN}
-        </div>
-        <OpenInNewIcon
-          sx={{
-            marginLeft: "5px",
-            fontSize: "20px",
-            "&:hover": { color: BASE_STYLE.COLOR_PALLETE.ELEMENTS },
-          }}
-        />
-      </div>
+      <CountryHeader countryName={feature?.properties?.ADMIN} />
       {isFeatureBeingHoveredOver ? (
         <Fragment>
           {feature.properties?.amount === "Unknown Amount" && (
@@ -162,13 +133,6 @@ const CountryResourcePopup = ({
             )}
         </Fragment>
       )}
-
-      {/* <div style={{ marginTop: "20px" }}>Net Import/Export Balance:</div>
-        <div style={{ marginTop: "20px" }}>Share Of Total Exports:</div>
-        <div style={{ marginTop: "20px" }}>Share Of Resource Exports:</div>
-        <div style={{ marginTop: "20px" }}>
-          Correlation between Price/Production and GDP:
-        </div> */}
     </div>
   ) : null;
 };

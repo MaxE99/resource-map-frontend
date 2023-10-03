@@ -1,11 +1,5 @@
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import { CommodityPriceT, CommodityT, GovInfoT } from "../../types/api";
-
-type AccordionWrapperProps = {
-  index: number;
-  summary: string;
-  details: string | JSX.Element | JSX.Element[] | undefined;
-};
+import { CommodityPriceT, CommodityT, GovInfoT } from "../../utils/types/api";
 
 type PricePlotProps = {
   data: CommodityPriceT[];
@@ -39,7 +33,6 @@ type ResourceBodyProps = {
 export type {
   SidebarProps,
   PricePlotProps,
-  AccordionWrapperProps,
   SidebarHeadProps,
   SidebarMenuProps,
   SidebarSelected,

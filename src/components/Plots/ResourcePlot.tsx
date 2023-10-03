@@ -1,10 +1,10 @@
 import Plot from "react-plotly.js";
 import { Data } from "plotly.js";
 
-import { ProductionReservesT } from "../../types/api";
-import { BASE_STYLE } from "../../styles/base";
-import { ResourcePlotT } from "../../types/map";
+import { ProductionReservesT } from "../../utils/types/api";
+import { BASE_STYLE } from "../../utils/styles/base";
 import { useState } from "react";
+import { ResourcePlotT } from "./types";
 
 const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
   const [hoverInfoText, setHoverInfoText] = useState<string>("");
@@ -37,11 +37,6 @@ const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
     margin: { t: 10, r: 15, b: 25, l: 35 },
   };
 
-  const config = {
-    displayModeBar: false,
-    responsive: true,
-  };
-
   const handleHover = (event: any) => {
     const points = event.points;
     if (points.length > 0) {
@@ -67,7 +62,7 @@ const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
         }}
         data={plotData}
         layout={layout}
-        config={config}
+        config={{ displayModeBar: false, responsive: true }}
         onHover={handleHover}
         onUnhover={handleUnhover}
       />

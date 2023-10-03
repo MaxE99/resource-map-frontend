@@ -1,14 +1,13 @@
 import { Fragment, useState } from "react";
 import { SidebarProps, SidebarSelected } from "./types";
 import { IoBookmarkOutline, IoInformationCircleOutline } from "react-icons/io5";
-import { DOMAIN } from "../../config";
+import { DOMAIN } from "../../utils/config";
 import SidebarHead from "./SidebarHead";
 import SidebarMenu from "./SidebarMenu";
 import DataSources from "./DataSources";
 import ResourceBody from "./ResourceBody";
 import AboutUs from "./AboutUs";
-import Backdrop from "../Backdrop/Backdrop";
-import LoadingProgress from "../LoadingProgress/LoadingProgress";
+import BackdropWrapper from "../Backdrop/BackdropWrapper";
 
 const Sidebar = ({
   commodity,
@@ -96,24 +95,7 @@ const Sidebar = ({
           </Fragment>
         </div>
       </div>
-      {isLoading && (
-        <Backdrop
-          children={[
-            <div
-              key="loading"
-              style={{
-                display: "flex",
-                height: "100%",
-                width: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <LoadingProgress />
-            </div>,
-          ]}
-        />
-      )}
+      {isLoading && <BackdropWrapper />}
     </div>
   );
 };

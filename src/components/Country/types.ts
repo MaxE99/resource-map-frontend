@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { CommodityT, ProductionReservesT } from "./api";
+import { CommodityT, ProductionReservesT } from "../../utils/types/api";
 
 type CountryResourcePopupT = {
   feature: GeoJSON.Feature;
@@ -14,25 +14,14 @@ type CountryBalancePopupT = {
   setPopupOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-type CountryInformationT = {
-  country: GeoJSON.Feature;
+type CountryInformationPopupT = {
+  feature: GeoJSON.Feature;
 };
 
 type ResourceTableT = {
-  country: GeoJSON.Feature;
+  feature: GeoJSON.Feature;
   isProductionReservesLoaded: boolean;
   setIsProductionReservesLoaded: Dispatch<SetStateAction<boolean>>;
-};
-
-type ImportExportTreemapT = {
-  country: GeoJSON.Feature;
-  isImportExportLoaded: boolean;
-  setIsImportExportLoaded: Dispatch<SetStateAction<boolean>>;
-};
-
-type ImportExportBalanceProps = {
-  country: GeoJSON.Feature;
-  setIsBalanceLoaded: Dispatch<SetStateAction<boolean>>;
 };
 
 type CountryStrongholdT = {
@@ -41,12 +30,23 @@ type CountryStrongholdT = {
   setPopupOpen: Dispatch<SetStateAction<boolean>>;
 };
 
+type CountryHeaderT = {
+  countryName: string;
+};
+
+type CountryToggleGroupT = {
+  firstChoice: string;
+  secondChoice: string;
+  currentChoice: string;
+  setCurrentChoice: Dispatch<SetStateAction<string>>;
+};
+
 export type {
   CountryResourcePopupT,
-  CountryInformationT,
+  CountryInformationPopupT,
   ResourceTableT,
-  ImportExportTreemapT,
   CountryBalancePopupT,
-  ImportExportBalanceProps,
   CountryStrongholdT,
+  CountryHeaderT,
+  CountryToggleGroupT,
 };

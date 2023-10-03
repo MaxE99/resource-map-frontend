@@ -1,6 +1,6 @@
 import "./styles.css";
 import { Tooltip } from "@mui/material";
-import { BASE_STYLE } from "../../styles/base";
+import { BASE_STYLE } from "../../utils/styles/base";
 import { Dispatch, SetStateAction } from "react";
 
 type FormButtonT = {

@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 
-import { AppContextProviderT, AppContextT } from "../types/base";
+import { AppContextProviderT, AppContextT } from "../utils/types/base";
 
 export const AppContext = createContext<AppContextT | undefined>(undefined);
 

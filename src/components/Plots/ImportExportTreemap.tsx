@@ -2,23 +2,21 @@
 
 import { useEffect, useState } from "react";
 import Slider from "@mui/material/Slider";
-import { ImportExportTreemapT } from "../../types/country";
-import { APP_STYLE } from "../../styles/app";
-import { fetchExportData, fetchImportData } from "../../functions/api";
-import { ImportExportT } from "../../types/api";
+import { ImportExportT } from "../../utils/types/api";
 import Plot from "react-plotly.js";
-import { IMPORT_EXPORT_MARKS } from "../../config";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { IMPORT_EXPORT_MARKS } from "../../utils/config";
 import NoDataChip from "../NoDataChip/NoDataChip";
+import { ImportExportTreemapT } from "./types";
+import { fetchExportData, fetchImportData } from "../../utils/functions/api";
+import { Data } from "plotly.js";
+import CountryToggleGroup from "../Country/CountryToggleGroup";
 
 const ImportExportTreemap = ({
-  country,
+  feature,
   isImportExportLoaded,
   setIsImportExportLoaded,
 }: ImportExportTreemapT): JSX.Element => {
-  const [importOrExport, setImportOrExport] = useState<"import" | "export">(
-    "export"
-  );
+  const [importOrExport, setImportOrExport] = useState<string>("export");
   const [year, setYear] = useState<number>(2021);
   const [importExportData, setImportExportData] = useState<ImportExportT[]>([]);
 
@@ -27,8 +25,8 @@ const ImportExportTreemap = ({
     const fetchData = async () => {
       try {
         const data = await (importOrExport === "import"
-          ? fetchImportData(year, undefined, country.properties?.ADMIN)
-          : fetchExportData(year, undefined, country.properties?.ADMIN));
+          ? fetchImportData(year, undefined, feature.properties?.ADMIN)
+          : fetchExportData(year, undefined, feature.properties?.ADMIN));
 
         const filteredData = data
           .filter((d) => !isNaN(Number(d.amount)) && Number(d.amount) !== 0)
@@ -48,14 +46,7 @@ const ImportExportTreemap = ({
     setYear(newValue);
   };
 
-  const handleImportExportChange = (
-    _: React.MouseEvent<HTMLElement>,
-    newSelection: "import" | "export"
-  ) => {
-    setImportOrExport(newSelection);
-  };
-
-  const data: any = [
+  const data: Data[] = [
     {
       labels: importExportData.map((data) => data.commodity_name),
       parents: importExportData.map(() => ""), // Set a common parent for all items
@@ -71,11 +62,6 @@ const ImportExportTreemap = ({
       },
     },
   ];
-
-  const config = {
-    displayModeBar: false,
-    responsive: true,
-  };
 
   return (
     <div style={{ width: "100%" }}>
@@ -103,26 +89,12 @@ const ImportExportTreemap = ({
             {importOrExport}
           </span>
         </div>
-        <ToggleButtonGroup
-          color="secondary"
-          value={importOrExport}
-          exclusive
-          onChange={handleImportExportChange}
-          sx={{ marginLeft: "auto" }}
-        >
-          <ToggleButton
-            sx={{ fontSize: "12px", padding: "8px 12px", fontWeight: 600 }}
-            value="import"
-          >
-            Import
-          </ToggleButton>
-          <ToggleButton
-            sx={{ fontSize: "12px", padding: "8px 12px", fontWeight: 600 }}
-            value="export"
-          >
-            Export
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <CountryToggleGroup
+          firstChoice="import"
+          secondChoice="export"
+          currentChoice={importOrExport}
+          setCurrentChoice={setImportOrExport}
+        />
       </div>
       {importExportData.length ? (
         <Plot
@@ -138,7 +110,7 @@ const ImportExportTreemap = ({
               b: 0,
             },
           }}
-          config={config}
+          config={{ displayModeBar: false, responsive: true }}
         />
       ) : isImportExportLoaded ? (
         <NoDataChip label={importOrExport} />
@@ -156,7 +128,6 @@ const ImportExportTreemap = ({
       <Slider
         color="secondary"
         sx={{
-          ...APP_STYLE,
           width: "97.5%",
           margin: "5px 10px 20px",
           height: "10px",

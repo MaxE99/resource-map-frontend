@@ -7,18 +7,20 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Slider from "@mui/material/Slider";
 import Paper from "@mui/material/Paper";
-import { ResourceTableT } from "../../types/country";
-import { MARKS } from "../../config";
-import { APP_STYLE } from "../../styles/app";
-import { fetchProductionData, fetchReservesData } from "../../functions/api";
-import { ProductionReservesT } from "../../types/api";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { ResourceTableT } from "./types";
+import { MARKS } from "../../utils/config";
+import { ProductionReservesT } from "../../utils/types/api";
 import NoDataChip from "../NoDataChip/NoDataChip";
+import {
+  fetchProductionData,
+  fetchReservesData,
+} from "../../utils/functions/api";
+import CountryToggleGroup from "./CountryToggleGroup";
 
 const headers = ["Resource", "Amount", "Share", "Rank"];
 
 const ResourceTable = ({
-  country,
+  feature,
   isProductionReservesLoaded,
   setIsProductionReservesLoaded,
 }: ResourceTableT): JSX.Element => {
@@ -26,17 +28,16 @@ const ResourceTable = ({
   const [prodReserveData, setProdReserveData] = useState<ProductionReservesT[]>(
     []
   );
-  const [productionOrReserves, setProductionOrReserves] = useState<
-    "production" | "reserves"
-  >("production");
+  const [productionOrReserves, setProductionOrReserves] =
+    useState<string>("production");
 
   useEffect(() => {
     setIsProductionReservesLoaded(false);
     const fetchData = async () => {
       try {
         const data = await (productionOrReserves === "production"
-          ? fetchProductionData(year, undefined, country.properties?.ADMIN)
-          : fetchReservesData(year, undefined, country.properties?.ADMIN));
+          ? fetchProductionData(year, undefined, feature.properties?.ADMIN)
+          : fetchReservesData(year, undefined, feature.properties?.ADMIN));
 
         const filteredData = data
           .filter((d) => !isNaN(Number(d.amount)) && Number(d.amount) !== 0)
@@ -53,13 +54,6 @@ const ResourceTable = ({
 
   const handleYearChange = (_: any, newValue: any) => {
     setYear(newValue);
-  };
-
-  const handleProductionReservesChange = (
-    _: React.MouseEvent<HTMLElement>,
-    newSelection: "production" | "reserves"
-  ) => {
-    setProductionOrReserves(newSelection);
   };
 
   return (
@@ -84,26 +78,12 @@ const ResourceTable = ({
             {productionOrReserves}
           </span>
         </div>
-        <ToggleButtonGroup
-          color="secondary"
-          value={productionOrReserves}
-          exclusive
-          onChange={handleProductionReservesChange}
-          sx={{ marginLeft: "auto" }}
-        >
-          <ToggleButton
-            sx={{ fontSize: "12px", padding: "8px 12px", fontWeight: 600 }}
-            value="production"
-          >
-            Production
-          </ToggleButton>
-          <ToggleButton
-            sx={{ fontSize: "12px", padding: "8px 12px", fontWeight: 600 }}
-            value="reserves"
-          >
-            Reserves
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <CountryToggleGroup
+          firstChoice="production"
+          secondChoice="reserves"
+          currentChoice={productionOrReserves}
+          setCurrentChoice={setProductionOrReserves}
+        />
       </div>
       {prodReserveData.length ? (
         <TableContainer
@@ -178,7 +158,6 @@ const ResourceTable = ({
       <Slider
         color="secondary"
         sx={{
-          ...APP_STYLE,
           width: "97.5%",
           margin: "5px 10px 20px",
           height: "10px",

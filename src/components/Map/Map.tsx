@@ -1,21 +1,21 @@
 import "leaflet/dist/leaflet.css";
+import "./styles.css";
+
 import { MapContainer, TileLayer, GeoJSON, Marker } from "react-leaflet";
 import { Backdrop, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { CSSProperties, Fragment, useContext, useState } from "react";
-import { LatLngBounds, LatLngExpression, Path } from "leaflet";
-import { centroid, polygon, multiPolygon } from "@turf/turf";
+import { Fragment, useContext, useState } from "react";
+import { LatLngBounds, Path } from "leaflet";
+import L from "leaflet";
 
 import CountryResourcePopup from "../Country/CountryResourcePopup";
 import { AppContext } from "../AppContextProvider";
-import { MapT } from "../../types/map";
-import { BASE_STYLE } from "../../styles/base";
-import { MAP_STYLE } from "../../styles/map";
-import "../../styles/map.css";
+import { MapT } from "./types";
+import { BASE_STYLE } from "../../utils/styles/base";
 import CountryBalancePopup from "../Country/CountryBalancePopup";
 import NoDataChip from "../NoDataChip/NoDataChip";
-import L from "leaflet";
 import CountryStrongholdPopup from "../Country/CountryStrongholdPopup";
-import { ProductionReservesT } from "../../types/api";
+import { ProductionReservesT } from "../../utils/types/api";
+import { calculateStrongholdCoords } from "./functions";
 
 const Map = ({
   countries,
@@ -119,24 +119,15 @@ const Map = ({
           countries?.features.map((feature: any) => {
             const strongholdCount = feature.properties?.strongholds?.length;
             if (strongholdCount) {
-              const customIcon = L.divIcon({
-                className: "custom-marker",
-                html: `<div class="circle">${strongholdCount}</div>`,
-                iconSize: [30, 30],
-              });
-              let turfedCoordinates: any = [];
-              if (feature.geometry.type === "Polygon") {
-                turfedCoordinates = polygon(feature.geometry.coordinates);
-              } else if (feature.geometry.type === "MultiPolygon") {
-                turfedCoordinates = multiPolygon(feature.geometry.coordinates);
-              }
-              const coords = centroid(turfedCoordinates)?.geometry
-                ?.coordinates ?? [0, 0];
               return (
                 <Marker
                   key={JSON.stringify(feature)}
-                  position={[coords[1], coords[0]] as LatLngExpression}
-                  icon={customIcon}
+                  position={calculateStrongholdCoords(feature)}
+                  icon={L.divIcon({
+                    className: "custom-marker",
+                    html: `<div class="circle">${strongholdCount}</div>`,
+                    iconSize: [30, 30],
+                  })}
                   eventHandlers={{
                     click: () => {
                       setSelectedStrongholds(feature.properties.strongholds),
@@ -146,31 +137,14 @@ const Map = ({
                 />
               );
             }
-            return null;
           })}
         {!isBalanceModeSelected && !isStrongholdModeSelected && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              width: "100%",
-              height: "80px",
-              borderTop: `1px solid ${BASE_STYLE.COLOR_PALLETE.LIGHT_GREY}`,
-              display: "flex",
-              alignItems: "center",
-              zIndex: 401,
-            }}
-          >
+          <div className="bottomBar">
             {otherCountries &&
               worldTotal &&
               (!otherCountries.includes("undefined") ||
                 !worldTotal.includes("undefined")) && (
-                <div
-                  style={{
-                    ...(MAP_STYLE.BOX as CSSProperties),
-                    color: BASE_STYLE.COLOR_PALLETE.TEXT,
-                  }}
-                >
+                <div className="otherAndTotalContainer">
                   {!otherCountries.includes("undefined") && (
                     <Fragment>
                       <span style={{ marginRight: "5px" }}>
@@ -212,26 +186,10 @@ const Map = ({
                 },
               }}
             >
-              <ToggleButton
-                sx={{
-                  fontSize: "12px",
-                  padding: "8px 12px",
-                  fontWeight: 600,
-                  border: `1px solid ${BASE_STYLE.COLOR_PALLETE.TEXT}`,
-                }}
-                value="Production"
-              >
+              <ToggleButton className="toggle" value="Production">
                 Production
               </ToggleButton>
-              <ToggleButton
-                sx={{
-                  fontSize: "12px",
-                  padding: "8px 12px",
-                  fontWeight: 600,
-                  border: `1px solid ${BASE_STYLE.COLOR_PALLETE.TEXT}`,
-                }}
-                value="Reserves"
-              >
+              <ToggleButton className="toggle" value="Reserves">
                 Reserves
               </ToggleButton>
             </ToggleButtonGroup>

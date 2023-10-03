@@ -1,24 +1,21 @@
-import { CSSProperties, Fragment, useContext, useEffect } from "react";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { Fragment, useContext, useEffect } from "react";
 
-import { CountryBalancePopupT } from "../../types/country";
+import { CountryBalancePopupT } from "./types";
 import { AppContext } from "../AppContextProvider";
-import { DOMAIN } from "../../config";
-import { formatNumberWithSuffix, slugify } from "../../functions/country";
-import { COUNTRY_STYLE } from "../../styles/country";
-import { MAP_STYLE } from "../../styles/map";
-import { BASE_STYLE } from "../../styles/base";
+import CountryHeader from "./CountryHeader";
+import { formatNumberWithSuffix } from "./functions";
 
 const CountryBalancePopup = ({
   feature,
   isFeatureBeingHoveredOver,
   setPopupOpen,
 }: CountryBalancePopupT): JSX.Element => {
-  const { setDialogIsOpen } = useContext<any>(AppContext);
+  const { setIsLoading } = useContext<any>(AppContext);
 
   const handleClickOutside = (event: MouseEvent) => {
     const targetElement = event.target as Element;
-    if (!targetElement.closest(".countryResourcePopup")) {
+    if (!targetElement.closest(".countryPopup")) {
+      setIsLoading(false);
       setPopupOpen(false); // Close the popup when clicked outside
     }
   };
@@ -33,33 +30,12 @@ const CountryBalancePopup = ({
 
   return (
     <div
-      className="countryResourcePopup"
+      className="countryPopup"
       style={{
-        ...(MAP_STYLE.POPUP as CSSProperties),
         top: isFeatureBeingHoveredOver ? "80%" : "50%",
       }}
     >
-      <div
-        style={COUNTRY_STYLE.COUNTRY_NAME_BOX}
-        onClick={() => setDialogIsOpen(true)}
-      >
-        <img
-          src={
-            DOMAIN + `/static/flags/${slugify(feature?.properties?.ADMIN)}.png`
-          }
-          style={{ height: "25px", marginRight: "5px" }}
-        />
-        <div className="countryNameBox" style={{ fontSize: "30px" }}>
-          {feature?.properties?.ADMIN}
-        </div>
-        <OpenInNewIcon
-          sx={{
-            marginLeft: "5px",
-            fontSize: "20px",
-            "&:hover": { color: BASE_STYLE.COLOR_PALLETE.ELEMENTS },
-          }}
-        />
-      </div>
+      <CountryHeader countryName={feature?.properties?.ADMIN} />
       <Fragment>
         <div style={{ margin: "5px 0" }}>
           <span style={{ fontWeight: 600 }}>Commodity Imports: </span>

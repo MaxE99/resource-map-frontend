@@ -1,11 +1,3 @@
-const slugify = (text: string): string => {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "") // Remove non-word characters except for spaces and hyphens
-    .replace(/[\s_-]+/g, "-") // Replace spaces and underscores with hyphens
-    .trim(); // Trim leading and trailing whitespace
-};
-
 const formatNumberWithSuffix = (num: number): string => {
   if (isNaN(Number(num)) || Number(num) === 0) {
     return "No Data found!";
@@ -21,4 +13,4 @@ const formatNumberWithSuffix = (num: number): string => {
   }
 };
 
-export { slugify, formatNumberWithSuffix };
+export { formatNumberWithSuffix };

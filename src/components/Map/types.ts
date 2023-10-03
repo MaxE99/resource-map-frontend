@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
-import { CommodityT, GovInfoT, ProductionReservesT } from "./api";
+import { CommodityT, GovInfoT } from "../../utils/types/api";
 
 type MapT = {
   countries: GeoJSON.GeoJsonObject | undefined;
@@ -10,10 +10,6 @@ type MapT = {
   noDataFound: boolean;
   isBalanceModeSelected: boolean;
   isStrongholdModeSelected: boolean;
-};
-
-type ResourcePlotT = {
-  data: ProductionReservesT[];
 };
 
 type GeoJSONDataUpdateT = {
@@ -30,4 +26,4 @@ type GeoJSONDataUpdateT = {
   setNoDataFound: Dispatch<SetStateAction<boolean>>;
 };
 
-export type { MapT, ResourcePlotT, GeoJSONDataUpdateT };
+export type { MapT, GeoJSONDataUpdateT };

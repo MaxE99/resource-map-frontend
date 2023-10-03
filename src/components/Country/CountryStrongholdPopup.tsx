@@ -1,25 +1,20 @@
-import { CSSProperties, useContext, useEffect } from "react";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { useEffect } from "react";
+import "./styles.css";
 
-import { CountryStrongholdT } from "../../types/country";
-import { AppContext } from "../AppContextProvider";
-import { ProductionReservesT } from "../../types/api";
-import { MAP_STYLE } from "../../styles/map";
-import { DOMAIN } from "../../config";
-import { slugify } from "../../functions/country";
-import { COUNTRY_STYLE } from "../../styles/country";
-import { BASE_STYLE } from "../../styles/base";
+import { CountryStrongholdT } from "./types";
+import { ProductionReservesT } from "../../utils/types/api";
+import { DOMAIN } from "../../utils/config";
+import CountryHeader from "./CountryHeader";
+import { slugify } from "../../utils/functions/utils";
 
 const CountryStrongholdPopup = ({
   strongholds,
   setSelectedStrongholds,
   setPopupOpen,
 }: CountryStrongholdT): JSX.Element => {
-  const { setDialogIsOpen } = useContext<any>(AppContext);
-
   const handleClickOutside = (event: MouseEvent) => {
     const targetElement = event.target as Element;
-    if (!targetElement.closest(".countryResourcePopup")) {
+    if (!targetElement.closest(".countryPopup")) {
       setSelectedStrongholds([]);
       setPopupOpen(false);
     }
@@ -34,39 +29,16 @@ const CountryStrongholdPopup = ({
   }, []);
 
   return (
-    <div
-      style={{
-        ...(MAP_STYLE.POPUP as CSSProperties),
-        top: "50%",
-      }}
-    >
-      <div
-        style={{ ...COUNTRY_STYLE.COUNTRY_NAME_BOX, marginBottom: "20px" }}
-        onClick={() => setDialogIsOpen(true)}
-      >
-        <img
-          src={
-            DOMAIN + `/static/flags/${slugify(strongholds[0].country_name)}.png`
-          }
-          style={{ height: "25px", marginRight: "5px" }}
-        />
-        <div className="countryNameBox" style={{ fontSize: "30px" }}>
-          {strongholds[0].country_name}
-        </div>
-        <OpenInNewIcon
-          sx={{
-            marginLeft: "5px",
-            fontSize: "15px",
-            "&:hover": { color: BASE_STYLE.COLOR_PALLETE.ELEMENTS },
-          }}
-        />
-      </div>
+    <div className="countryPopup" style={{ top: "50%" }}>
+      <CountryHeader countryName={strongholds[0].country_name} />
       {strongholds
         .sort(
+          //@ts-ignore // strongholds can only hold ProductionReservesT that have a share
           (a: ProductionReservesT, b: ProductionReservesT) => b.share - a.share
         )
         .map((stronghold: ProductionReservesT) => (
           <div
+            key={JSON.stringify(stronghold)}
             style={{
               display: "flex",
               alignItems: "center",
@@ -87,13 +59,7 @@ const CountryStrongholdPopup = ({
                     stronghold.commodity_name
                   )}.jpg`
                 }
-                style={{
-                  height: "25px",
-                  width: "25px",
-                  marginRight: "5px",
-                  borderRadius: "4px",
-                  border: `2px solid ${BASE_STYLE.COLOR_PALLETE.LIGHT_GREY}`,
-                }}
+                className="strongholdCommodityImg"
               />
               <span style={{ fontWeight: 600, marginRight: "5px" }}>
                 {stronghold.commodity_name}:

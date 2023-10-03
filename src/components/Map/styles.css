@@ -1,0 +1,56 @@
+.noDataFound {
+  padding: 15px 30px;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 400;
+  border-radius: 20px;
+  font-weight: 600;
+  background: var(--main-element);
+  color: var(--main-text);
+  border: 1px solid;
+  text-transform: uppercase;
+}
+
+.bottomBar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+  border-top: 1px solid var(--light-grey);
+  display: flex;
+  align-items: center;
+  z-index: 401;
+}
+
+.bottomBar .toggle {
+  font-size: 12px;
+  padding: 8px 12px;
+  font-weight: 600;
+  border: 1px solid var(--main-text);
+}
+
+.otherAndTotalContainer {
+  padding: 20px;
+  z-index: 998;
+  border-top-right-radius: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--main-text);
+}
+
+.countryPopup {
+  max-width: 400px;
+  font-size: 16px;
+  overflow-y: auto;
+  max-height: 50vh;
+  z-index: 500;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--main-text);
+  padding: 20px;
+  border-radius: 8px;
+}

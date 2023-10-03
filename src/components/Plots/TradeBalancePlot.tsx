@@ -1,25 +1,25 @@
 import Plot from "react-plotly.js";
 import { Fragment, useEffect, useState } from "react";
-import { fetchImportExportBalanceData } from "../../functions/api";
-import { ImportExportBalanceT } from "../../types/api";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { ImportExportBalanceT } from "../../utils/types/api";
 import NoDataChip from "../NoDataChip/NoDataChip";
-import { ImportExportBalanceProps } from "../../types/country";
+import { fetchImportExportBalanceData } from "../../utils/functions/api";
+import { TradeBalancePlotT } from "./types";
+import { Data } from "plotly.js";
+import CountryToggleGroup from "../Country/CountryToggleGroup";
 
-const ImportExportBalance = ({
-  country,
+const TradeBalancePlot = ({
+  feature,
   setIsBalanceLoaded,
-}: ImportExportBalanceProps): JSX.Element => {
-  const [totalOrCommodityBalance, setTotalOrCommodityBalance] = useState<
-    "Commodity Trade Balance" | "Total Trade Balance"
-  >("Commodity Trade Balance");
+}: TradeBalancePlotT): JSX.Element => {
+  const [totalOrCommodityBalance, setTotalOrCommodityBalance] =
+    useState<string>("Commodity");
   const [importExportBalance, setImportExportBalance] = useState<
     ImportExportBalanceT[]
   >([]);
 
   useEffect(() => {
-    if (country.properties?.ADMIN) {
-      fetchImportExportBalanceData(undefined, country.properties.ADMIN)
+    if (feature.properties?.ADMIN) {
+      fetchImportExportBalanceData(undefined, feature.properties.ADMIN)
         .then((data: ImportExportBalanceT[]) => setImportExportBalance(data))
         .catch(() =>
           console.error("Could not fetch import export balance data!")
@@ -28,21 +28,14 @@ const ImportExportBalance = ({
     }
   }, []);
 
-  const handleChange = (
-    _: React.MouseEvent<HTMLElement>,
-    newSelection: "Commodity Trade Balance" | "Total Trade Balance"
-  ) => {
-    setTotalOrCommodityBalance(newSelection);
-  };
-
-  const data: any = [
+  const data: Data[] = [
     {
       type: "scatter",
       mode: "lines",
       name: "Commodity Imports",
       x: importExportBalance.map((data) => data.year),
       y:
-        totalOrCommodityBalance === "Commodity Trade Balance"
+        totalOrCommodityBalance === "Commodity"
           ? importExportBalance.map((data) => data.total_commodity_imports)
           : importExportBalance.map((data) => data.total_imports),
       showlegend: false,
@@ -54,7 +47,7 @@ const ImportExportBalance = ({
       name: "Exports",
       x: importExportBalance.map((data) => data.year),
       y:
-        totalOrCommodityBalance === "Commodity Trade Balance"
+        totalOrCommodityBalance === "Commodity"
           ? importExportBalance.map((data) => data.total_commodity_exports)
           : importExportBalance.map((data) => data.total_exports),
       showlegend: false,
@@ -65,7 +58,7 @@ const ImportExportBalance = ({
       name: "Balance",
       x: importExportBalance.map((data) => data.year),
       y:
-        totalOrCommodityBalance === "Commodity Trade Balance"
+        totalOrCommodityBalance === "Commodity"
           ? importExportBalance.map(
               (data) =>
                 data.total_commodity_exports - data.total_commodity_imports
@@ -77,7 +70,7 @@ const ImportExportBalance = ({
       marker: {
         color: importExportBalance.map((data) => {
           const balance =
-            totalOrCommodityBalance === "Commodity Trade Balance"
+            totalOrCommodityBalance === "Commodity"
               ? data.total_commodity_exports - data.total_commodity_imports
               : data.total_exports - data.total_imports;
           return balance >= 0 ? "green" : "red"; // Set color to green for positive, red for negative
@@ -85,14 +78,6 @@ const ImportExportBalance = ({
       },
     },
   ];
-
-  const layout = {
-    margin: { t: 10, r: 20, b: 35, l: 30 },
-  };
-
-  const config = {
-    displayModeBar: false,
-  };
 
   return (
     <Fragment>
@@ -112,35 +97,21 @@ const ImportExportBalance = ({
             bottom: 0,
           }}
         >
-          {totalOrCommodityBalance}
+          {totalOrCommodityBalance} Trade Balance
         </div>
-        <ToggleButtonGroup
-          color="secondary"
-          value={totalOrCommodityBalance}
-          exclusive
-          onChange={handleChange}
-          sx={{ marginLeft: "auto" }}
-        >
-          <ToggleButton
-            sx={{ fontSize: "12px", padding: "8px 12px", fontWeight: 600 }}
-            value="Commodity Trade Balance"
-          >
-            Commodity
-          </ToggleButton>
-          <ToggleButton
-            sx={{ fontSize: "12px", padding: "8px 12px", fontWeight: 600 }}
-            value="Total Trade Balance"
-          >
-            Total
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <CountryToggleGroup
+          firstChoice="Commodity"
+          secondChoice="Total"
+          currentChoice={totalOrCommodityBalance}
+          setCurrentChoice={setTotalOrCommodityBalance}
+        />
       </div>
       {importExportBalance.length ? (
         <Plot
           style={{ width: "100%" }}
           data={data}
-          layout={layout}
-          config={config}
+          layout={{ margin: { t: 10, r: 20, b: 35, l: 30 } }}
+          config={{ displayModeBar: false, responsive: true }}
         />
       ) : (
         <NoDataChip label={totalOrCommodityBalance} />
@@ -149,4 +120,4 @@ const ImportExportBalance = ({
   );
 };
 
-export default ImportExportBalance;
+export default TradeBalancePlot;

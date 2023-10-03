@@ -50,3 +50,24 @@
   border-radius: 12px;
   color: var(--main-text);
 }
+
+.accordion-wrapper {
+  background: transparent;
+  color: var(--main-text);
+  border: 1px solid;
+  margin-top: 20px;
+}
+
+.accordion-index {
+  margin-right: 10px;
+  border-radius: 50%;
+  background: var(--main-element);
+  width: 24px;
+  height: 24px;
+  color: var(--main-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+}

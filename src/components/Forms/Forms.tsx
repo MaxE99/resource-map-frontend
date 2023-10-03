@@ -1,14 +1,14 @@
-import { CommodityT } from "../../types/api";
+import { CommodityT } from "../../utils/types/api";
 import Dropdown from "../Dropdown/Dropdown";
 import "./styles.css";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { OptionProps } from "../Dropdown/types";
-import { DOMAIN } from "../../config";
+import { DOMAIN } from "../../utils/config";
 import FormButton from "./FormButton";
 import BalanceIcon from "@mui/icons-material/Balance";
 import ShieldIcon from "@mui/icons-material/Shield";
-import { BASE_STYLE } from "../../styles/base";
-import { COMMODITIES_DATA } from "../../start-data";
+import { BASE_STYLE } from "../../utils/styles/base";
+import { COMMODITIES_DATA } from "../../utils/start-data";
 
 type FormsProps = {
   selectedCommodity: CommodityT;

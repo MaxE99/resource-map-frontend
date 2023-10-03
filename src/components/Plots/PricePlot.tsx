@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CommodityPriceT } from "../../types/api";
+import { CommodityPriceT } from "../../utils/types/api";
 import { PricePlotProps } from "./types";
 import { Data } from "plotly.js";
 import Plot from "react-plotly.js";
@@ -23,7 +23,7 @@ const PricePlot = ({ data }: PricePlotProps): JSX.Element => {
           (a: CommodityPriceT, b: CommodityPriceT) =>
             new Date(a.date).getTime() - new Date(b.date).getTime()
         )
-        .map((entry: CommodityPriceT) => entry.price)
+        .map((entry: CommodityPriceT) => Number(entry.price))
     : [];
 
   const plotData: Data[] = [

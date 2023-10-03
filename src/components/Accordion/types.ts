@@ -17,4 +17,15 @@ type AccordionProps = {
   body: ReactNode;
 };
 
-export type { AccordionHeadProps, AccordionBodyProps, AccordionProps };
+type AccordionWrapperProps = {
+  index: number;
+  summary: string;
+  details: string | JSX.Element | JSX.Element[] | undefined;
+};
+
+export type {
+  AccordionHeadProps,
+  AccordionBodyProps,
+  AccordionProps,
+  AccordionWrapperProps,
+};
