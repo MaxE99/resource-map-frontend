@@ -148,7 +148,7 @@ const Map = ({
             }
             return null;
           })}
-        {!isBalanceModeSelected && (
+        {!isBalanceModeSelected && !isStrongholdModeSelected && (
           <div
             style={{
               position: "absolute",
