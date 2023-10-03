@@ -158,7 +158,7 @@ const Map = ({
               borderTop: `1px solid ${BASE_STYLE.COLOR_PALLETE.LIGHT_GREY}`,
               display: "flex",
               alignItems: "center",
-              zIndex: 400,
+              zIndex: 401,
             }}
           >
             {otherCountries &&
