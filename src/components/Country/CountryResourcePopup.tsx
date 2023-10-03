@@ -73,7 +73,6 @@ const CountryResourcePopup = ({
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      setIsLoading(false);
     };
   }, []);
 
@@ -81,6 +80,7 @@ const CountryResourcePopup = ({
     const targetElement = event.target as Element;
     if (!targetElement.closest(".countryResourcePopup")) {
       setPopupOpen(false); // Close the popup when clicked outside
+      setIsLoading(false); // needed so that if something inside the popup loads at the moment is not keeping the map in a loading state
     }
   };
 
