@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, GeoJSON, Marker } from "react-leaflet";
 import { Backdrop, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { CSSProperties, Fragment, useContext, useState } from "react";
 import { LatLngBounds, LatLngExpression, Path } from "leaflet";
+import { centroid, polygon, multiPolygon } from "@turf/turf";
 
 import CountryResourcePopup from "../Country/CountryResourcePopup";
 import { AppContext } from "../AppContextProvider";
@@ -13,7 +14,6 @@ import "../../styles/map.css";
 import CountryBalancePopup from "../Country/CountryBalancePopup";
 import NoDataChip from "../NoDataChip/NoDataChip";
 import L from "leaflet";
-import { calculatePolygonCentroid } from "../../functions/app";
 import CountryStrongholdPopup from "../Country/CountryStrongholdPopup";
 import { ProductionReservesT } from "../../types/api";
 
@@ -124,30 +124,18 @@ const Map = ({
                 html: `<div class="circle">${strongholdCount}</div>`,
                 iconSize: [30, 30],
               });
-              let cords = [30, 30];
+              let turfedCoordinates: any = [];
               if (feature.geometry.type === "Polygon") {
-                cords = calculatePolygonCentroid(feature.geometry.coordinates);
+                turfedCoordinates = polygon(feature.geometry.coordinates);
               } else if (feature.geometry.type === "MultiPolygon") {
-                const indexOfLargest = feature.geometry.coordinates.reduce(
-                  (
-                    maxIndex: number,
-                    arr: [number, number],
-                    currentIndex: number,
-                    arrays: [number, number][]
-                  ) =>
-                    arr.length > arrays[maxIndex].length
-                      ? currentIndex
-                      : maxIndex,
-                  0
-                );
-                cords = calculatePolygonCentroid(
-                  feature.geometry.coordinates[indexOfLargest]
-                );
+                turfedCoordinates = multiPolygon(feature.geometry.coordinates);
               }
+              const coords = centroid(turfedCoordinates)?.geometry
+                ?.coordinates ?? [0, 0];
               return (
                 <Marker
                   key={JSON.stringify(feature)}
-                  position={cords as LatLngExpression}
+                  position={[coords[1], coords[0]] as LatLngExpression}
                   icon={customIcon}
                   eventHandlers={{
                     click: () => {
