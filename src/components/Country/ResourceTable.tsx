@@ -135,7 +135,7 @@ const ResourceTable = ({
                   <TableCell
                     sx={{
                       textAlign: "center",
-                      fontWeight: row.rank <= 3 ? 600 : "normal",
+                      fontWeight: row.rank && row.rank <= 3 ? 600 : "normal",
                       backgroundColor:
                         row.rank === 1
                           ? "gold"

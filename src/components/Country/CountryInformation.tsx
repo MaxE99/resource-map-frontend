@@ -27,6 +27,7 @@ const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
       setIsLoading(false);
     } else {
       setIsLoading(true);
+      setIsCountryInfoLoading(true);
     }
   }, [isImportExportLoaded, isProductionReservesLoaded, isBalanceLoaded]);
 
@@ -62,12 +63,6 @@ const CountryInformation = ({ country }: CountryInformationT): JSX.Element => {
           country={country}
           setIsBalanceLoaded={setIsBalanceLoaded}
         />
-
-        {/*<div>GDP Chart:</div>
-      <div>Resources as % of GDP Chart:</div>
-      <div>Ranking: Resource Dependency:</div> */}
-        {/* <div>Ease of Doing Business Index: {country.ease_of_biz}</div>
-      <div>Income Group: {country.income_group}</div> */}
       </div>
       {isCountryInfoLoading && (
         <Backdrop
