@@ -81,6 +81,7 @@ const Forms = ({
     <div className="forms">
       <Dropdown
         renderRemove={false}
+        isModeActivated={isBalanceModeSelected || isStrongholdModeSelected}
         label="Select a commodity"
         options={commodityOptions.sort(
           (a: OptionProps, b: OptionProps): number => {

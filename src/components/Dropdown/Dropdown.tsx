@@ -7,6 +7,7 @@ import { DropdownProps } from "./types";
 
 const Dropdown = ({
   renderRemove,
+  isModeActivated,
   label,
   setSelected,
   selected,
@@ -15,7 +16,10 @@ const Dropdown = ({
   const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <div className="dropdown" onClick={() => setOpen(!open)}>
+    <div
+      className="dropdown"
+      onClick={() => setOpen(isModeActivated ? false : !open)}
+    >
       <div
         style={{
           display: "flex",

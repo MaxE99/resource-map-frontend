@@ -16,6 +16,7 @@ type OptionListProps = {
 
 type DropdownProps = {
   renderRemove: boolean;
+  isModeActivated: boolean;
   label: string;
   setSelected: (arg: any | undefined) => void;
   selected: string | undefined;
