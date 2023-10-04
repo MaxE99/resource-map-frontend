@@ -10,13 +10,13 @@ import { slugify } from "../../utils/functions/utils";
 const CountryStrongholdPopup = ({
   strongholds,
   setSelectedStrongholds,
-  setPopupOpen,
+  setIsPopupOpen,
 }: CountryStrongholdT): JSX.Element => {
   const handleClickOutside = (event: MouseEvent) => {
     const targetElement = event.target as Element;
     if (!targetElement.closest(".countryPopup")) {
       setSelectedStrongholds([]);
-      setPopupOpen(false);
+      setIsPopupOpen(false);
     }
   };
 

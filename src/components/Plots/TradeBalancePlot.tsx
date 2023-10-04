@@ -11,8 +11,7 @@ const TradeBalancePlot = ({
   feature,
   setIsBalanceLoaded,
 }: TradeBalancePlotT): JSX.Element => {
-  const [totalOrCommodityBalance, setTotalOrCommodityBalance] =
-    useState<string>("Commodity");
+  const [currentChoice, setCurrentChoice] = useState<string>("Commodity");
   const [importExportBalance, setImportExportBalance] = useState<
     ImportExportBalanceT[]
   >([]);
@@ -33,7 +32,7 @@ const TradeBalancePlot = ({
       name: "Commodity Imports",
       x: importExportBalance.map((data) => data.year),
       y:
-        totalOrCommodityBalance === "Commodity"
+        currentChoice === "Commodity"
           ? importExportBalance.map((data) => data.total_commodity_imports)
           : importExportBalance.map((data) => data.total_imports),
       showlegend: false,
@@ -45,7 +44,7 @@ const TradeBalancePlot = ({
       name: "Exports",
       x: importExportBalance.map((data) => data.year),
       y:
-        totalOrCommodityBalance === "Commodity"
+        currentChoice === "Commodity"
           ? importExportBalance.map((data) => data.total_commodity_exports)
           : importExportBalance.map((data) => data.total_exports),
       showlegend: false,
@@ -56,7 +55,7 @@ const TradeBalancePlot = ({
       name: "Balance",
       x: importExportBalance.map((data) => data.year),
       y:
-        totalOrCommodityBalance === "Commodity"
+        currentChoice === "Commodity"
           ? importExportBalance.map(
               (data) =>
                 data.total_commodity_exports - data.total_commodity_imports
@@ -68,7 +67,7 @@ const TradeBalancePlot = ({
       marker: {
         color: importExportBalance.map((data) => {
           const balance =
-            totalOrCommodityBalance === "Commodity"
+            currentChoice === "Commodity"
               ? data.total_commodity_exports - data.total_commodity_imports
               : data.total_exports - data.total_imports;
           return balance >= 0 ? "green" : "red"; // Set color to green for positive, red for negative
@@ -95,13 +94,13 @@ const TradeBalancePlot = ({
             bottom: 0,
           }}
         >
-          {totalOrCommodityBalance} Trade Balance
+          {currentChoice} Trade Balance
         </div>
         <CountryToggleGroup
           firstChoice="Commodity"
           secondChoice="Total"
-          currentChoice={totalOrCommodityBalance}
-          setCurrentChoice={setTotalOrCommodityBalance}
+          currentChoice={currentChoice}
+          setCurrentChoice={setCurrentChoice}
         />
       </div>
       {importExportBalance.length ? (
@@ -112,7 +111,7 @@ const TradeBalancePlot = ({
           config={{ displayModeBar: false, responsive: true }}
         />
       ) : (
-        <NoDataChip label={totalOrCommodityBalance} />
+        <NoDataChip label={currentChoice} />
       )}
     </Fragment>
   );

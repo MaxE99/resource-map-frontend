@@ -4,14 +4,14 @@ import { CommodityT, ProductionReservesT } from "../../utils/types/api";
 type CountryResourcePopupT = {
   feature: GeoJSON.Feature;
   commodity: CommodityT;
-  isFeatureBeingHoveredOver: boolean;
-  setPopupOpen: Dispatch<SetStateAction<boolean>>;
+  isFeatureHovered: boolean;
+  setIsPopupOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 type CountryBalancePopupT = {
   feature: GeoJSON.Feature;
-  isFeatureBeingHoveredOver: boolean;
-  setPopupOpen: Dispatch<SetStateAction<boolean>>;
+  isFeatureHovered: boolean;
+  setIsPopupOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 type CountryInformationPopupT = {
@@ -27,7 +27,7 @@ type ResourceTableT = {
 type CountryStrongholdT = {
   strongholds: ProductionReservesT[];
   setSelectedStrongholds: Dispatch<SetStateAction<ProductionReservesT[]>>;
-  setPopupOpen: Dispatch<SetStateAction<boolean>>;
+  setIsPopupOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 type CountryHeaderT = {

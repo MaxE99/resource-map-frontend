@@ -13,19 +13,19 @@ import {
 const CountryResourcePopup = ({
   feature,
   commodity,
-  isFeatureBeingHoveredOver,
-  setPopupOpen,
+  isFeatureHovered,
+  setIsPopupOpen,
 }: CountryResourcePopupT): JSX.Element | null => {
   const [productionData, setProductionData] = useState<ProductionReservesT[]>();
   const [reserveData, setReserveData] = useState<ProductionReservesT[]>();
-  const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
+  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
 
   const { setIsLoading } = useContext<any>(AppContext);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
 
-    if (feature?.properties && !isFeatureBeingHoveredOver) {
+    if (feature?.properties && !isFeatureHovered) {
       let isProductionDataLoaded = false;
       let isReservesDataLoaded = false;
       setIsLoading(true);
@@ -41,7 +41,7 @@ const CountryResourcePopup = ({
           isProductionDataLoaded = true;
           if (isProductionDataLoaded && isReservesDataLoaded) {
             setIsLoading(false);
-            setDataHasLoaded(true);
+            setIsDataLoaded(true);
           }
         });
 
@@ -57,7 +57,7 @@ const CountryResourcePopup = ({
           isReservesDataLoaded = true;
           if (isProductionDataLoaded && isReservesDataLoaded) {
             setIsLoading(false);
-            setDataHasLoaded(true);
+            setIsDataLoaded(true);
           }
         });
     }
@@ -70,20 +70,20 @@ const CountryResourcePopup = ({
   const handleClickOutside = (event: MouseEvent) => {
     const targetElement = event.target as Element;
     if (!targetElement.closest(".countryPopup")) {
-      setPopupOpen(false); // Close the popup when clicked outside
+      setIsPopupOpen(false); // Close the popup when clicked outside
       setIsLoading(false); // needed so that if something inside the popup loads at the moment is not keeping the map in a loading state
     }
   };
 
-  return dataHasLoaded || isFeatureBeingHoveredOver ? (
+  return isDataLoaded || isFeatureHovered ? (
     <div
       className="countryPopup"
       style={{
-        top: isFeatureBeingHoveredOver ? "80%" : "50%",
+        top: isFeatureHovered ? "80%" : "50%",
       }}
     >
       <CountryHeader countryName={feature?.properties?.ADMIN} />
-      {isFeatureBeingHoveredOver ? (
+      {isFeatureHovered ? (
         <Fragment>
           {feature.properties?.amount === "Unknown Amount" && (
             <div style={{ margin: "5px 0", fontWeight: 600, color: "red" }}>

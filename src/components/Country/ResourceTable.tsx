@@ -28,14 +28,13 @@ const ResourceTable = ({
   const [prodReserveData, setProdReserveData] = useState<ProductionReservesT[]>(
     []
   );
-  const [productionOrReserves, setProductionOrReserves] =
-    useState<string>("production");
+  const [currentChoice, setCurrentChoice] = useState<string>("production");
 
   useEffect(() => {
     setIsProductionReservesLoaded(false);
     const fetchData = async () => {
       try {
-        const data = await (productionOrReserves === "production"
+        const data = await (currentChoice === "production"
           ? fetchProductionData(year, undefined, feature.properties?.ADMIN)
           : fetchReservesData(year, undefined, feature.properties?.ADMIN));
 
@@ -50,10 +49,10 @@ const ResourceTable = ({
       }
     };
     fetchData();
-  }, [year, productionOrReserves]);
+  }, [year, currentChoice]);
 
-  const handleYearChange = (_: any, newValue: any) => {
-    setYear(newValue);
+  const handleYearChange = (_: any, newYear: any) => {
+    setYear(newYear);
   };
 
   return (
@@ -75,14 +74,14 @@ const ResourceTable = ({
         >
           <span>{year}</span>
           <span style={{ textTransform: "uppercase", marginLeft: "4px" }}>
-            {productionOrReserves}
+            {currentChoice}
           </span>
         </div>
         <CountryToggleGroup
           firstChoice="production"
           secondChoice="reserves"
-          currentChoice={productionOrReserves}
-          setCurrentChoice={setProductionOrReserves}
+          currentChoice={currentChoice}
+          setCurrentChoice={setCurrentChoice}
         />
       </div>
       {prodReserveData.length ? (
@@ -136,7 +135,7 @@ const ResourceTable = ({
           </Table>
         </TableContainer>
       ) : isProductionReservesLoaded ? (
-        <NoDataChip label={productionOrReserves} />
+        <NoDataChip label={currentChoice} />
       ) : (
         <TableContainer
           component={Paper}

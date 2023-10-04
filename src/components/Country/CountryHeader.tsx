@@ -8,10 +8,10 @@ import { BASE_STYLE } from "../../utils/styles/base";
 import { slugify } from "../../utils/functions/utils";
 
 const CountryHeader = ({ countryName }: CountryHeaderT): JSX.Element => {
-  const { setDialogIsOpen } = useContext<any>(AppContext);
+  const { setIsDialogOpen } = useContext<any>(AppContext);
 
   return (
-    <div className="countryNameBox" onClick={() => setDialogIsOpen(true)}>
+    <div className="countryNameBox" onClick={() => setIsDialogOpen(true)}>
       <img
         src={DOMAIN + `/static/flags/${slugify(countryName)}.png`}
         style={{ height: "25px", marginRight: "5px" }}

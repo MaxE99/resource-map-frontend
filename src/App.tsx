@@ -23,8 +23,8 @@ import {
   fetchStrongholdData,
 } from "./utils/functions/api";
 import {
-  addDataToGeojson,
-  addInformationToGeojson,
+  updateGeoJSONWithCommodity,
+  updateGeoJSONWithStartData,
   getQueryString,
   updateGeoJSONWithBalance,
   updateGeoJSONWithStronghold,
@@ -48,7 +48,7 @@ const App = (): JSX.Element | null => {
   const [prices, setPrices] = useState<CommodityPriceT[]>(
     randomCommodity.current.prices
   );
-  const [initialLoadComplete, setInitialLoadComplete] =
+  const [isInitialLoadComplete, setIsInitialLoadComplete] =
     useState<boolean>(false);
   const [worldGeojson, setWorldGeojson] = useState<
     GeoJSON.FeatureCollection | undefined
@@ -68,9 +68,9 @@ const App = (): JSX.Element | null => {
   const {
     selectedCountry,
     isShowingProduction,
-    dialogIsOpen,
+    isDialogOpen,
     isLoading,
-    setDialogIsOpen,
+    setIsDialogOpen,
     setIsLoading,
   } = useContext<any>(AppContext);
 
@@ -78,7 +78,7 @@ const App = (): JSX.Element | null => {
     if (isBalanceModeSelected || isStrongholdModeSelected) {
       setNoDataFound(false);
     }
-    if (initialLoadComplete && worldGeojson) {
+    if (isInitialLoadComplete && worldGeojson) {
       setIsLoading(true);
       if (isBalanceModeSelected) {
         fetchImportExportBalanceData(year, undefined)
@@ -111,7 +111,9 @@ const App = (): JSX.Element | null => {
           setWorldGeojson: setWorldGeojson,
           setNoDataFound: setNoDataFound,
         };
-        addDataToGeojson(dataUpdateProps).finally(() => setIsLoading(false));
+        updateGeoJSONWithCommodity(dataUpdateProps).finally(() =>
+          setIsLoading(false)
+        );
       }
     }
   }, [
@@ -123,7 +125,7 @@ const App = (): JSX.Element | null => {
   ]);
 
   useEffect(() => {
-    if (initialLoadComplete) {
+    if (isInitialLoadComplete) {
       const fetchSidebarData = async () => {
         setIsSidebarLoading(true);
         await Promise.all([
@@ -142,21 +144,21 @@ const App = (): JSX.Element | null => {
   }, [year, selectedCommodity]);
 
   useEffect(() => {
-    if (!initialLoadComplete) {
+    if (!isInitialLoadComplete) {
       const addInfoProps = {
         selectedCommodity: randomCommodity.current,
         setWorldGeojson: setWorldGeojson,
         setOtherCountries: setOtherCountries,
         setWorldTotal: setWorldTotal,
       };
-      addInformationToGeojson(addInfoProps);
+      updateGeoJSONWithStartData(addInfoProps);
       setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
     // if directly set in the starter useEffect hook, it causes API calls from the other two useEffect hooks.
-    worldGeojson && setInitialLoadComplete(true);
+    worldGeojson && setIsInitialLoadComplete(true);
   }, [worldGeojson]);
 
   const handleChange = (_: any, newValue: any) => {
@@ -217,8 +219,8 @@ const App = (): JSX.Element | null => {
               overflow: isLoading ? "hidden" : "auto",
             },
           }}
-          open={dialogIsOpen}
-          onClose={() => setDialogIsOpen(false)}
+          open={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
         >
           <CountryInformationPopup feature={selectedCountry} />
         </Dialog>

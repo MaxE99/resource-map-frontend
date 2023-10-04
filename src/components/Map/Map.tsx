@@ -26,9 +26,8 @@ const Map = ({
   isBalanceModeSelected,
   isStrongholdModeSelected,
 }: MapT): JSX.Element => {
-  const [popupOpen, setPopupOpen] = useState<boolean>(false);
-  const [isFeatureBeingHoveredOver, setIsFeatureBeingHoveredOver] =
-    useState<boolean>(true);
+  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+  const [isFeatureHovered, setIsFeatureHovered] = useState<boolean>(true);
   const [hoveredFeature, setHoveredFeature] = useState<
     GeoJSON.Feature | undefined
   >(undefined);
@@ -60,15 +59,15 @@ const Map = ({
     layer.on({
       click: () => {
         if (selectedCommodity) {
-          setIsFeatureBeingHoveredOver(false);
+          setIsFeatureHovered(false);
           setSelectedCountry(feature);
-          setPopupOpen(true);
+          setIsPopupOpen(true);
           featureIsBeingClickedOn = true;
         }
       },
       mouseover: () => {
-        setIsFeatureBeingHoveredOver(true);
-        setPopupOpen(true);
+        setIsFeatureHovered(true);
+        setIsPopupOpen(true);
         setSelectedCountry(feature);
         setHoveredFeature(feature);
         layer.setStyle({
@@ -78,8 +77,8 @@ const Map = ({
       },
       mouseout: () => {
         if (!featureIsBeingClickedOn) {
-          setIsFeatureBeingHoveredOver(false);
-          setPopupOpen(false);
+          setIsFeatureHovered(false);
+          setIsPopupOpen(false);
           setHoveredFeature(undefined);
           layer.setStyle({
             weight: 1,
@@ -131,7 +130,7 @@ const Map = ({
                   eventHandlers={{
                     click: () => {
                       setSelectedStrongholds(feature.properties.strongholds),
-                        setPopupOpen(true);
+                        setIsPopupOpen(true);
                     },
                   }}
                 />
@@ -201,29 +200,29 @@ const Map = ({
           <NoDataChip label="" />
         </div>
       )}
-      {popupOpen && selectedCommodity && (
+      {isPopupOpen && selectedCommodity && (
         <Fragment>
           {isBalanceModeSelected ? (
             <CountryBalancePopup
               key={JSON.stringify(selectedCountry)}
               feature={selectedCountry}
-              setPopupOpen={setPopupOpen}
-              isFeatureBeingHoveredOver={isFeatureBeingHoveredOver}
+              setIsPopupOpen={setIsPopupOpen}
+              isFeatureHovered={isFeatureHovered}
             />
           ) : isStrongholdModeSelected && selectedStrongholds.length ? (
             <CountryStrongholdPopup
               key={JSON.stringify(selectedStrongholds)}
               strongholds={selectedStrongholds}
               setSelectedStrongholds={setSelectedStrongholds}
-              setPopupOpen={setPopupOpen}
+              setIsPopupOpen={setIsPopupOpen}
             />
           ) : (
             <CountryResourcePopup
               key={JSON.stringify(selectedCountry)}
               feature={selectedCountry}
               commodity={selectedCommodity}
-              setPopupOpen={setPopupOpen}
-              isFeatureBeingHoveredOver={isFeatureBeingHoveredOver}
+              setIsPopupOpen={setIsPopupOpen}
+              isFeatureHovered={isFeatureHovered}
             />
           )}
           <Backdrop
@@ -233,7 +232,7 @@ const Map = ({
               left: 0,
               zIndex: 401,
             }}
-            open={popupOpen && !isFeatureBeingHoveredOver}
+            open={isPopupOpen && !isFeatureHovered}
           />
         </Fragment>
       )}

@@ -48,7 +48,7 @@ const getQueryString = (
   return queryString;
 };
 
-const addInformationToGeojson = (props: AddGeoJSONInfoT): void => {
+const updateGeoJSONWithStartData = (props: AddGeoJSONInfoT): void => {
   const updatedGeoJsonData = { ...COUNTRIES_DATA };
 
   const totalAmount = props.selectedCommodity.production.find(
@@ -163,7 +163,9 @@ const updateGeoJSONWithStronghold = (
   setWorldGeojson(updatedGeoJsonData);
 };
 
-const addDataToGeojson = async (props: GeoJSONDataUpdateT): Promise<void> => {
+const updateGeoJSONWithCommodity = async (
+  props: GeoJSONDataUpdateT
+): Promise<void> => {
   if (props.selectedCommodity?.name) {
     try {
       const [productionReservesData] = await Promise.all([
@@ -248,8 +250,8 @@ const slugify = (text: string): string => {
 
 export {
   getQueryString,
-  addDataToGeojson,
-  addInformationToGeojson,
+  updateGeoJSONWithCommodity,
+  updateGeoJSONWithStartData,
   slugify,
   updateGeoJSONWithBalance,
   updateGeoJSONWithStronghold,

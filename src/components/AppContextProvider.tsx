@@ -8,7 +8,7 @@ const AppContextProvider = ({ children }: AppContextProviderT) => {
   const [selectedCountry, setSelectedCountry] =
     useState<GeoJSON.Feature | null>(null);
   const [isShowingProduction, setIsShowingProduction] = useState<boolean>(true);
-  const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   return (
@@ -18,8 +18,8 @@ const AppContextProvider = ({ children }: AppContextProviderT) => {
         setSelectedCountry,
         isShowingProduction,
         setIsShowingProduction,
-        dialogIsOpen,
-        setDialogIsOpen,
+        isDialogOpen,
+        setIsDialogOpen,
         isLoading,
         setIsLoading,
       }}

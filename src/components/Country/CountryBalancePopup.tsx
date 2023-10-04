@@ -7,8 +7,8 @@ import { formatNumberWithSuffix } from "./functions";
 
 const CountryBalancePopup = ({
   feature,
-  isFeatureBeingHoveredOver,
-  setPopupOpen,
+  isFeatureHovered,
+  setIsPopupOpen,
 }: CountryBalancePopupT): JSX.Element => {
   const { setIsLoading } = useContext<any>(AppContext);
 
@@ -16,7 +16,7 @@ const CountryBalancePopup = ({
     const targetElement = event.target as Element;
     if (!targetElement.closest(".countryPopup")) {
       setIsLoading(false);
-      setPopupOpen(false); // Close the popup when clicked outside
+      setIsPopupOpen(false); // Close the popup when clicked outside
     }
   };
 
@@ -32,7 +32,7 @@ const CountryBalancePopup = ({
     <div
       className="countryPopup"
       style={{
-        top: isFeatureBeingHoveredOver ? "80%" : "50%",
+        top: isFeatureHovered ? "80%" : "50%",
       }}
     >
       <CountryHeader countryName={feature?.properties?.ADMIN} />

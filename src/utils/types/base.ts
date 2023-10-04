@@ -16,8 +16,8 @@ type AppContextT = {
   setSelectedCountry: Dispatch<SetStateAction<GeoJSON.Feature | null>>;
   isShowingProduction: boolean;
   setIsShowingProduction: Dispatch<SetStateAction<boolean>>;
-  dialogIsOpen: boolean;
-  setDialogIsOpen: Dispatch<SetStateAction<boolean>>;
+  isDialogOpen: boolean;
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
   isLoading: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
 };

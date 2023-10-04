@@ -7,11 +7,11 @@ const CountryToggleGroup = ({
   currentChoice,
   setCurrentChoice,
 }: CountryToggleGroupT): JSX.Element => {
-  const handleProductionReservesChange = (
+  const handleChange = (
     _: React.MouseEvent<HTMLElement>,
-    newSelection: string
+    selection: string
   ) => {
-    setCurrentChoice(newSelection);
+    setCurrentChoice(selection);
   };
 
   return (
@@ -19,7 +19,7 @@ const CountryToggleGroup = ({
       color="secondary"
       value={currentChoice}
       exclusive
-      onChange={handleProductionReservesChange}
+      onChange={handleChange}
       sx={{ marginLeft: "auto" }}
     >
       <ToggleButton

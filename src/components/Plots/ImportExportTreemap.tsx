@@ -16,7 +16,7 @@ const ImportExportTreemap = ({
   isImportExportLoaded,
   setIsImportExportLoaded,
 }: ImportExportTreemapT): JSX.Element => {
-  const [importOrExport, setImportOrExport] = useState<string>("export");
+  const [currentChoice, setCurrentChoice] = useState<string>("export");
   const [year, setYear] = useState<number>(2021);
   const [importExportData, setImportExportData] = useState<ImportExportT[]>([]);
 
@@ -24,7 +24,7 @@ const ImportExportTreemap = ({
     setIsImportExportLoaded(false);
     const fetchData = async () => {
       try {
-        const data = await (importOrExport === "import"
+        const data = await (currentChoice === "import"
           ? fetchImportData(year, undefined, feature.properties?.ADMIN)
           : fetchExportData(year, undefined, feature.properties?.ADMIN));
 
@@ -40,7 +40,7 @@ const ImportExportTreemap = ({
       }
     };
     fetchData();
-  }, [year, importOrExport]);
+  }, [year, currentChoice]);
 
   const handleYearChange = (_: any, newValue: any) => {
     setYear(newValue);
@@ -86,14 +86,14 @@ const ImportExportTreemap = ({
             Commodity
           </span>
           <span style={{ textTransform: "uppercase", marginLeft: "4px" }}>
-            {importOrExport}
+            {currentChoice}
           </span>
         </div>
         <CountryToggleGroup
           firstChoice="import"
           secondChoice="export"
-          currentChoice={importOrExport}
-          setCurrentChoice={setImportOrExport}
+          currentChoice={currentChoice}
+          setCurrentChoice={setCurrentChoice}
         />
       </div>
       {importExportData.length ? (
@@ -113,7 +113,7 @@ const ImportExportTreemap = ({
           config={{ displayModeBar: false, responsive: true }}
         />
       ) : isImportExportLoaded ? (
-        <NoDataChip label={importOrExport} />
+        <NoDataChip label={currentChoice} />
       ) : (
         <div
           style={{
