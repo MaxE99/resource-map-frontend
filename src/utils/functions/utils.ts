@@ -155,6 +155,10 @@ const updateGeoJSONWithStronghold = (
     if (countryStrongholds.length) {
       feature.properties.strongholds = countryStrongholds;
     }
+    // this resets previous stylings
+    feature.properties.style = {
+      fillColor: "white",
+    };
   });
   //@ts-ignore
   setWorldGeojson(updatedGeoJsonData);

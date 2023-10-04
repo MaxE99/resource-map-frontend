@@ -42,7 +42,7 @@ const CountryStrongholdPopup = ({
             style={{
               display: "flex",
               alignItems: "center",
-              marginBottom: "15px",
+              marginTop: "15px",
             }}
           >
             <div
