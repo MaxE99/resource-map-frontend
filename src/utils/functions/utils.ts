@@ -1,4 +1,3 @@
-import { GeoJSONDataUpdateT } from "../../components/Map/types";
 import { API } from "../config";
 import {
   CommodityT,
@@ -6,11 +5,11 @@ import {
   ProductionReservesT,
 } from "../types/api";
 import { COUNTRIES_DATA } from "../start-data";
-import { AddGeoJSONInfoT } from "../types/base";
+import { AddGeoJSONInfoT, GeoJSONDataUpdateT } from "../types/base";
 import { Dispatch, SetStateAction } from "react";
 
 // Function to generate a color based on percentage
-const getColor = (percentage: number) => {
+const getColor = (percentage: number): string => {
   // Calculate the darkness based on the percentage (0% => 70, 100% => 0)
   const darkness = 70 - percentage * 4;
   // Use a fixed saturation and hue for black (0% saturation and hue)
@@ -49,7 +48,7 @@ const getQueryString = (
   return queryString;
 };
 
-const addInformationToGeojson = (props: AddGeoJSONInfoT) => {
+const addInformationToGeojson = (props: AddGeoJSONInfoT): void => {
   const updatedGeoJsonData = { ...COUNTRIES_DATA };
 
   const totalAmount = props.selectedCommodity.production.find(
@@ -117,7 +116,7 @@ const updateGeoJSONWithBalance = (
   setWorldGeojson: Dispatch<
     SetStateAction<GeoJSON.FeatureCollection | undefined>
   >
-) => {
+): void => {
   const updatedGeoJsonData = { ...COUNTRIES_DATA };
   updatedGeoJsonData?.features?.forEach((feature: any) => {
     const countryName = feature.properties.ADMIN;
@@ -148,7 +147,7 @@ const updateGeoJSONWithStronghold = (
   setWorldGeojson: Dispatch<
     SetStateAction<GeoJSON.FeatureCollection | undefined>
   >
-) => {
+): void => {
   const updatedGeoJsonData = { ...COUNTRIES_DATA };
   updatedGeoJsonData?.features?.forEach((feature: any) => {
     const countryName = feature.properties.ADMIN;
@@ -164,7 +163,7 @@ const updateGeoJSONWithStronghold = (
   setWorldGeojson(updatedGeoJsonData);
 };
 
-const addDataToGeojson = async (props: GeoJSONDataUpdateT) => {
+const addDataToGeojson = async (props: GeoJSONDataUpdateT): Promise<void> => {
   if (props.selectedCommodity?.name) {
     try {
       const [productionReservesData] = await Promise.all([

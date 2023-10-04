@@ -4,16 +4,7 @@ import "./styles.css";
 
 const DataSources = (): JSX.Element => {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        marginTop: "20px",
-        gap: "20px",
-        lineHeight: 2,
-        letterSpacing: "0.5px",
-      }}
-    >
+    <div className="data-sources-container">
       <Accordion
         index={-1}
         label="Commodity Data"

@@ -42,10 +42,25 @@ type AddGeoJSONInfoT = {
   setWorldTotal: Dispatch<SetStateAction<string | undefined>>;
 };
 
+type GeoJSONDataUpdateT = {
+  selectedCommodity: CommodityT;
+  queryString: string;
+  worldGeojson: GeoJSON.FeatureCollection;
+  year: number;
+  setGovInfo: Dispatch<SetStateAction<GovInfoT | null>>;
+  setOtherCountries: Dispatch<SetStateAction<string | undefined>>;
+  setWorldTotal: Dispatch<SetStateAction<string | undefined>>;
+  setWorldGeojson: Dispatch<
+    SetStateAction<GeoJSON.FeatureCollection | undefined>
+  >;
+  setNoDataFound: Dispatch<SetStateAction<boolean>>;
+};
+
 export type {
   MarksT,
   AppContextT,
   AppContextProviderT,
   AddGeoJSONInfoT,
   DefaultCommodityT,
+  GeoJSONDataUpdateT,
 };

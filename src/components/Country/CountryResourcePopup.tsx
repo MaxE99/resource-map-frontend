@@ -18,8 +18,9 @@ const CountryResourcePopup = ({
 }: CountryResourcePopupT): JSX.Element | null => {
   const [productionData, setProductionData] = useState<ProductionReservesT[]>();
   const [reserveData, setReserveData] = useState<ProductionReservesT[]>();
-  const { setIsLoading } = useContext<any>(AppContext);
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
+
+  const { setIsLoading } = useContext<any>(AppContext);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);

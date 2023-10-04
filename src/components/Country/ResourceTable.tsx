@@ -17,7 +17,7 @@ import {
 } from "../../utils/functions/api";
 import CountryToggleGroup from "./CountryToggleGroup";
 
-const headers = ["Resource", "Amount", "Share", "Rank"];
+const HEADERS = ["Resource", "Amount", "Share", "Rank"];
 
 const ResourceTable = ({
   feature,
@@ -93,7 +93,7 @@ const ResourceTable = ({
           <Table>
             <TableHead>
               <TableRow>
-                {headers.map((header) => (
+                {HEADERS.map((header) => (
                   <TableCell sx={{ textAlign: "center" }} key={header}>
                     {header}
                   </TableCell>

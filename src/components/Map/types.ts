@@ -1,6 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
-
-import { CommodityT, GovInfoT } from "../../utils/types/api";
+import { CommodityT } from "../../utils/types/api";
 
 type MapT = {
   countries: GeoJSON.GeoJsonObject | undefined;
@@ -12,18 +10,4 @@ type MapT = {
   isStrongholdModeSelected: boolean;
 };
 
-type GeoJSONDataUpdateT = {
-  selectedCommodity: CommodityT;
-  queryString: string;
-  worldGeojson: GeoJSON.FeatureCollection;
-  year: number;
-  setGovInfo: Dispatch<SetStateAction<GovInfoT | null>>;
-  setOtherCountries: Dispatch<SetStateAction<string | undefined>>;
-  setWorldTotal: Dispatch<SetStateAction<string | undefined>>;
-  setWorldGeojson: Dispatch<
-    SetStateAction<GeoJSON.FeatureCollection | undefined>
-  >;
-  setNoDataFound: Dispatch<SetStateAction<boolean>>;
-};
-
-export type { MapT, GeoJSONDataUpdateT };
+export type { MapT };

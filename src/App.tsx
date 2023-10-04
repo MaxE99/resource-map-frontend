@@ -15,7 +15,6 @@ import {
 } from "./utils/types/api";
 import { IMPORT_EXPORT_MARKS, MARKS } from "./utils/config";
 import Forms from "./components/Forms/Forms";
-import { GeoJSONDataUpdateT } from "./components/Map/types";
 import { DEFAULT_COMMODITIES } from "./utils/start-data";
 import {
   fetchGovInfoData,
@@ -31,7 +30,7 @@ import {
   updateGeoJSONWithStronghold,
 } from "./utils/functions/utils";
 import BackdropWrapper from "./components/Backdrop/BackdropWrapper";
-import { DefaultCommodityT } from "./utils/types/base";
+import { DefaultCommodityT, GeoJSONDataUpdateT } from "./utils/types/base";
 
 const App = (): JSX.Element | null => {
   const randomCommodity = useRef<DefaultCommodityT>(

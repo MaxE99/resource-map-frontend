@@ -9,7 +9,7 @@ const CountryToggleGroup = ({
 }: CountryToggleGroupT): JSX.Element => {
   const handleProductionReservesChange = (
     _: React.MouseEvent<HTMLElement>,
-    newSelection: any
+    newSelection: string
   ) => {
     setCurrentChoice(newSelection);
   };

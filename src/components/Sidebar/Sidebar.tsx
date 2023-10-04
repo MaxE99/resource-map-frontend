@@ -1,4 +1,5 @@
 import { Fragment, useState } from "react";
+import "./styles.css";
 import { SidebarProps, SidebarSelected } from "./types";
 import { IoBookmarkOutline, IoInformationCircleOutline } from "react-icons/io5";
 import { DOMAIN } from "../../utils/config";
