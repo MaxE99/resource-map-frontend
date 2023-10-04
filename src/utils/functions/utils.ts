@@ -81,10 +81,7 @@ const updateGeoJSONWithStartData = (props: AddGeoJSONInfoT): void => {
           fillColor: "red",
         };
       } else {
-        const share = parseFloat(
-          //@ts-ignore
-          ((productionCountry.amount / totalAmount) * 100).toFixed(2)
-        );
+        const share = parseFloat(Number(productionCountry.share).toFixed(2));
         feature.properties.style = {
           fillColor: getColor(share),
         };
@@ -208,7 +205,7 @@ const updateGeoJSONWithCommodity = async (
             };
           } else {
             const share = parseFloat(
-              ((productionCountry.amount / totalAmount) * 100).toFixed(2)
+              Number(productionCountry.share).toFixed(2)
             );
             feature.properties.style = {
               fillColor: getColor(share),
