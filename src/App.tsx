@@ -86,12 +86,14 @@ const App = (): JSX.Element | null => {
           .then((data: ImportExportBalanceT[]) =>
             updateGeoJSONWithBalance(data, setWorldGeojson)
           )
+          .catch((error) => console.error("Error fetching data:", error))
           .finally(() => setIsLoading(false));
       } else if (isStrongholdModeSelected) {
         fetchStrongholdData(year)
           .then((data: ProductionReservesT[]) =>
             updateGeoJSONWithStronghold(data, setWorldGeojson)
           )
+          .catch((error) => console.error("Error fetching data:", error))
           .finally(() => setIsLoading(false));
       } else {
         const queryString = getQueryString(
@@ -133,9 +135,7 @@ const App = (): JSX.Element | null => {
             (data: CommodityPriceT[]) => setPrices(data)
           ),
         ])
-          .catch((error) =>
-            console.error("Error fetching sidebar data:", error)
-          )
+          .catch((error) => console.error("Error fetching data:", error))
           .finally(() => setIsSidebarLoading(false));
       };
       fetchSidebarData();

@@ -35,9 +35,7 @@ const CountryResourcePopup = ({
           );
           setProductionData(sortedData);
         })
-        .catch((error) =>
-          console.error("Error fetching production data:", error)
-        )
+        .catch((error) => console.error("Error fetching data:", error))
         .finally(() => {
           isProductionDataLoaded = true;
           if (isProductionDataLoaded && isReservesDataLoaded) {
@@ -53,7 +51,7 @@ const CountryResourcePopup = ({
           );
           setReserveData(sortedData);
         })
-        .catch((error) => console.error("Error fetching reserves data:", error))
+        .catch((error) => console.error("Error fetching data:", error))
         .finally(() => {
           isReservesDataLoaded = true;
           if (isProductionDataLoaded && isReservesDataLoaded) {

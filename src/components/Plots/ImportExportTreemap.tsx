@@ -34,7 +34,7 @@ const ImportExportTreemap = ({
 
         setImportExportData(filteredData);
       } catch (error) {
-        console.error("Import/Export data could not be fetched!");
+        console.error("Error fetching data:", error);
       } finally {
         setIsImportExportLoaded(true);
       }

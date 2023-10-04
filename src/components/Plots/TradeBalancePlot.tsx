@@ -21,9 +21,7 @@ const TradeBalancePlot = ({
     if (feature.properties?.ADMIN) {
       fetchImportExportBalanceData(undefined, feature.properties.ADMIN)
         .then((data: ImportExportBalanceT[]) => setImportExportBalance(data))
-        .catch(() =>
-          console.error("Could not fetch import export balance data!")
-        )
+        .catch((error) => console.error("Error fetching data:", error))
         .finally(() => setIsBalanceLoaded(true));
     }
   }, []);

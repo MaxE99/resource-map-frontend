@@ -168,9 +168,9 @@ const addDataToGeojson = async (props: GeoJSONDataUpdateT) => {
   if (props.selectedCommodity?.name) {
     try {
       const [productionReservesData] = await Promise.all([
-        fetch(props.queryString, { method: "GET" }).then((response) =>
-          response.json()
-        ),
+        fetch(props.queryString, { method: "GET" })
+          .then((response) => response.json())
+          .catch((error) => console.error("Error fetching data:", error)),
       ]);
 
       props.setNoDataFound(productionReservesData.length ? false : true);

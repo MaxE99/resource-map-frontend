@@ -44,7 +44,7 @@ const ResourceTable = ({
           .sort((a, b) => a.commodity_name.localeCompare(b.commodity_name));
         setProdReserveData(filteredData);
       } catch (error) {
-        console.error("Production could not be fetched!", error);
+        console.error("Error fetching data", error);
       } finally {
         setIsProductionReservesLoaded(true);
       }
