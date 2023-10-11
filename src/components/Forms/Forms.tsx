@@ -29,7 +29,7 @@ const Forms = ({
 }: FormsProps): JSX.Element => {
   const [commodityOptions, setCommodityOptions] = useState<OptionProps[]>([]);
   const [selectedCommId, setSelectedCommId] = useState<string | undefined>(
-    selectedCommodity.name
+    selectedCommodity.name,
   );
 
   useEffect(() => {
@@ -62,13 +62,13 @@ const Forms = ({
             </div>,
           ],
         };
-      })
+      }),
     );
   }, [selectedCommodity]);
 
   useEffect(() => {
     const newValue: CommodityT | undefined = COMMODITIES_DATA.find(
-      (commodity) => commodity.name === selectedCommId
+      (commodity) => commodity.name === selectedCommId,
     );
     newValue && setSelectedCommodity(newValue);
   }, [selectedCommId]);
@@ -88,7 +88,7 @@ const Forms = ({
             if (a.identifier > b.identifier) return 1;
             if (a.identifier < b.identifier) return -1;
             return 0;
-          }
+          },
         )}
         selected={selectedCommId}
         setSelected={setSelectedCommId}
