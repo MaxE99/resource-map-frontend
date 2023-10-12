@@ -23,10 +23,11 @@ const ResourceTable = ({
   feature,
   isProductionReservesLoaded,
   setIsProductionReservesLoaded,
+  year,
+  setYear,
 }: ResourceTableT): JSX.Element => {
-  const [year, setYear] = useState<number>(2021);
   const [prodReserveData, setProdReserveData] = useState<ProductionReservesT[]>(
-    []
+    [],
   );
   const [currentChoice, setCurrentChoice] = useState<string>("production");
 

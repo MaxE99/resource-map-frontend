@@ -229,7 +229,11 @@ const App = (): JSX.Element | null => {
           open={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
         >
-          <CountryInformationPopup feature={selectedCountry} />
+          <CountryInformationPopup
+            feature={selectedCountry}
+            year={year}
+            setYear={setYear}
+          />
         </Dialog>
       </div>
     </Fragment>

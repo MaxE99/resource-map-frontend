@@ -16,12 +16,16 @@ type CountryBalancePopupT = {
 
 type CountryInformationPopupT = {
   feature: GeoJSON.Feature;
+  year: number;
+  setYear: Dispatch<SetStateAction<number>>;
 };
 
 type ResourceTableT = {
   feature: GeoJSON.Feature;
   isProductionReservesLoaded: boolean;
   setIsProductionReservesLoaded: Dispatch<SetStateAction<boolean>>;
+  year: number;
+  setYear: Dispatch<SetStateAction<number>>;
 };
 
 type CountryStrongholdT = {

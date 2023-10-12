@@ -9,6 +9,8 @@ import BackdropWrapper from "../Backdrop/BackdropWrapper";
 
 const CountryInformationPopup = ({
   feature,
+  year,
+  setYear,
 }: CountryInformationPopupT): JSX.Element => {
   const [isCountryInfoLoading, setIsCountryInfoLoading] =
     useState<boolean>(true);
@@ -22,7 +24,7 @@ const CountryInformationPopup = ({
 
   useEffect(() => {
     setIsCountryInfoLoading(
-      !(isImportExportLoaded && isProductionReservesLoaded && isBalanceLoaded)
+      !(isImportExportLoaded && isProductionReservesLoaded && isBalanceLoaded),
     );
   }, [isImportExportLoaded, isProductionReservesLoaded, isBalanceLoaded]);
 
@@ -38,6 +40,8 @@ const CountryInformationPopup = ({
           feature={feature}
           isProductionReservesLoaded={isProductionReservesLoaded}
           setIsProductionReservesLoaded={setIsProductionReservesLoaded}
+          year={year}
+          setYear={setYear}
         />
         <ImportExportTreemap
           feature={feature}
