@@ -1,25 +1,22 @@
 import "./styles.css";
 import { Tooltip } from "@mui/material";
 import { BASE_STYLE } from "../../utils/styles/base";
-import { Dispatch, SetStateAction } from "react";
 
 type FormButtonT = {
   label: string;
   icon: JSX.Element;
   isSelected: boolean;
-  setState: Dispatch<SetStateAction<boolean>>;
-  setOtherButtonState: Dispatch<SetStateAction<boolean>>;
+  clickHandler: () => void;
 };
 
 const FormButton = ({
   label,
   icon,
   isSelected,
-  setState,
-  setOtherButtonState,
+  clickHandler,
 }: FormButtonT): JSX.Element => {
   return (
-    <Tooltip title={isSelected ? "Going back to commodity selection" : label}>
+    <Tooltip title={!isSelected && label}>
       <button
         className="formButton"
         style={{
@@ -31,8 +28,7 @@ const FormButton = ({
             : BASE_STYLE.COLOR_PALLETE.LIGHT_GREY,
         }}
         onClick={() => {
-          setState(!isSelected);
-          setOtherButtonState(false);
+          clickHandler();
         }}
       >
         <div className="outerDiv">
