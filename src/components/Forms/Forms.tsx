@@ -7,6 +7,8 @@ import { DOMAIN } from "../../utils/config";
 import FormButton from "./FormButton";
 import BalanceIcon from "@mui/icons-material/Balance";
 import ShieldIcon from "@mui/icons-material/Shield";
+
+import { IoDiamondOutline } from "react-icons/io5";
 import { BASE_STYLE } from "../../utils/styles/base";
 import { COMMODITIES_DATA } from "../../utils/start-data";
 
@@ -95,6 +97,20 @@ const Forms = ({
       />
       <div style={{ display: "flex" }}>
         <FormButton
+          key="default"
+          label="Show commodity production and reserve"
+          icon={
+            <IoDiamondOutline
+              style={{ fontSize: "23px", color: BASE_STYLE.COLOR_PALLETE.TEXT }}
+            />
+          }
+          isSelected={!isBalanceModeSelected && !isStrongholdModeSelected}
+          clickHandler={() => {
+            setIsBalanceModeSelected(false);
+            setIsStrongholdModeSelected(false);
+          }}
+        />
+        <FormButton
           key="balance"
           label="Show commodity trade balance"
           icon={
@@ -103,8 +119,10 @@ const Forms = ({
             />
           }
           isSelected={isBalanceModeSelected}
-          setState={setIsBalanceModeSelected}
-          setOtherButtonState={setIsStrongholdModeSelected}
+          clickHandler={() => {
+            setIsBalanceModeSelected(true);
+            setIsStrongholdModeSelected(false);
+          }}
         />
         <FormButton
           key="strongholds"
@@ -115,8 +133,10 @@ const Forms = ({
             />
           }
           isSelected={isStrongholdModeSelected}
-          setState={setIsStrongholdModeSelected}
-          setOtherButtonState={setIsBalanceModeSelected}
+          clickHandler={() => {
+            setIsBalanceModeSelected(false);
+            setIsStrongholdModeSelected(true);
+          }}
         />
       </div>
     </div>
