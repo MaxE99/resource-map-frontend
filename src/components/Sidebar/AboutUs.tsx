@@ -11,15 +11,40 @@ const AboutUs = (): JSX.Element => {
         started as a small hobby project, and we'd like to tell you a bit about
         it.
       </div>
-      <div style={{ display: "flex", marginTop: "10px" }}>
-        <img
-          style={{ height: "100px", marginRight: "20px" }}
-          src="http://localhost:8000//static/kilian.jpeg"
-        />
-        <img
-          style={{ height: "100px" }}
-          src="http://localhost:8000//static/max.jpeg"
-        />
+      <div
+        style={{ display: "flex", marginTop: "15px", justifyContent: "center" }}
+      >
+        <div
+          style={{
+            border: "var(--light-grey) 2px solid",
+            height: "204px",
+            width: "204px",
+            borderRadius: "8px",
+          }}
+        >
+          <img
+            height={200}
+            width={200}
+            style={{ borderRadius: "8px" }}
+            src="http://localhost:8000//static/kilian.jpeg"
+          />
+        </div>
+        <div
+          style={{
+            border: "var(--light-grey) 2px solid",
+            height: "204px",
+            width: "204px",
+            marginLeft: "40px",
+            borderRadius: "8px",
+          }}
+        >
+          <img
+            height={200}
+            width={200}
+            style={{ borderRadius: "8px" }}
+            src="http://localhost:8000//static/max.jpeg"
+          />
+        </div>
       </div>
       <h3 className="aboutUsHeader">Why We Chose This Project</h3>
       <div>
