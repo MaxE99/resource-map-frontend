@@ -17,6 +17,8 @@ const BASE_STYLE = {
     ELEMENTS: "#1277c4",
     TEXT: "#fff",
     LIGHT_GREY: "#666",
+    RED: "#FF3131",
+    GREEN: "#39FF14",
   },
   BOX_SHADOW: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
 };

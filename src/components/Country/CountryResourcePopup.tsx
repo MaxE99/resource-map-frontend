@@ -9,6 +9,7 @@ import {
   fetchProductionData,
   fetchReservesData,
 } from "../../utils/functions/api";
+import { BASE_STYLE } from "../../utils/styles/base";
 
 const CountryResourcePopup = ({
   feature,
@@ -86,7 +87,13 @@ const CountryResourcePopup = ({
       {isFeatureHovered ? (
         <Fragment>
           {feature.properties?.amount === "Unknown Amount" && (
-            <div style={{ margin: "5px 0", fontWeight: 600, color: "red" }}>
+            <div
+              style={{
+                margin: "5px 0",
+                fontWeight: 600,
+                color: BASE_STYLE.COLOR_PALLETE.RED,
+              }}
+            >
               Unknown Amount
             </div>
           )}

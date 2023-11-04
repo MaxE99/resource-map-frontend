@@ -7,6 +7,7 @@ import {
 import { COUNTRIES_DATA } from "../start-data";
 import { AddGeoJSONInfoT, GeoJSONDataUpdateT } from "../types/base";
 import { Dispatch, SetStateAction } from "react";
+import { BASE_STYLE } from "../styles/base";
 
 // Function to generate a color based on percentage
 const getColor = (percentage: number): string => {
@@ -78,7 +79,7 @@ const updateGeoJSONWithStartData = (props: AddGeoJSONInfoT): void => {
         feature.properties.amount = "Unknown Amount";
         feature.properties.metric = metric;
         feature.properties.style = {
-          fillColor: "red",
+          fillColor: BASE_STYLE.COLOR_PALLETE.RED,
         };
       } else {
         const share = parseFloat(Number(productionCountry.share).toFixed(2));
@@ -131,7 +132,7 @@ const updateGeoJSONWithBalance = (
           Number(countryBalance.total_commodity_exports) >
           Number(countryBalance.total_commodity_imports)
             ? "green"
-            : "red",
+            : BASE_STYLE.COLOR_PALLETE.RED,
       };
     }
   });
@@ -205,7 +206,7 @@ const updateGeoJSONWithCommodity = async (
             feature.properties.amount = "Unknown Amount";
             feature.properties.metric = metric;
             feature.properties.style = {
-              fillColor: "red",
+              fillColor: BASE_STYLE.COLOR_PALLETE.RED,
             };
           } else {
             const share = parseFloat(

@@ -6,6 +6,7 @@ import { fetchImportExportBalanceData } from "../../utils/functions/api";
 import { TradeBalancePlotT } from "./types";
 import { Data } from "plotly.js";
 import CountryToggleGroup from "../Country/CountryToggleGroup";
+import { BASE_STYLE } from "../../utils/styles/base";
 
 const TradeBalancePlot = ({
   feature,
@@ -36,7 +37,7 @@ const TradeBalancePlot = ({
           ? importExportBalance.map((data) => data.total_commodity_imports)
           : importExportBalance.map((data) => data.total_imports),
       showlegend: false,
-      line: { color: "red" },
+      line: { color: BASE_STYLE.COLOR_PALLETE.RED },
     },
     {
       type: "scatter",
@@ -48,7 +49,7 @@ const TradeBalancePlot = ({
           ? importExportBalance.map((data) => data.total_commodity_exports)
           : importExportBalance.map((data) => data.total_exports),
       showlegend: false,
-      line: { color: "green" },
+      line: { color: BASE_STYLE.COLOR_PALLETE.GREEN },
     },
     {
       type: "bar",
@@ -70,7 +71,9 @@ const TradeBalancePlot = ({
             currentChoice === "Commodity"
               ? data.total_commodity_exports - data.total_commodity_imports
               : data.total_exports - data.total_imports;
-          return balance >= 0 ? "green" : "red"; // Set color to green for positive, red for negative
+          return balance >= 0
+            ? BASE_STYLE.COLOR_PALLETE.GREEN
+            : BASE_STYLE.COLOR_PALLETE.RED; // Set color to green for positive, red for negative
         }),
       },
     },

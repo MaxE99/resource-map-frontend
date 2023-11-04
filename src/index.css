@@ -8,8 +8,8 @@
 
   --box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
-  /* --main-red: (mui red) */
-  /* --main-green: (mui green) */
+  --main-red: "#FF3131";
+  --main-green: "#39FF14";
 }
 
 * {
