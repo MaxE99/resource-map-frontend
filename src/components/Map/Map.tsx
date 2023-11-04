@@ -210,6 +210,7 @@ const Map = ({
           ) : isStrongholdModeSelected && selectedStrongholds.length ? (
             <CountryStrongholdPopup
               key={JSON.stringify(selectedStrongholds)}
+              isFeatureHovered={isFeatureHovered}
               strongholds={selectedStrongholds}
               setSelectedStrongholds={setSelectedStrongholds}
               setIsPopupOpen={setIsPopupOpen}

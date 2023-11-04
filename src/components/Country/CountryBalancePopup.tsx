@@ -35,7 +35,10 @@ const CountryBalancePopup = ({
         top: isFeatureHovered ? "80%" : "50%",
       }}
     >
-      <CountryHeader countryName={feature?.properties?.ADMIN} />
+      <CountryHeader
+        countryName={feature?.properties?.ADMIN}
+        isHovered={isFeatureHovered}
+      />
       <Fragment>
         <div style={{ margin: "5px 0" }}>
           <span style={{ fontWeight: 600 }}>Commodity Imports: </span>

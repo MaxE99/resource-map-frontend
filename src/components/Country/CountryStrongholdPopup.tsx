@@ -8,6 +8,7 @@ import CountryHeader from "./CountryHeader";
 import { slugify } from "../../utils/functions/utils";
 
 const CountryStrongholdPopup = ({
+  isFeatureHovered,
   strongholds,
   setSelectedStrongholds,
   setIsPopupOpen,
@@ -30,7 +31,10 @@ const CountryStrongholdPopup = ({
 
   return (
     <div className="countryPopup" style={{ top: "50%" }}>
-      <CountryHeader countryName={strongholds[0].country_name} />
+      <CountryHeader
+        countryName={strongholds[0].country_name}
+        isHovered={isFeatureHovered}
+      />
       {strongholds
         .sort(
           //@ts-ignore // strongholds can only hold ProductionReservesT that have a share

@@ -16,6 +16,7 @@ type CountryBalancePopupT = {
 
 type CountryInformationPopupT = {
   feature: GeoJSON.Feature;
+  isFeatureHovered: boolean;
   year: number;
   setYear: Dispatch<SetStateAction<number>>;
 };
@@ -29,6 +30,7 @@ type ResourceTableT = {
 };
 
 type CountryStrongholdT = {
+  isFeatureHovered: boolean;
   strongholds: ProductionReservesT[];
   setSelectedStrongholds: Dispatch<SetStateAction<ProductionReservesT[]>>;
   setIsPopupOpen: Dispatch<SetStateAction<boolean>>;
@@ -36,6 +38,7 @@ type CountryStrongholdT = {
 
 type CountryHeaderT = {
   countryName: string;
+  isHovered: boolean;
 };
 
 type CountryToggleGroupT = {

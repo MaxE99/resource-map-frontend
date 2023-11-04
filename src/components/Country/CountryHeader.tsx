@@ -7,7 +7,10 @@ import { DOMAIN } from "../../utils/config";
 import { BASE_STYLE } from "../../utils/styles/base";
 import { slugify } from "../../utils/functions/utils";
 
-const CountryHeader = ({ countryName }: CountryHeaderT): JSX.Element => {
+const CountryHeader = ({
+  countryName,
+  isHovered,
+}: CountryHeaderT): JSX.Element => {
   const { setIsDialogOpen } = useContext<any>(AppContext);
 
   return (
@@ -19,13 +22,15 @@ const CountryHeader = ({ countryName }: CountryHeaderT): JSX.Element => {
       <div className="countryNameBox" style={{ fontSize: "30px" }}>
         {countryName}
       </div>
-      <OpenInNewIcon
-        sx={{
-          marginLeft: "5px",
-          fontSize: "20px",
-          "&:hover": { color: BASE_STYLE.COLOR_PALLETE.ELEMENTS },
-        }}
-      />
+      {!isHovered && (
+        <OpenInNewIcon
+          sx={{
+            marginLeft: "5px",
+            fontSize: "20px",
+            "&:hover": { color: BASE_STYLE.COLOR_PALLETE.ELEMENTS },
+          }}
+        />
+      )}
     </div>
   );
 };

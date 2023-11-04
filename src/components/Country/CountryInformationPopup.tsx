@@ -9,6 +9,7 @@ import BackdropWrapper from "../Backdrop/BackdropWrapper";
 
 const CountryInformationPopup = ({
   feature,
+  isFeatureHovered,
   year,
   setYear,
 }: CountryInformationPopupT): JSX.Element => {
@@ -24,7 +25,7 @@ const CountryInformationPopup = ({
 
   useEffect(() => {
     setIsCountryInfoLoading(
-      !(isImportExportLoaded && isProductionReservesLoaded && isBalanceLoaded),
+      !(isImportExportLoaded && isProductionReservesLoaded && isBalanceLoaded)
     );
   }, [isImportExportLoaded, isProductionReservesLoaded, isBalanceLoaded]);
 
@@ -35,7 +36,10 @@ const CountryInformationPopup = ({
   return (
     <div>
       <div style={{ padding: "20px" }}>
-        <CountryHeader countryName={feature?.properties?.ADMIN} />
+        <CountryHeader
+          countryName={feature?.properties?.ADMIN}
+          isHovered={isFeatureHovered}
+        />
         <ResourceTable
           feature={feature}
           isProductionReservesLoaded={isProductionReservesLoaded}

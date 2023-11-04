@@ -83,7 +83,10 @@ const CountryResourcePopup = ({
         top: isFeatureHovered ? "80%" : "50%",
       }}
     >
-      <CountryHeader countryName={feature?.properties?.ADMIN} />
+      <CountryHeader
+        countryName={feature?.properties?.ADMIN}
+        isHovered={isFeatureHovered}
+      />
       {isFeatureHovered ? (
         <Fragment>
           {feature.properties?.amount === "Unknown Amount" && (
