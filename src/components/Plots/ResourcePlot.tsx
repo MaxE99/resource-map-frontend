@@ -17,11 +17,17 @@ const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
     {
       x: dates,
       y: amounts,
-      type: "scatter",
+      type: "bar",
       fill: "tozeroy",
       mode: "lines",
       line: { color: BASE_STYLE.COLOR_PALLETE.ELEMENTS },
       hoverinfo: "none",
+      marker: {
+        line: {
+          color: BASE_STYLE.COLOR_PALLETE.LIGHT_GREY,
+          width: 1,
+        },
+      },
     },
   ];
 
