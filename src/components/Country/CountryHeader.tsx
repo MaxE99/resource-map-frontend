@@ -19,9 +19,7 @@ const CountryHeader = ({
         src={DOMAIN + `/static/flags/${slugify(countryName)}.png`}
         style={{ height: "25px", marginRight: "5px" }}
       />
-      <div className="countryNameBox" style={{ fontSize: "30px" }}>
-        {countryName}
-      </div>
+      <div style={{ fontSize: "30px" }}>{countryName}</div>
       {!isHovered && (
         <OpenInNewIcon
           sx={{

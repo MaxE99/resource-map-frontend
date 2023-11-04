@@ -51,6 +51,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: var(--main-text);
-  padding: 20px;
+  padding: 12px;
   border-radius: 8px;
+  border: 1px solid var(--light-grey);
 }
