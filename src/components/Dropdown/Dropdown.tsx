@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import OpenButton from "./OpenButton";
 import RemoveButton from "./RemoveButton";
 import OptionList from "./OptionList";
 import "./styles.css";
-import { DropdownProps } from "./types";
+import { DropdownProps, OptionProps } from "./types";
 
 const Dropdown = ({
   renderRemove,
@@ -14,6 +14,21 @@ const Dropdown = ({
   options,
 }: DropdownProps): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
+
+  const getSelectedImage = (): JSX.Element => {
+    if (!selected) return <React.Fragment />;
+    const selectedOption: OptionProps | undefined = options.find(
+      (option) => option.identifier === selected,
+    );
+
+    return (
+      <div
+        style={{ marginLeft: "10px", display: "flex", alignItems: "center" }}
+      >
+        {selectedOption && selectedOption.children}
+      </div>
+    );
+  };
 
   return (
     <div
@@ -30,16 +45,19 @@ const Dropdown = ({
         }}
       >
         <div className={`dropdown-inner${open ? " dropdown-inner-open" : ""}`}>
-          <label
-            style={{
-              display: "flex",
-              alignItems: "center",
-              padding: "0 0 0 20px",
-              color: selected ? "var(--main-text)" : "var(--light-grey)",
-            }}
-          >
-            {selected || label}
-          </label>
+          <div style={{ display: "flex" }}>
+            {getSelectedImage()}
+            <label
+              style={{
+                display: "flex",
+                alignItems: "center",
+                padding: "0 0 0 20px",
+                color: selected ? "var(--main-text)" : "var(--light-grey)",
+              }}
+            >
+              {selected || label}
+            </label>
+          </div>
           <div
             style={{
               display: "flex",
