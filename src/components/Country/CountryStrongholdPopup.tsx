@@ -30,7 +30,10 @@ const CountryStrongholdPopup = ({
   }, []);
 
   return (
-    <div className="countryPopup" style={{ top: "50%" }}>
+    <div
+      className="countryPopup"
+      style={{ top: "50%", padding: isFeatureHovered ? "12px" : "20px" }}
+    >
       <CountryHeader
         countryName={strongholds[0].country_name}
         isHovered={isFeatureHovered}

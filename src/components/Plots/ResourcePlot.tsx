@@ -40,14 +40,14 @@ const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
     yaxis: {
       ticklen: 5,
     },
-    margin: { t: 10, r: 15, b: 25, l: 35 },
+    margin: { t: 10, r: 5, b: 25, l: 35 },
   };
 
   const handleHover = (event: any) => {
     const points = event.points;
     if (points.length > 0) {
       const infotext = points.map((point: any) => {
-        return `${point.x}: $ ${point.y.toFixed(2)}`;
+        return `${point.x}: ${point.y.toFixed(2)}`;
       });
       setHoverInfoText(infotext.join("<br/>"));
     } else {

@@ -81,6 +81,7 @@ const CountryResourcePopup = ({
       className="countryPopup"
       style={{
         top: isFeatureHovered ? "80%" : "50%",
+        padding: isFeatureHovered ? "12px" : "20px",
       }}
     >
       <CountryHeader
@@ -119,28 +120,34 @@ const CountryResourcePopup = ({
             )}
         </Fragment>
       ) : (
-        <Fragment>
+        <div style={{ display: "flex", marginTop: "20px" }}>
           {productionData &&
             productionData?.length > 0 &&
             productionData.every((item) => !isNaN(Number(item.amount))) && (
-              <Fragment>
-                <div style={{ marginTop: "10px", fontWeight: 600 }}>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ fontWeight: 600 }}>
                   Production By Year In {productionData[0].metric}:
                 </div>
                 <ResourcePlot data={productionData} />
-              </Fragment>
+              </div>
             )}
           {reserveData &&
             reserveData?.length > 0 &&
             reserveData.every((item) => !isNaN(Number(item.amount))) && (
-              <Fragment>
-                <div style={{ marginTop: "20px", fontWeight: 600 }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginLeft: "20px",
+                }}
+              >
+                <div style={{ fontWeight: 600 }}>
                   Reserves By Year In {reserveData[0].metric}:
                 </div>
                 <ResourcePlot data={reserveData} />
-              </Fragment>
+              </div>
             )}
-        </Fragment>
+        </div>
       )}
     </div>
   ) : null;

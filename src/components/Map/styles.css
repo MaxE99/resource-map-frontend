@@ -42,7 +42,8 @@
 }
 
 .countryPopup {
-  max-width: 400px;
+  width: fit-content;
+  max-width: 100%;
   font-size: 16px;
   overflow-y: auto;
   max-height: 50vh;
@@ -51,7 +52,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: var(--main-text);
-  padding: 12px;
+  /* padding: 20px; */
   border-radius: 8px;
   border: 1px solid var(--light-grey);
 }

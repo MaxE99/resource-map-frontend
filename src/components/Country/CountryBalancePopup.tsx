@@ -33,6 +33,7 @@ const CountryBalancePopup = ({
       className="countryPopup"
       style={{
         top: isFeatureHovered ? "80%" : "50%",
+        padding: isFeatureHovered ? "12px" : "20px",
       }}
     >
       <CountryHeader
