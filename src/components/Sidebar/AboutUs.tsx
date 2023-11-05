@@ -1,5 +1,6 @@
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { Tooltip } from "@mui/material";
+import { DOMAIN } from "../../utils/config";
 
 const AboutUs = (): JSX.Element => {
   return (
@@ -26,7 +27,7 @@ const AboutUs = (): JSX.Element => {
             height={200}
             width={200}
             style={{ borderRadius: "8px" }}
-            src="http://localhost:8000//static/kilian.jpeg"
+            src={DOMAIN + "/static/kilian.jpeg"}
           />
         </div>
         <div
@@ -42,7 +43,7 @@ const AboutUs = (): JSX.Element => {
             height={200}
             width={200}
             style={{ borderRadius: "8px" }}
-            src="http://localhost:8000//static/max.jpeg"
+            src={DOMAIN + "/static/max.jpeg"}
           />
         </div>
       </div>
