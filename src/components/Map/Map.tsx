@@ -58,7 +58,7 @@ const Map = ({
 
     layer.on({
       click: () => {
-        if (selectedCommodity) {
+        if (selectedCommodity && !isStrongholdModeSelected) {
           setIsFeatureHovered(false);
           setSelectedCountry(feature);
           setIsPopupOpen(true);
@@ -66,14 +66,16 @@ const Map = ({
         }
       },
       mouseover: () => {
-        setIsFeatureHovered(true);
-        setIsPopupOpen(true);
-        setSelectedCountry(feature);
-        setHoveredFeature(feature);
-        layer.setStyle({
-          weight: 2,
-          color: BASE_STYLE.COLOR_PALLETE.ELEMENTS,
-        });
+        if (!isStrongholdModeSelected) {
+          setIsFeatureHovered(true);
+          setIsPopupOpen(true);
+          setSelectedCountry(feature);
+          setHoveredFeature(feature);
+          layer.setStyle({
+            weight: 2,
+            color: BASE_STYLE.COLOR_PALLETE.ELEMENTS,
+          });
+        }
       },
       mouseout: () => {
         if (!featureIsBeingClickedOn) {
