@@ -59,10 +59,10 @@ const TradeBalancePlot = ({
         currentChoice === "Commodity"
           ? importExportBalance.map(
               (data) =>
-                data.total_commodity_exports - data.total_commodity_imports
+                data.total_commodity_exports - data.total_commodity_imports,
             )
           : importExportBalance.map(
-              (data) => data.total_exports - data.total_imports
+              (data) => data.total_exports - data.total_imports,
             ),
       showlegend: false,
       marker: {
@@ -95,6 +95,7 @@ const TradeBalancePlot = ({
             fontWeight: 600,
             position: "absolute",
             bottom: 0,
+            color: "var(--main-text)",
           }}
         >
           {currentChoice} Trade Balance
@@ -110,7 +111,21 @@ const TradeBalancePlot = ({
         <Plot
           style={{ width: "100%" }}
           data={data}
-          layout={{ margin: { t: 10, r: 20, b: 35, l: 30 } }}
+          layout={{
+            margin: { t: 10, r: 20, b: 35, l: 30 },
+            plot_bgcolor: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
+            paper_bgcolor: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
+            xaxis: {
+              tickfont: {
+                color: BASE_STYLE.COLOR_PALLETE.TEXT,
+              },
+            },
+            yaxis: {
+              tickfont: {
+                color: BASE_STYLE.COLOR_PALLETE.TEXT,
+              },
+            },
+          }}
           config={{ displayModeBar: false, responsive: true }}
         />
       ) : (

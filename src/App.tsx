@@ -34,19 +34,19 @@ import { DefaultCommodityT, GeoJSONDataUpdateT } from "./utils/types/base";
 
 const App = (): JSX.Element | null => {
   const randomCommodity = useRef<DefaultCommodityT>(
-    DEFAULT_COMMODITIES[Math.floor(Math.random() * 10)]
+    DEFAULT_COMMODITIES[Math.floor(Math.random() * 10)],
   );
   const [selectedCommodity, setSelectedCommodity] = useState<CommodityT>(
-    randomCommodity.current.commodity
+    randomCommodity.current.commodity,
   );
   const [year, setYear] = useState<number>(
-    randomCommodity.current.gov_info.year
+    randomCommodity.current.gov_info.year,
   );
   const [govInfo, setGovInfo] = useState<GovInfoT | null>(
-    randomCommodity.current.gov_info
+    randomCommodity.current.gov_info,
   );
   const [prices, setPrices] = useState<CommodityPriceT[]>(
-    randomCommodity.current.prices
+    randomCommodity.current.prices,
   );
   const [isInitialLoadComplete, setIsInitialLoadComplete] =
     useState<boolean>(false);
@@ -55,7 +55,7 @@ const App = (): JSX.Element | null => {
   >(undefined);
 
   const [otherCountries, setOtherCountries] = useState<string | undefined>(
-    undefined
+    undefined,
   );
   const [worldTotal, setWorldTotal] = useState<string | undefined>(undefined);
   const [noDataFound, setNoDataFound] = useState<boolean>(false);
@@ -83,14 +83,14 @@ const App = (): JSX.Element | null => {
       if (isBalanceModeSelected) {
         fetchImportExportBalanceData(year, undefined)
           .then((data: ImportExportBalanceT[]) =>
-            updateGeoJSONWithBalance(data, setWorldGeojson)
+            updateGeoJSONWithBalance(data, setWorldGeojson),
           )
           .catch((error) => console.error("Error fetching data:", error))
           .finally(() => setIsLoading(false));
       } else if (isStrongholdModeSelected) {
         fetchStrongholdData(year)
           .then((data: ProductionReservesT[]) =>
-            updateGeoJSONWithStronghold(data, setWorldGeojson)
+            updateGeoJSONWithStronghold(data, setWorldGeojson),
           )
           .catch((error) => console.error("Error fetching data:", error))
           .finally(() => setIsLoading(false));
@@ -98,7 +98,7 @@ const App = (): JSX.Element | null => {
         const queryString = getQueryString(
           isShowingProduction,
           selectedCommodity,
-          year
+          year,
         );
         const dataUpdateProps: GeoJSONDataUpdateT = {
           selectedCommodity: selectedCommodity,
@@ -112,7 +112,7 @@ const App = (): JSX.Element | null => {
           setNoDataFound: setNoDataFound,
         };
         updateGeoJSONWithCommodity(dataUpdateProps).finally(() =>
-          setIsLoading(false)
+          setIsLoading(false),
         );
       }
     }
@@ -130,10 +130,10 @@ const App = (): JSX.Element | null => {
         setIsSidebarLoading(true);
         await Promise.all([
           fetchGovInfoData(year, selectedCommodity.name).then(
-            (data: GovInfoT[]) => setGovInfo(data?.length ? data[0] : null)
+            (data: GovInfoT[]) => setGovInfo(data?.length ? data[0] : null),
           ),
           fetchPriceData(selectedCommodity.name).then(
-            (data: CommodityPriceT[]) => setPrices(data)
+            (data: CommodityPriceT[]) => setPrices(data),
           ),
         ])
           .catch((error) => console.error("Error fetching data:", error))
@@ -223,6 +223,8 @@ const App = (): JSX.Element | null => {
               maxWidth: "90%",
               width: "800px",
               height: "calc(100% - 64px)",
+              borderRadius: "8px",
+              border: "solid 2px var(--light-grey)",
               overflow: isLoading ? "hidden" : "auto",
             },
           }}

@@ -6,6 +6,7 @@ import { AppContext } from "../AppContextProvider";
 import { DOMAIN } from "../../utils/config";
 import { BASE_STYLE } from "../../utils/styles/base";
 import { slugify } from "../../utils/functions/utils";
+import { Box } from "@mui/material";
 
 const CountryHeader = ({
   countryName,
@@ -19,16 +20,34 @@ const CountryHeader = ({
         src={DOMAIN + `/static/flags/${slugify(countryName)}.png`}
         style={{ height: "25px", marginRight: "5px" }}
       />
-      <div style={{ fontSize: "30px" }}>{countryName}</div>
-      {!isHovered && (
-        <OpenInNewIcon
+      <Box
+        sx={{
+          color: BASE_STYLE.COLOR_PALLETE.TEXT,
+          "&:hover": { color: BASE_STYLE.COLOR_PALLETE.ELEMENTS },
+          display: "flex",
+          transition: "400ms all ease",
+          alignItems: "center",
+        }}
+      >
+        {" "}
+        <Box
           sx={{
-            marginLeft: "5px",
-            fontSize: "20px",
-            "&:hover": { color: BASE_STYLE.COLOR_PALLETE.ELEMENTS },
+            color: "inherit",
+            fontSize: "30px",
           }}
-        />
-      )}
+        >
+          {countryName}
+        </Box>
+        {!isHovered && (
+          <OpenInNewIcon
+            sx={{
+              marginLeft: "5px",
+              fontSize: "20px",
+              color: "inherit",
+            }}
+          />
+        )}
+      </Box>
     </div>
   );
 };

@@ -33,7 +33,7 @@ const CountryResourcePopup = ({
       fetchProductionData(undefined, commodity.name, feature.properties.ADMIN)
         .then((data: ProductionReservesT[]) => {
           const sortedData = data.sort(
-            (a: ProductionReservesT, b: ProductionReservesT) => a.year - b.year
+            (a: ProductionReservesT, b: ProductionReservesT) => a.year - b.year,
           );
           setProductionData(sortedData);
         })
@@ -49,7 +49,7 @@ const CountryResourcePopup = ({
       fetchReservesData(undefined, commodity.name, feature.properties.ADMIN)
         .then((data: ProductionReservesT[]) => {
           const sortedData = data.sort(
-            (a: ProductionReservesT, b: ProductionReservesT) => a.year - b.year
+            (a: ProductionReservesT, b: ProductionReservesT) => a.year - b.year,
           );
           setReserveData(sortedData);
         })
@@ -82,6 +82,7 @@ const CountryResourcePopup = ({
       style={{
         top: isFeatureHovered ? "80%" : "50%",
         padding: isFeatureHovered ? "12px" : "20px",
+        backgroundColor: "var(--main-background)",
       }}
     >
       <CountryHeader
@@ -104,14 +105,14 @@ const CountryResourcePopup = ({
           {feature.properties?.amount &&
             feature.properties.amount !== "Unknown Amount" && (
               <Fragment>
-                <div style={{ margin: "5px 0" }}>
+                <div style={{ margin: "5px 0", color: "var(--main-text)" }}>
                   <span style={{ fontWeight: 600 }}>Amount: </span>
                   <span>
                     {feature.properties.amount} {feature.properties.metric}
                   </span>
                 </div>
                 {!isNaN(Number(feature.properties.share)) && (
-                  <div>
+                  <div style={{ color: "var(--main-text)" }}>
                     <span style={{ fontWeight: 600 }}>Share: </span>
                     <span>{Number(feature.properties.share).toFixed(2)}%</span>
                   </div>
@@ -125,7 +126,7 @@ const CountryResourcePopup = ({
             productionData?.length > 0 &&
             productionData.every((item) => !isNaN(Number(item.amount))) && (
               <div style={{ display: "flex", flexDirection: "column" }}>
-                <div style={{ fontWeight: 600 }}>
+                <div style={{ fontWeight: 600, color: "var(--main-text)" }}>
                   Production By Year In {productionData[0].metric}:
                 </div>
                 <ResourcePlot data={productionData} />
@@ -141,7 +142,7 @@ const CountryResourcePopup = ({
                   marginLeft: "20px",
                 }}
               >
-                <div style={{ fontWeight: 600 }}>
+                <div style={{ fontWeight: 600, color: "var(--main-text)" }}>
                   Reserves By Year In {reserveData[0].metric}:
                 </div>
                 <ResourcePlot data={reserveData} />

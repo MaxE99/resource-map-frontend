@@ -10,6 +10,7 @@ import { ImportExportTreemapT } from "./types";
 import { fetchExportData, fetchImportData } from "../../utils/functions/api";
 import { Data } from "plotly.js";
 import CountryToggleGroup from "../Country/CountryToggleGroup";
+import { BASE_STYLE } from "../../utils/styles/base";
 
 const ImportExportTreemap = ({
   feature,
@@ -71,6 +72,8 @@ const ImportExportTreemap = ({
           zIndex: 1,
           margin: "20px 0 10px",
           position: "relative",
+          color: "var(--main-text)",
+          backgroundColor: "var(--main-background)",
         }}
       >
         <div
@@ -98,11 +101,15 @@ const ImportExportTreemap = ({
       </div>
       {importExportData.length ? (
         <Plot
-          style={{ marginTop: "-35px", marginLeft: "-10px" }}
+          style={{
+            marginTop: "-35px",
+            marginLeft: "-10px",
+          }}
           data={data}
           layout={{
             width: 780,
             height: 780,
+            paper_bgcolor: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
             margin: {
               l: 0,
               r: 0,
@@ -127,6 +134,7 @@ const ImportExportTreemap = ({
 
       <Slider
         color="secondary"
+        className="mainSlider"
         sx={{
           width: "97.5%",
           margin: "5px 10px 20px",

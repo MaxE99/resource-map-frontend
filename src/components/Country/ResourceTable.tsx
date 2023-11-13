@@ -16,6 +16,7 @@ import {
   fetchReservesData,
 } from "../../utils/functions/api";
 import CountryToggleGroup from "./CountryToggleGroup";
+import { BASE_STYLE } from "../../utils/styles/base";
 
 const HEADERS = ["Resource", "Amount", "Share", "Rank"];
 
@@ -73,8 +74,20 @@ const ResourceTable = ({
             bottom: 0,
           }}
         >
-          <span>{year}</span>
-          <span style={{ textTransform: "uppercase", marginLeft: "4px" }}>
+          <span
+            style={{
+              color: "var(--main-text)",
+            }}
+          >
+            {year}
+          </span>
+          <span
+            style={{
+              color: "var(--main-text)",
+              textTransform: "uppercase",
+              marginLeft: "4px",
+            }}
+          >
             {currentChoice}
           </span>
         </div>
@@ -88,13 +101,23 @@ const ResourceTable = ({
       {prodReserveData.length ? (
         <TableContainer
           component={Paper}
-          sx={{ boxShadow: "none", border: "1px solid rgba(224, 224, 224, 1)" }}
+          sx={{
+            boxShadow: "none",
+            backgroundColor: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
+            border: "1px solid rgba(224, 224, 224, 1)",
+          }}
         >
           <Table>
             <TableHead>
               <TableRow>
                 {HEADERS.map((header) => (
-                  <TableCell sx={{ textAlign: "center" }} key={header}>
+                  <TableCell
+                    sx={{
+                      textAlign: "center",
+                      color: BASE_STYLE.COLOR_PALLETE.TEXT,
+                    }}
+                    key={header}
+                  >
                     {header}
                   </TableCell>
                 ))}
@@ -103,13 +126,28 @@ const ResourceTable = ({
             <TableBody>
               {prodReserveData.map((row, index) => (
                 <TableRow sx={{ textAlign: "center" }} key={index}>
-                  <TableCell sx={{ textAlign: "center" }}>
+                  <TableCell
+                    sx={{
+                      textAlign: "center",
+                      color: BASE_STYLE.COLOR_PALLETE.TEXT,
+                    }}
+                  >
                     {row.commodity_name}
                   </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
+                  <TableCell
+                    sx={{
+                      textAlign: "center",
+                      color: BASE_STYLE.COLOR_PALLETE.TEXT,
+                    }}
+                  >
                     {row.amount} {row.metric}
                   </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
+                  <TableCell
+                    sx={{
+                      textAlign: "center",
+                      color: BASE_STYLE.COLOR_PALLETE.TEXT,
+                    }}
+                  >
                     {!isNaN(Number(row.share)) && Number(row.share) !== 0
                       ? Number(row.share).toFixed(2) + " %"
                       : "/"}
@@ -117,6 +155,10 @@ const ResourceTable = ({
                   <TableCell
                     sx={{
                       textAlign: "center",
+                      color:
+                        row.rank && row.rank <= 3
+                          ? BASE_STYLE.COLOR_PALLETE.BACKGROUND
+                          : BASE_STYLE.COLOR_PALLETE.TEXT,
                       fontWeight: row.rank && row.rank <= 3 ? 600 : "normal",
                       backgroundColor:
                         row.rank === 1
@@ -157,6 +199,7 @@ const ResourceTable = ({
       )}
       <Slider
         color="secondary"
+        className="mainSlider"
         sx={{
           width: "97.5%",
           margin: "5px 10px 20px",

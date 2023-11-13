@@ -10,7 +10,7 @@ const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
   const [hoverInfoText, setHoverInfoText] = useState<string>("");
   const dates: number[] = data.map((entry: ProductionReservesT) => entry.year);
   const amounts: string[] = data.map(
-    (entry: ProductionReservesT) => entry.amount
+    (entry: ProductionReservesT) => entry.amount,
   );
 
   const plotData: Data[] = [
@@ -36,10 +36,18 @@ const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
       showgrid: false,
       ticklen: 5,
       dtick: 1,
+      tickfont: {
+        color: BASE_STYLE.COLOR_PALLETE.TEXT,
+      },
     },
     yaxis: {
       ticklen: 5,
+      tickfont: {
+        color: BASE_STYLE.COLOR_PALLETE.TEXT,
+      },
     },
+    plot_bgcolor: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
+    paper_bgcolor: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
     margin: { t: 10, r: 5, b: 25, l: 35 },
   };
 

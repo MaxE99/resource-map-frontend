@@ -25,7 +25,7 @@ const CountryInformationPopup = ({
 
   useEffect(() => {
     setIsCountryInfoLoading(
-      !(isImportExportLoaded && isProductionReservesLoaded && isBalanceLoaded)
+      !(isImportExportLoaded && isProductionReservesLoaded && isBalanceLoaded),
     );
   }, [isImportExportLoaded, isProductionReservesLoaded, isBalanceLoaded]);
 
@@ -34,8 +34,16 @@ const CountryInformationPopup = ({
   }, [isCountryInfoLoading]);
 
   return (
-    <div>
-      <div style={{ padding: "20px" }}>
+    <div
+      style={{
+        backgroundColor: "var(--main-background)",
+      }}
+    >
+      <div
+        style={{
+          padding: "20px",
+        }}
+      >
         <CountryHeader
           countryName={feature?.properties?.ADMIN}
           isHovered={isFeatureHovered}
