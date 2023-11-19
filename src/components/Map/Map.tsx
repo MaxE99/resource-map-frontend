@@ -25,6 +25,7 @@ const Map = ({
   noDataFound,
   isBalanceModeSelected,
   isStrongholdModeSelected,
+  windowWidth,
 }: MapT): JSX.Element => {
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [isFeatureHovered, setIsFeatureHovered] = useState<boolean>(true);
@@ -138,12 +139,35 @@ const Map = ({
             }
           })}
         {!isBalanceModeSelected && !isStrongholdModeSelected && (
-          <div className="bottomBar">
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              width: "100%",
+              height: "80px",
+              borderTop: "1px solid var(--light-grey)",
+              display: "flex",
+              alignItems: "center",
+              zIndex: 401,
+            }}
+          >
             {otherCountries &&
               worldTotal &&
               (!otherCountries.includes("undefined") ||
                 !worldTotal.includes("undefined")) && (
-                <div className="otherAndTotalContainer">
+                <div
+                  style={{
+                    padding: "20px",
+                    zIndex: 998,
+                    borderTopRightRadius: "20px",
+                    fontSize: "15px",
+                    fontWeight: 600,
+                    color: "var(--main-text)",
+                    maxWidth: "200px",
+                    overflowX: "scroll",
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   {!otherCountries.includes("undefined") && (
                     <Fragment>
                       <span style={{ marginRight: "5px" }}>
@@ -171,30 +195,89 @@ const Map = ({
                   )}
                 </div>
               )}
-            <ToggleButtonGroup
-              color="secondary"
-              className="mapToggle"
-              value={isShowingProduction ? "Production" : "Reserves"}
-              exclusive
-              onChange={() => setIsShowingProduction(!isShowingProduction)}
-              sx={{
-                padding: "20px",
-                marginLeft: "auto",
-                "& .Mui-selected": {
-                  backgroundColor: `${BASE_STYLE.COLOR_PALLETE.ELEMENTS} !important`,
-                },
-              }}
-            >
-              <ToggleButton className="toggle" value="Production">
-                Production
-              </ToggleButton>
-              <ToggleButton className="toggle" value="Reserves">
-                Reserves
-              </ToggleButton>
-            </ToggleButtonGroup>
+            {windowWidth > 650 && (
+              <ToggleButtonGroup
+                color="secondary"
+                className="mapToggle"
+                value={isShowingProduction ? "Production" : "Reserves"}
+                exclusive
+                onChange={() => setIsShowingProduction(!isShowingProduction)}
+                sx={{
+                  padding: "20px",
+                  marginLeft: "auto",
+                  "& .Mui-selected": {
+                    backgroundColor: `${BASE_STYLE.COLOR_PALLETE.ELEMENTS} !important`,
+                  },
+                }}
+              >
+                <ToggleButton
+                  style={{
+                    fontSize: "12px",
+                    padding: "8px 12px",
+                    fontWeight: 600,
+                    border: "1px solid var(--main-text)",
+                  }}
+                  value="Production"
+                >
+                  Production
+                </ToggleButton>
+                <ToggleButton
+                  style={{
+                    fontSize: "12px",
+                    padding: "8px 12px",
+                    fontWeight: 600,
+                    border: "1px solid var(--main-text)",
+                  }}
+                  value="Reserves"
+                >
+                  Reserves
+                </ToggleButton>
+              </ToggleButtonGroup>
+            )}
           </div>
         )}
       </MapContainer>
+      {windowWidth <= 650 && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <ToggleButtonGroup
+            color="secondary"
+            className="mapToggle"
+            value={isShowingProduction ? "Production" : "Reserves"}
+            exclusive
+            onChange={() => setIsShowingProduction(!isShowingProduction)}
+            sx={{
+              padding: "20px",
+              "& .Mui-selected": {
+                backgroundColor: `${BASE_STYLE.COLOR_PALLETE.ELEMENTS} !important`,
+              },
+            }}
+          >
+            <ToggleButton
+              style={{
+                fontSize: "12px",
+                padding: "8px 12px",
+                fontWeight: 600,
+                border: "1px solid var(--main-text)",
+              }}
+              value="Production"
+            >
+              Production
+            </ToggleButton>
+            <ToggleButton
+              style={{
+                fontSize: "12px",
+                padding: "8px 12px",
+                fontWeight: 600,
+                border: "1px solid var(--main-text)",
+              }}
+              value="Reserves"
+            >
+              Reserves
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
+      )}
+
       {noDataFound && (
         <div className="map-chip-container">
           <NoDataChip label="" />

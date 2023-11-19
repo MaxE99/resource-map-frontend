@@ -19,6 +19,7 @@ type FormsProps = {
   setSelectedCommodity: Dispatch<SetStateAction<CommodityT>>;
   setIsBalanceModeSelected: Dispatch<SetStateAction<boolean>>;
   setIsStrongholdModeSelected: Dispatch<SetStateAction<boolean>>;
+  windowWidth: number;
 };
 
 const Forms = ({
@@ -28,6 +29,7 @@ const Forms = ({
   setSelectedCommodity,
   setIsBalanceModeSelected,
   setIsStrongholdModeSelected,
+  windowWidth,
 }: FormsProps): JSX.Element => {
   const [commodityOptions, setCommodityOptions] = useState<OptionProps[]>([]);
   const [selectedCommId, setSelectedCommId] = useState<string | undefined>(
@@ -80,7 +82,16 @@ const Forms = ({
   }, [selectedCommodity]);
 
   return (
-    <div className="forms">
+    <div
+      style={{
+        display: "flex",
+        flexDirection: windowWidth > 1000 ? "row" : "column",
+        justifyContent: windowWidth > 1000 ? "space-between" : "unset",
+        width: "100%",
+        marginBottom: "30px",
+        gap: windowWidth > 1000 ? "40px" : "20px",
+      }}
+    >
       <Dropdown
         renderRemove={false}
         isModeActivated={isBalanceModeSelected || isStrongholdModeSelected}
@@ -95,7 +106,12 @@ const Forms = ({
         selected={selectedCommId}
         setSelected={setSelectedCommId}
       />
-      <div style={{ display: "flex" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: windowWidth > 1000 ? "unset" : "center",
+        }}
+      >
         <FormButton
           key="default"
           label="Show commodity production and reserve"

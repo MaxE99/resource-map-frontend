@@ -11,6 +11,7 @@ import { BASE_STYLE } from "../../utils/styles/base";
 const TradeBalancePlot = ({
   feature,
   setIsBalanceLoaded,
+  windowWidth,
 }: TradeBalancePlotT): JSX.Element => {
   const [currentChoice, setCurrentChoice] = useState<string>("Commodity");
   const [importExportBalance, setImportExportBalance] = useState<
@@ -84,6 +85,7 @@ const TradeBalancePlot = ({
       <div
         style={{
           display: "flex",
+          flexDirection: windowWidth > 570 ? "row" : "column",
           zIndex: 1,
           margin: "20px 0 10px",
           position: "relative",
@@ -93,7 +95,7 @@ const TradeBalancePlot = ({
           style={{
             fontSize: "20px",
             fontWeight: 600,
-            position: "absolute",
+            position: "relative",
             bottom: 0,
             color: "var(--main-text)",
           }}

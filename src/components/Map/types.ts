@@ -8,6 +8,7 @@ type MapT = {
   noDataFound: boolean;
   isBalanceModeSelected: boolean;
   isStrongholdModeSelected: boolean;
+  windowWidth: number;
 };
 
 export type { MapT };

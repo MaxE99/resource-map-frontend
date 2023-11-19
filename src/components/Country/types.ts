@@ -19,6 +19,7 @@ type CountryInformationPopupT = {
   isFeatureHovered: boolean;
   year: number;
   setYear: Dispatch<SetStateAction<number>>;
+  windowWidth: number;
 };
 
 type ResourceTableT = {
@@ -27,6 +28,7 @@ type ResourceTableT = {
   setIsProductionReservesLoaded: Dispatch<SetStateAction<boolean>>;
   year: number;
   setYear: Dispatch<SetStateAction<number>>;
+  windowWidth: number;
 };
 
 type CountryStrongholdT = {

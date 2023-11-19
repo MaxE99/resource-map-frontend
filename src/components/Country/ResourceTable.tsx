@@ -26,6 +26,7 @@ const ResourceTable = ({
   setIsProductionReservesLoaded,
   year,
   setYear,
+  windowWidth,
 }: ResourceTableT): JSX.Element => {
   const [prodReserveData, setProdReserveData] = useState<ProductionReservesT[]>(
     [],
@@ -62,6 +63,7 @@ const ResourceTable = ({
       <div
         style={{
           display: "flex",
+          flexDirection: windowWidth > 500 ? "row" : "column",
           position: "relative",
           marginBottom: "10px",
         }}
@@ -70,7 +72,7 @@ const ResourceTable = ({
           style={{
             fontSize: "20px",
             fontWeight: 600,
-            position: "absolute",
+            position: "relative",
             bottom: 0,
           }}
         >

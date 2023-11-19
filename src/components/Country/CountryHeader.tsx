@@ -29,7 +29,6 @@ const CountryHeader = ({
           alignItems: "center",
         }}
       >
-        {" "}
         <Box
           sx={{
             color: "inherit",

@@ -15,6 +15,7 @@ const Sidebar = ({
   govInfo,
   prices,
   isLoading,
+  windowWidth,
 }: SidebarProps): JSX.Element => {
   const [selected, setSelected] = useState<SidebarSelected>("resource");
 
@@ -65,14 +66,22 @@ const Sidebar = ({
 
   const getSidebarBody = (): JSX.Element => {
     if (selected === "datasource") return <DataSources />;
-    if (selected === "about") return <AboutUs />;
+    if (selected === "about") return <AboutUs windowWidth={windowWidth} />;
     return (
       <ResourceBody commodity={commodity} govInfo={govInfo} prices={prices} />
     );
   };
 
   return (
-    <div className="sidebar-wrapper">
+    <div
+      style={{
+        width: windowWidth > 1000 ? "32.5%" : "100%",
+        height: windowWidth > 1000 ? "calc(100vh - 60px)" : "800px",
+        position: "relative",
+        borderRadius: "8px",
+        border: "2px solid var(--light-grey)",
+      }}
+    >
       <div className="sidebar">
         <div
           style={{

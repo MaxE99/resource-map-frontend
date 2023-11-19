@@ -16,6 +16,7 @@ const ImportExportTreemap = ({
   feature,
   isImportExportLoaded,
   setIsImportExportLoaded,
+  windowWidth,
 }: ImportExportTreemapT): JSX.Element => {
   const [currentChoice, setCurrentChoice] = useState<string>("export");
   const [year, setYear] = useState<number>(2021);
@@ -70,6 +71,7 @@ const ImportExportTreemap = ({
         style={{
           display: "flex",
           zIndex: 1,
+          flexDirection: windowWidth > 550 ? "row" : "column",
           margin: "20px 0 10px",
           position: "relative",
           color: "var(--main-text)",
@@ -80,7 +82,7 @@ const ImportExportTreemap = ({
           style={{
             fontSize: "20px",
             fontWeight: 600,
-            position: "absolute",
+            position: "relative",
             bottom: 0,
           }}
         >
@@ -107,7 +109,7 @@ const ImportExportTreemap = ({
           }}
           data={data}
           layout={{
-            width: 780,
+            width: windowWidth > 850 ? 780 : windowWidth - 100,
             height: 780,
             paper_bgcolor: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
             margin: {

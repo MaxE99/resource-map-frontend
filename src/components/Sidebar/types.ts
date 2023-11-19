@@ -10,6 +10,7 @@ type SidebarProps = {
   govInfo: GovInfoT | null;
   prices: CommodityPriceT[] | undefined;
   isLoading: boolean;
+  windowWidth: number;
 };
 
 type SidebarHeadProps = {

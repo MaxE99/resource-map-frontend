@@ -2,7 +2,11 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { Tooltip } from "@mui/material";
 import { DOMAIN } from "../../utils/config";
 
-const AboutUs = (): JSX.Element => {
+type AboutUsProps = {
+  windowWidth: number;
+};
+
+const AboutUs = ({ windowWidth }: AboutUsProps): JSX.Element => {
   return (
     <div style={{ lineHeight: 2, letterSpacing: "0.5px" }}>
       <h3 className="aboutUsHeader">Meet the Team</h3>
@@ -13,7 +17,14 @@ const AboutUs = (): JSX.Element => {
         it.
       </div>
       <div
-        style={{ display: "flex", marginTop: "15px", justifyContent: "center" }}
+        style={{
+          display: "flex",
+          flexDirection: windowWidth > 600 ? "row" : "column",
+          alignItems: "center",
+          marginTop: "15px",
+          gap: "40px",
+          justifyContent: "center",
+        }}
       >
         <div
           style={{
@@ -35,7 +46,6 @@ const AboutUs = (): JSX.Element => {
             border: "var(--light-grey) 2px solid",
             height: "204px",
             width: "204px",
-            marginLeft: "40px",
             borderRadius: "8px",
           }}
         >

@@ -12,6 +12,7 @@ const CountryInformationPopup = ({
   isFeatureHovered,
   year,
   setYear,
+  windowWidth,
 }: CountryInformationPopupT): JSX.Element => {
   const [isCountryInfoLoading, setIsCountryInfoLoading] =
     useState<boolean>(true);
@@ -54,15 +55,18 @@ const CountryInformationPopup = ({
           setIsProductionReservesLoaded={setIsProductionReservesLoaded}
           year={year}
           setYear={setYear}
+          windowWidth={windowWidth}
         />
         <ImportExportTreemap
           feature={feature}
           isImportExportLoaded={isImportExportLoaded}
           setIsImportExportLoaded={setIsImportExportLoaded}
+          windowWidth={windowWidth}
         />
         <TradeBalancePlot
           feature={feature}
           setIsBalanceLoaded={setIsBalanceLoaded}
+          windowWidth={windowWidth}
         />
       </div>
       {isCountryInfoLoading && <BackdropWrapper />}

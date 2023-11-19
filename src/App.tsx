@@ -64,6 +64,7 @@ const App = (): JSX.Element | null => {
     useState<boolean>(false);
   const [isStrongholdModeSelected, setIsStrongholdModeSelected] =
     useState<boolean>(false);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
   const {
     selectedCountry,
@@ -154,6 +155,16 @@ const App = (): JSX.Element | null => {
       updateGeoJSONWithStartData(addInfoProps);
       setIsLoading(false);
     }
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -167,8 +178,23 @@ const App = (): JSX.Element | null => {
 
   return (
     <Fragment>
-      <div className="mainWrapper">
-        <div className="mainOuterBox">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: windowWidth > 1000 ? "row" : "column",
+          justifyContent: windowWidth > 1000 ? "space-between" : "unset",
+          margin: "30px 30px 0",
+        }}
+      >
+        <div
+          style={{
+            width: windowWidth > 1000 ? "65%" : "100%",
+            height: windowWidth > 1000 ? "calc(100vh - 60px)" : "unset",
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: windowWidth > 1000 ? "unset" : "40px",
+          }}
+        >
           <Forms
             selectedCommodity={selectedCommodity}
             isBalanceModeSelected={isBalanceModeSelected}
@@ -176,6 +202,7 @@ const App = (): JSX.Element | null => {
             setSelectedCommodity={setSelectedCommodity}
             setIsBalanceModeSelected={setIsBalanceModeSelected}
             setIsStrongholdModeSelected={setIsStrongholdModeSelected}
+            windowWidth={windowWidth}
           />
           <div
             style={{
@@ -194,6 +221,7 @@ const App = (): JSX.Element | null => {
               noDataFound={noDataFound}
               isBalanceModeSelected={isBalanceModeSelected}
               isStrongholdModeSelected={isStrongholdModeSelected}
+              windowWidth={windowWidth}
             />
             {isLoading && <BackdropWrapper />}
           </div>
@@ -216,6 +244,7 @@ const App = (): JSX.Element | null => {
           govInfo={govInfo}
           prices={prices}
           isLoading={isSidebarLoading}
+          windowWidth={windowWidth}
         />
         <Dialog
           sx={{
@@ -236,6 +265,7 @@ const App = (): JSX.Element | null => {
             feature={selectedCountry}
             year={year}
             setYear={setYear}
+            windowWidth={windowWidth}
           />
         </Dialog>
       </div>
