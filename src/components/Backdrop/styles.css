@@ -16,6 +16,7 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.35);
   border-radius: inherit;
+  z-index: 499;
 }
 
 .loading-progress {

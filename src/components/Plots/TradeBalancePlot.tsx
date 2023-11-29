@@ -14,6 +14,7 @@ const TradeBalancePlot = ({
   windowWidth,
 }: TradeBalancePlotT): JSX.Element => {
   const [currentChoice, setCurrentChoice] = useState<string>("Commodity");
+  const [plotIndex, setPlotIndex] = useState<number>(0);
   const [importExportBalance, setImportExportBalance] = useState<
     ImportExportBalanceT[]
   >([]);
@@ -26,6 +27,10 @@ const TradeBalancePlot = ({
         .finally(() => setIsBalanceLoaded(true));
     }
   }, []);
+
+  useEffect(() => {
+    setPlotIndex(plotIndex + 1);
+  }, [currentChoice]);
 
   const data: Data[] = [
     {
@@ -85,9 +90,9 @@ const TradeBalancePlot = ({
       <div
         style={{
           display: "flex",
-          flexDirection: windowWidth > 570 ? "row" : "column",
+          flexDirection: "row",
           zIndex: 1,
-          margin: "20px 0 10px",
+          margin: "50px 0 10px",
           position: "relative",
         }}
       >
@@ -96,11 +101,22 @@ const TradeBalancePlot = ({
             fontSize: "20px",
             fontWeight: 600,
             position: "relative",
+            display: "flex",
+            alignItems: "center",
             bottom: 0,
             color: "var(--main-text)",
           }}
         >
-          {currentChoice} Trade Balance
+          {windowWidth > 570 && (
+            <div>
+              <span style={{ textTransform: "uppercase", marginLeft: "4px" }}>
+                {currentChoice}
+              </span>
+              <span style={{ textTransform: "uppercase", marginLeft: "4px" }}>
+                Trade Balance
+              </span>
+            </div>
+          )}
         </div>
         <CountryToggleGroup
           firstChoice="Commodity"
@@ -110,26 +126,29 @@ const TradeBalancePlot = ({
         />
       </div>
       {importExportBalance.length ? (
-        <Plot
-          style={{ width: "100%" }}
-          data={data}
-          layout={{
-            margin: { t: 10, r: 20, b: 35, l: 30 },
-            plot_bgcolor: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
-            paper_bgcolor: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
-            xaxis: {
-              tickfont: {
-                color: BASE_STYLE.COLOR_PALLETE.TEXT,
+        <div style={{ height: "500px" }}>
+          <Plot
+            style={{ width: "100%" }}
+            data={data}
+            key={plotIndex}
+            layout={{
+              margin: { t: 10, r: 20, b: 35, l: 30 },
+              plot_bgcolor: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
+              paper_bgcolor: BASE_STYLE.COLOR_PALLETE.BACKGROUND,
+              xaxis: {
+                tickfont: {
+                  color: BASE_STYLE.COLOR_PALLETE.TEXT,
+                },
               },
-            },
-            yaxis: {
-              tickfont: {
-                color: BASE_STYLE.COLOR_PALLETE.TEXT,
+              yaxis: {
+                tickfont: {
+                  color: BASE_STYLE.COLOR_PALLETE.TEXT,
+                },
               },
-            },
-          }}
-          config={{ displayModeBar: false, responsive: true }}
-        />
+            }}
+            config={{ displayModeBar: false, responsive: true }}
+          />
+        </div>
       ) : (
         <NoDataChip label={currentChoice} />
       )}

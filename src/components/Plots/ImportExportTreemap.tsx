@@ -71,8 +71,8 @@ const ImportExportTreemap = ({
         style={{
           display: "flex",
           zIndex: 1,
-          flexDirection: windowWidth > 550 ? "row" : "column",
-          margin: "20px 0 10px",
+          flexDirection: "row",
+          margin: "50px 0 10px",
           position: "relative",
           color: "var(--main-text)",
           backgroundColor: "var(--main-background)",
@@ -83,16 +83,22 @@ const ImportExportTreemap = ({
             fontSize: "20px",
             fontWeight: 600,
             position: "relative",
+            display: "flex",
+            alignItems: "center",
             bottom: 0,
           }}
         >
           <span>{year}</span>
-          <span style={{ textTransform: "uppercase", marginLeft: "4px" }}>
-            Commodity
-          </span>
-          <span style={{ textTransform: "uppercase", marginLeft: "4px" }}>
-            {currentChoice}
-          </span>
+          {windowWidth > 550 && (
+            <div>
+              <span style={{ textTransform: "uppercase", marginLeft: "4px" }}>
+                Commodity
+              </span>
+              <span style={{ textTransform: "uppercase", marginLeft: "4px" }}>
+                {currentChoice}
+              </span>
+            </div>
+          )}
         </div>
         <CountryToggleGroup
           firstChoice="import"
@@ -119,7 +125,7 @@ const ImportExportTreemap = ({
               b: 0,
             },
           }}
-          config={{ displayModeBar: false, responsive: true }}
+          config={{ staticPlot: true, displayModeBar: false, responsive: true }}
         />
       ) : isImportExportLoaded ? (
         <NoDataChip label={currentChoice} />

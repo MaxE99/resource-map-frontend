@@ -121,7 +121,16 @@ const CountryResourcePopup = ({
             )}
         </Fragment>
       ) : (
-        <div style={{ display: "flex", marginTop: "20px" }}>
+        <div
+          style={{
+            display: "flex",
+            marginTop:
+              (productionData && productionData?.length > 0) ||
+              (reserveData && reserveData?.length > 0)
+                ? "20px"
+                : "unset",
+          }}
+        >
           {productionData &&
             productionData?.length > 0 &&
             productionData.every((item) => !isNaN(Number(item.amount))) && (

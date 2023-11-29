@@ -18,12 +18,16 @@ const CountryToggleGroup = ({
   return (
     <ToggleButtonGroup
       color="secondary"
+      className="mapToggle"
       value={currentChoice}
       exclusive
       onChange={handleChange}
       sx={{
+        border: `1px solid ${BASE_STYLE.COLOR_PALLETE.TEXT}`,
         marginLeft: "auto",
-        border: `1px solid ${BASE_STYLE.COLOR_PALLETE.LIGHT_GREY}`,
+        "& .Mui-selected": {
+          backgroundColor: `${BASE_STYLE.COLOR_PALLETE.ELEMENTS} !important`,
+        },
       }}
     >
       <ToggleButton

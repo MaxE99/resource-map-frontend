@@ -38,6 +38,7 @@ const CountryInformationPopup = ({
     <div
       style={{
         backgroundColor: "var(--main-background)",
+        overflowY: isCountryInfoLoading ? "hidden" : "scroll",
       }}
     >
       <div

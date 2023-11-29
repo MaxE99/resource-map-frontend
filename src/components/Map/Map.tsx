@@ -142,8 +142,8 @@ const Map = ({
           <div
             style={{
               position: "absolute",
-              bottom: 0,
               width: "100%",
+              bottom: 50,
               height: "80px",
               borderTop: "1px solid var(--light-grey)",
               display: "flex",
@@ -157,15 +157,15 @@ const Map = ({
                 !worldTotal.includes("undefined")) && (
                 <div
                   style={{
-                    padding: "20px",
                     zIndex: 998,
-                    borderTopRightRadius: "20px",
                     fontSize: "15px",
                     fontWeight: 600,
                     color: "var(--main-text)",
-                    maxWidth: "200px",
+                    maxWidth: "600px",
                     overflowX: "scroll",
                     whiteSpace: "nowrap",
+                    padding: windowWidth > 600 ? "20px" : "unset",
+                    margin: windowWidth > 600 ? "unset" : "4px",
                   }}
                 >
                   {!otherCountries.includes("undefined") && (

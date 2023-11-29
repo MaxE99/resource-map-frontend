@@ -183,7 +183,7 @@ const App = (): JSX.Element | null => {
           display: "flex",
           flexDirection: windowWidth > 1000 ? "row" : "column",
           justifyContent: windowWidth > 1000 ? "space-between" : "unset",
-          margin: "30px 30px 0",
+          margin: windowWidth > 800 ? "30px 30px 0" : "10px 10px 0",
         }}
       >
         <div
@@ -225,18 +225,23 @@ const App = (): JSX.Element | null => {
             />
             {isLoading && <BackdropWrapper />}
           </div>
-          <Slider
-            className="mainSlider"
-            value={year}
-            min={isBalanceModeSelected ? 1995 : 2018}
-            max={isBalanceModeSelected ? 2021 : 2022}
-            marks={isBalanceModeSelected ? IMPORT_EXPORT_MARKS : MARKS}
-            step={1}
-            onChange={handleChange}
-            valueLabelDisplay="auto"
-            valueLabelFormat={(value) => value.toString()}
-            aria-label="Year Slider"
-          />
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Slider
+              className="mainSlider"
+              sx={{
+                width: windowWidth > 1000 ? "100%" : `${windowWidth - 40}px`,
+              }}
+              value={year}
+              min={isBalanceModeSelected ? 1995 : 2018}
+              max={isBalanceModeSelected ? 2021 : 2022}
+              marks={isBalanceModeSelected ? IMPORT_EXPORT_MARKS : MARKS}
+              step={1}
+              onChange={handleChange}
+              valueLabelDisplay="auto"
+              valueLabelFormat={(value) => value.toString()}
+              aria-label="Year Slider"
+            />
+          </div>
         </div>
         <Sidebar
           key={JSON.stringify(govInfo)}

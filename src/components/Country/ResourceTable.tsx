@@ -63,9 +63,10 @@ const ResourceTable = ({
       <div
         style={{
           display: "flex",
-          flexDirection: windowWidth > 500 ? "row" : "column",
+          flexDirection: "row",
           position: "relative",
           marginBottom: "10px",
+          marginTop: "30px",
         }}
       >
         <div
@@ -74,6 +75,8 @@ const ResourceTable = ({
             fontWeight: 600,
             position: "relative",
             bottom: 0,
+            display: "flex",
+            alignItems: "center",
           }}
         >
           <span
@@ -83,15 +86,17 @@ const ResourceTable = ({
           >
             {year}
           </span>
-          <span
-            style={{
-              color: "var(--main-text)",
-              textTransform: "uppercase",
-              marginLeft: "4px",
-            }}
-          >
-            {currentChoice}
-          </span>
+          {windowWidth > 500 && (
+            <span
+              style={{
+                color: "var(--main-text)",
+                textTransform: "uppercase",
+                marginLeft: "4px",
+              }}
+            >
+              {currentChoice}
+            </span>
+          )}
         </div>
         <CountryToggleGroup
           firstChoice="production"
