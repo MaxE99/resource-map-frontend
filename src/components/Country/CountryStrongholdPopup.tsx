@@ -41,7 +41,7 @@ const CountryStrongholdPopup = ({
       {strongholds
         .sort(
           //@ts-ignore // strongholds can only hold ProductionReservesT that have a share
-          (a: ProductionReservesT, b: ProductionReservesT) => b.share - a.share
+          (a: ProductionReservesT, b: ProductionReservesT) => b.share - a.share,
         )
         .map((stronghold: ProductionReservesT) => (
           <div
@@ -57,22 +57,32 @@ const CountryStrongholdPopup = ({
                 display: "flex",
                 alignItems: "center",
                 fontSize: "18px",
+                color: "var(--main-text)",
               }}
             >
               <img
                 src={
                   DOMAIN +
                   `/static/commodity_imgs/${slugify(
-                    stronghold.commodity_name
+                    stronghold.commodity_name,
                   )}.jpg`
                 }
                 className="strongholdCommodityImg"
               />
-              <span style={{ fontWeight: 600, marginRight: "5px" }}>
+              <span
+                style={{
+                  color: "var(--main-text)",
+                  fontWeight: 600,
+                  marginRight: "5px",
+                }}
+              >
                 {stronghold.commodity_name}:
               </span>
             </div>
-            <span> {Number(stronghold.share).toFixed(2)}%</span>
+            <span style={{ color: "var(--main-text)" }}>
+              {" "}
+              {Number(stronghold.share).toFixed(2)}%
+            </span>
           </div>
         ))}
     </div>

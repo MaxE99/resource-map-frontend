@@ -143,7 +143,7 @@ const Map = ({
             style={{
               position: "absolute",
               width: "100%",
-              bottom: 50,
+              bottom: windowWidth > 1600 ? 0 : 50,
               height: "80px",
               borderTop: "1px solid var(--light-grey)",
               display: "flex",

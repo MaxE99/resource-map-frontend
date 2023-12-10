@@ -42,18 +42,30 @@ const CountryBalancePopup = ({
       />
       <Fragment>
         <div style={{ margin: "5px 0" }}>
-          <span style={{ fontWeight: 600 }}>Commodity Imports: </span>
-          <span>
+          <span style={{ color: "var(--main-text)", fontWeight: 600 }}>
+            Commodity Imports:{" "}
+          </span>
+          <span
+            style={{
+              color: "var(--main-text)",
+            }}
+          >
             {formatNumberWithSuffix(
-              feature.properties?.total_commodity_imports
+              feature.properties?.total_commodity_imports,
             )}
           </span>
         </div>
         <div>
-          <span style={{ fontWeight: 600 }}>Commodity Exports: </span>
-          <span>
+          <span style={{ color: "var(--main-text)", fontWeight: 600 }}>
+            Commodity Exports:{" "}
+          </span>
+          <span
+            style={{
+              color: "var(--main-text)",
+            }}
+          >
             {formatNumberWithSuffix(
-              feature.properties?.total_commodity_exports
+              feature.properties?.total_commodity_exports,
             )}
           </span>
         </div>
