@@ -1,4 +1,5 @@
 import { IoIosArrowDown } from "react-icons/io";
+
 import "./styles.css";
 import { OpenButtonProps } from "./types";
 

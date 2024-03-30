@@ -1,14 +1,14 @@
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import { CommodityPriceT, CommodityT, GovInfoT } from "../../utils/types/api";
+import { CommodityT, GovInfoT, PriceT } from "../../utils/types/api";
 
 type PricePlotProps = {
-  data: CommodityPriceT[];
+  data: PriceT[];
 };
 
 type SidebarProps = {
   commodity: CommodityT;
   govInfo: GovInfoT | null;
-  prices: CommodityPriceT[] | undefined;
+  prices: PriceT[] | undefined;
   isLoading: boolean;
   windowWidth: number;
 };
@@ -28,7 +28,16 @@ type SidebarSelected = "resource" | "datasource" | "about";
 type ResourceBodyProps = {
   commodity: CommodityT;
   govInfo: GovInfoT | null;
-  prices: CommodityPriceT[] | undefined;
+  prices: PriceT[] | undefined;
+};
+
+type AboutUsProps = {
+  windowWidth: number;
+};
+
+type CreatorImageProps = {
+  name: string;
+  linkedinLink: string;
 };
 
 export type {
@@ -38,4 +47,6 @@ export type {
   SidebarMenuProps,
   SidebarSelected,
   ResourceBodyProps,
+  AboutUsProps,
+  CreatorImageProps,
 };

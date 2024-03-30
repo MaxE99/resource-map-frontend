@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import "./styles.css";
 
-import { CountryStrongholdT } from "./types";
-import { ProductionReservesT } from "../../utils/types/api";
-import { DOMAIN } from "../../utils/config";
+import "./styles.css";
+import { CountryStrongholdPopupT } from "./types";
+import { StrongholdT } from "../../utils/types/api";
+import { S3_FOLDER } from "../../utils/config";
 import CountryHeader from "./CountryHeader";
 import { slugify } from "../../utils/functions/utils";
 
@@ -12,7 +12,7 @@ const CountryStrongholdPopup = ({
   strongholds,
   setSelectedStrongholds,
   setIsPopupOpen,
-}: CountryStrongholdT): JSX.Element => {
+}: CountryStrongholdPopupT): JSX.Element => {
   const handleClickOutside = (event: MouseEvent) => {
     const targetElement = event.target as Element;
     if (!targetElement.closest(".countryPopup")) {
@@ -35,15 +35,14 @@ const CountryStrongholdPopup = ({
       style={{ top: "50%", padding: isFeatureHovered ? "12px" : "20px" }}
     >
       <CountryHeader
-        countryName={strongholds[0].country_name}
+        countryName={strongholds[0].country}
         isHovered={isFeatureHovered}
       />
       {strongholds
         .sort(
-          //@ts-ignore // strongholds can only hold ProductionReservesT that have a share
-          (a: ProductionReservesT, b: ProductionReservesT) => b.share - a.share,
+          (a: StrongholdT, b: StrongholdT) => Number(b.share) - Number(a.share)
         )
-        .map((stronghold: ProductionReservesT) => (
+        .map((stronghold: StrongholdT) => (
           <div
             key={JSON.stringify(stronghold)}
             style={{
@@ -62,10 +61,8 @@ const CountryStrongholdPopup = ({
             >
               <img
                 src={
-                  DOMAIN +
-                  `/static/commodity_imgs/${slugify(
-                    stronghold.commodity_name,
-                  )}.jpg`
+                  S3_FOLDER +
+                  `static/commodity_imgs/${slugify(stronghold.commodity)}.jpg`
                 }
                 className="strongholdCommodityImg"
               />
@@ -76,7 +73,7 @@ const CountryStrongholdPopup = ({
                   marginRight: "5px",
                 }}
               >
-                {stronghold.commodity_name}:
+                {stronghold.commodity}:
               </span>
             </div>
             <span style={{ color: "var(--main-text)" }}>

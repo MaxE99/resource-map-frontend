@@ -25,12 +25,7 @@ const ResourceBody = ({
   ];
 
   return (
-    <div
-      style={{
-        lineHeight: 2,
-        letterSpacing: "0.5px",
-      }}
-    >
+    <div style={{ lineHeight: 2, letterSpacing: "0.5px" }}>
       <div
         style={{
           display: "flex",
@@ -66,9 +61,9 @@ const ResourceBody = ({
           label="Largest Producers"
           body={
             <div>
-              {commodity.companies.map((commodity: string) => (
-                <div key={commodity} style={{ margin: "5px 0 0 10px" }}>
-                  {commodity}
+              {commodity.companies.map((company: string) => (
+                <div key={company} style={{ margin: "5px 0 0 10px" }}>
+                  {company}
                 </div>
               ))}
             </div>
@@ -80,7 +75,8 @@ const ResourceBody = ({
               key={item.index}
               index={item.index}
               label={item.summary}
-              body={item.details}
+              // @ts-ignore
+              body={item.details?.substring(1, item.details?.length - 1)}
             />
           ))}
       </div>

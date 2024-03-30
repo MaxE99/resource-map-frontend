@@ -1,11 +1,12 @@
+import { useState } from "react";
 import { LiaBarsSolid } from "react-icons/lia";
 import {
   IoDiamondOutline,
   IoBookmarkOutline,
   IoInformationCircleOutline,
 } from "react-icons/io5";
+
 import "./styles.css";
-import { useState } from "react";
 import { SidebarMenuProps } from "./types";
 
 const SidebarMenu = ({

@@ -1,5 +1,6 @@
-import { AccordionHeadProps } from "./types";
 import { IoIosArrowDown } from "react-icons/io";
+
+import { AccordionHeadProps } from "./types";
 import "./styles.css";
 
 const AccordionHead = ({

@@ -1,4 +1,5 @@
 import { IoMdClose } from "react-icons/io";
+
 import "./styles.css";
 import { RemoveButtonProps } from "./types";
 

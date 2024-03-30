@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import "./styles.css";
 import Option from "./Option";
 import { OptionListProps } from "./types";
@@ -26,9 +27,9 @@ const OptionList = ({
   return (
     <div className="dropdown-options-wrapper">
       <ul style={{ padding: "4px 0" }}>
-        {options.map((option: any, index: number) => (
+        {options.map((option: any) => (
           <Option
-            key={index}
+            key={option.identifier}
             identifier={option.identifier}
             children={option.children}
             selected={selected}

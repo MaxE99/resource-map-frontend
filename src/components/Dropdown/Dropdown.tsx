@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import OpenButton from "./OpenButton";
 import RemoveButton from "./RemoveButton";
 import OptionList from "./OptionList";
@@ -18,7 +19,7 @@ const Dropdown = ({
   const getSelectedImage = (): JSX.Element => {
     if (!selected) return <React.Fragment />;
     const selectedOption: OptionProps | undefined = options.find(
-      (option) => option.identifier === selected,
+      (option) => option.identifier === selected
     );
 
     return (

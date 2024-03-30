@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
-import { CommodityPriceT, ProductionReservesT } from "../../utils/types/api";
+
+import { CommodityCountryDataT, PriceT } from "../../utils/types/api";
 
 type PricePlotProps = {
-  data: CommodityPriceT[] | undefined;
+  data: PriceT[] | undefined;
 };
 
 type TradeBalancePlotT = {
@@ -19,7 +20,7 @@ type ImportExportTreemapT = {
 };
 
 type ResourcePlotT = {
-  data: ProductionReservesT[];
+  data: CommodityCountryDataT[];
 };
 
 export type {

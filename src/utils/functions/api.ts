@@ -1,12 +1,12 @@
 import { API } from "../config";
 import {
-  CommodityT,
-  CountryT,
-  ProductionReservesT,
-  GovInfoT,
-  ImportExportT,
-  CommodityPriceT,
-  ImportExportBalanceT,
+  ImportExportBalanceResT,
+  StrongholdResT,
+  GovInfoResT,
+  PriceResT,
+  CommodityCountryDataResT,
+  CountryResourceTableResT,
+  TradeBalanceResT,
 } from "../types/api";
 
 async function fetchData<T>(
@@ -19,9 +19,7 @@ async function fetchData<T>(
     url += "?" + new URLSearchParams(queryParameters);
   }
 
-  const response = await fetch(url, {
-    method: "GET",
-  });
+  const response = await fetch(url, { method: "GET" });
 
   if (!response.ok) {
     throw new Error(`API request failed with status ${response.status}`);
@@ -30,138 +28,77 @@ async function fetchData<T>(
   return await response.json();
 }
 
-const fetchCountryData = async (name?: string): Promise<CountryT[]> => {
-  const queryParams = name
-    ? new URLSearchParams({ name: encodeURIComponent(name) })
-    : undefined;
-  return fetchData<CountryT[]>(API.COUNTRIES, queryParams);
+const fetchTradeBalanceData = (
+  year: number
+): Promise<ImportExportBalanceResT> => {
+  const queryParams = new URLSearchParams({
+    year: year.toString(),
+  });
+  return fetchData<ImportExportBalanceResT>(API.BALANCE, queryParams);
 };
 
-const fetchCommodityData = async (name?: string): Promise<CommodityT[]> => {
-  const queryParams = name
-    ? new URLSearchParams({ name: encodeURIComponent(name) })
-    : undefined;
-  return fetchData<CommodityT[]>(API.COMMODITIES, queryParams);
-};
-
-const fetchProductionData = async (
-  year?: number,
-  commodity?: string,
-  country?: string
-): Promise<ProductionReservesT[]> => {
-  const queryParams = new URLSearchParams();
-  if (year !== undefined) {
-    queryParams.append("year", year.toString());
-  }
-  if (commodity !== undefined) {
-    queryParams.append("commodity", commodity);
-  }
-  if (country !== undefined) {
-    queryParams.append("country", country);
-  }
-  return fetchData<ProductionReservesT[]>(API.PRODUCTION, queryParams);
-};
-
-const fetchReservesData = async (
-  year?: number,
-  commodity?: string,
-  country?: string
-): Promise<ProductionReservesT[]> => {
-  const queryParams = new URLSearchParams();
-  if (year !== undefined) {
-    queryParams.append("year", year.toString());
-  }
-  if (commodity !== undefined) {
-    queryParams.append("commodity", commodity);
-  }
-  if (country !== undefined) {
-    queryParams.append("country", country);
-  }
-  return fetchData<ProductionReservesT[]>(API.RESERVES, queryParams);
-};
-
-const fetchGovInfoData = async (
-  year?: number,
-  commodity?: string
-): Promise<GovInfoT[]> => {
-  const queryParams = new URLSearchParams();
-  if (year !== undefined) {
-    queryParams.append("year", year.toString());
-  }
-  if (commodity !== undefined) {
-    queryParams.append("commodity", commodity);
-  }
-  return fetchData<GovInfoT[]>(API.GOV_INFO, queryParams);
-};
-
-const fetchImportData = async (
-  year?: number,
-  commodity?: string,
-  country?: string
-): Promise<ImportExportT[]> => {
-  const queryParams = new URLSearchParams();
-  if (year !== undefined) {
-    queryParams.append("year", year.toString());
-  }
-  if (commodity !== undefined) {
-    queryParams.append("commodity", commodity);
-  }
-  if (country !== undefined) {
-    queryParams.append("country", country);
-  }
-  return fetchData<ImportExportT[]>(API.IMPORTS, queryParams);
-};
-
-const fetchExportData = async (
-  year?: number,
-  commodity?: string,
-  country?: string
-): Promise<ImportExportT[]> => {
-  const queryParams = new URLSearchParams();
-  if (year !== undefined) {
-    queryParams.append("year", year.toString());
-  }
-  if (commodity !== undefined) {
-    queryParams.append("commodity", commodity);
-  }
-  if (country !== undefined) {
-    queryParams.append("country", country);
-  }
-  return fetchData<ImportExportT[]>(API.EXPORTS, queryParams);
-};
-
-const fetchPriceData = (commodity: string): Promise<CommodityPriceT[]> =>
-  fetchData<CommodityPriceT[]>(API.PRICES, new URLSearchParams({ commodity }));
-
-const fetchImportExportBalanceData = (
-  year?: number,
-  country?: string
-): Promise<ImportExportBalanceT[]> => {
-  const queryParams = new URLSearchParams();
-  if (year !== undefined) {
-    queryParams.append("year", year.toString());
-  }
-  if (country !== undefined) {
-    queryParams.append("country", country);
-  }
-  return fetchData<ImportExportBalanceT[]>(API.BALANCE, queryParams);
-};
-
-const fetchStrongholdData = (year: number): Promise<ProductionReservesT[]> =>
-  fetchData<ProductionReservesT[]>(
-    API.STRONGHOLD,
+const fetchStrongholdData = (year: number): Promise<StrongholdResT> =>
+  fetchData<StrongholdResT>(
+    API.PRODUCTION,
     new URLSearchParams({ year: year.toString() })
   );
 
+const fetchGovInfoData = async (
+  year: number,
+  commodity: string
+): Promise<GovInfoResT> => {
+  const queryParams = new URLSearchParams({
+    year: year.toString(),
+    commodity: commodity,
+  });
+  return fetchData<GovInfoResT>(API.GOV_INFO, queryParams);
+};
+
+const fetchPriceData = (commodity: string): Promise<PriceResT> =>
+  fetchData<PriceResT>(API.PRICES, new URLSearchParams({ commodity }));
+
+const fetchCommodityCountryData = async (
+  commodity: string,
+  country: string,
+  getProductionData: boolean = true
+): Promise<CommodityCountryDataResT> => {
+  const queryParams = new URLSearchParams({
+    commodity: commodity,
+    country: country,
+  });
+  const endpoint = getProductionData ? API.PRODUCTION : API.RESERVES;
+  return fetchData<CommodityCountryDataResT>(endpoint, queryParams);
+};
+
+const fetchCountryResourceTable = async (
+  year: number,
+  country: string,
+  getProductionData: boolean = true
+): Promise<CountryResourceTableResT> => {
+  const queryParams = new URLSearchParams({
+    year: year.toString(),
+    country: country,
+  });
+  const endpoint = getProductionData ? API.PRODUCTION : API.RESERVES;
+  return fetchData<CountryResourceTableResT>(endpoint, queryParams);
+};
+
+const fetchCountryTradeBalanceData = (
+  country: string
+): Promise<TradeBalanceResT> => {
+  const queryParams = new URLSearchParams();
+  if (country !== undefined) {
+    queryParams.append("country", country);
+  }
+  return fetchData<TradeBalanceResT>(API.BALANCE, queryParams);
+};
+
 export {
-  fetchCountryData,
-  fetchCommodityData,
-  fetchProductionData,
-  fetchReservesData,
   fetchGovInfoData,
-  fetchImportData,
-  fetchExportData,
   fetchPriceData,
-  fetchImportExportBalanceData,
+  fetchTradeBalanceData,
   fetchStrongholdData,
+  fetchCommodityCountryData,
+  fetchCountryResourceTable,
+  fetchCountryTradeBalanceData,
 };

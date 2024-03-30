@@ -3,8 +3,9 @@ import {
   CommodityT,
   ImportExportBalanceT,
   ProductionReservesT,
+  StrongholdT,
 } from "../types/api";
-import { COUNTRIES_DATA } from "../start-data";
+import { COUNTRIES_DATA } from "../startData";
 import { AddGeoJSONInfoT, GeoJSONDataUpdateT } from "../types/base";
 import { Dispatch, SetStateAction } from "react";
 import { BASE_STYLE } from "../styles/base";
@@ -53,11 +54,11 @@ const updateGeoJSONWithStartData = (props: AddGeoJSONInfoT): void => {
   const updatedGeoJsonData = { ...COUNTRIES_DATA };
 
   const totalAmount = props.selectedCommodity.production.find(
-    (entry: ProductionReservesT) => entry.country_name === "World total"
+    (entry: ProductionReservesT) => entry.country === "World total"
   )?.amount;
 
   const otherCountriesAmount = props.selectedCommodity.production.find(
-    (entry: ProductionReservesT) => entry.country_name === "Other countries"
+    (entry: ProductionReservesT) => entry.country === "Other countries"
   )?.amount;
 
   let metric = "";
@@ -66,7 +67,7 @@ const updateGeoJSONWithStartData = (props: AddGeoJSONInfoT): void => {
     const countryName = feature.properties.ADMIN;
 
     const productionCountry = props.selectedCommodity.production.find(
-      (entry: ProductionReservesT) => entry.country_name === countryName
+      (entry: ProductionReservesT) => entry.country === countryName
     );
 
     if (
@@ -120,7 +121,7 @@ const updateGeoJSONWithBalance = (
     const countryName = feature.properties.ADMIN;
 
     const countryBalance = data.find(
-      (entry: ImportExportBalanceT) => entry.country_name === countryName
+      (entry: ImportExportBalanceT) => entry.country === countryName
     );
     if (countryBalance) {
       feature.properties.total_commodity_imports =
@@ -141,7 +142,7 @@ const updateGeoJSONWithBalance = (
 };
 
 const updateGeoJSONWithStronghold = (
-  data: ProductionReservesT[],
+  data: StrongholdT[],
   setWorldGeojson: Dispatch<
     SetStateAction<GeoJSON.FeatureCollection | undefined>
   >
@@ -151,7 +152,7 @@ const updateGeoJSONWithStronghold = (
     const countryName = feature.properties.ADMIN;
 
     const countryStrongholds = data.filter(
-      (stronghold) => stronghold.country_name === countryName
+      (stronghold) => stronghold.country === countryName
     );
     if (countryStrongholds.length) {
       feature.properties.strongholds = countryStrongholds;
@@ -170,21 +171,23 @@ const updateGeoJSONWithCommodity = async (
 ): Promise<void> => {
   if (props.selectedCommodity?.name) {
     try {
-      const [productionReservesData] = await Promise.all([
+      let [productionReservesData] = await Promise.all([
         fetch(props.queryString, { method: "GET" })
           .then((response) => response.json())
           .catch((error) => console.error("Error fetching data:", error)),
       ]);
 
+      productionReservesData = productionReservesData["data"];
+
       props.setNoDataFound(productionReservesData.length ? false : true);
       const updatedGeoJsonData = { ...props.worldGeojson };
 
       const totalAmount = productionReservesData.find(
-        (entry: ProductionReservesT) => entry.country_name === "World total"
+        (entry: ProductionReservesT) => entry.country === "World total"
       )?.amount;
 
       const otherCountriesAmount = productionReservesData.find(
-        (entry: ProductionReservesT) => entry.country_name === "Other countries"
+        (entry: ProductionReservesT) => entry.country === "Other countries"
       )?.amount;
 
       let metric = "";
@@ -193,7 +196,7 @@ const updateGeoJSONWithCommodity = async (
         const countryName = feature.properties.ADMIN;
 
         const productionCountry = productionReservesData.find(
-          (entry: ProductionReservesT) => entry.country_name === countryName
+          (entry: ProductionReservesT) => entry.country === countryName
         );
 
         if (

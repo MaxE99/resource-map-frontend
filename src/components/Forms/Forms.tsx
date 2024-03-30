@@ -1,16 +1,16 @@
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import BalanceIcon from "@mui/icons-material/Balance";
+import ShieldIcon from "@mui/icons-material/Shield";
+import { IoDiamondOutline } from "react-icons/io5";
+
 import { CommodityT } from "../../utils/types/api";
 import Dropdown from "../Dropdown/Dropdown";
 import "./styles.css";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { OptionProps } from "../Dropdown/types";
-import { DOMAIN } from "../../utils/config";
+import { S3_FOLDER } from "../../utils/config";
 import FormButton from "./FormButton";
-import BalanceIcon from "@mui/icons-material/Balance";
-import ShieldIcon from "@mui/icons-material/Shield";
-
-import { IoDiamondOutline } from "react-icons/io5";
 import { BASE_STYLE } from "../../utils/styles/base";
-import { COMMODITIES_DATA } from "../../utils/start-data";
+import { COMMODITIES_DATA } from "../../utils/startData";
 
 type FormsProps = {
   selectedCommodity: CommodityT;
@@ -33,7 +33,7 @@ const Forms = ({
 }: FormsProps): JSX.Element => {
   const [commodityOptions, setCommodityOptions] = useState<OptionProps[]>([]);
   const [selectedCommId, setSelectedCommId] = useState<string | undefined>(
-    selectedCommodity.name,
+    selectedCommodity.name
   );
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const Forms = ({
               }}
             >
               <img
-                src={DOMAIN + "/static/" + commodity.img_path + ".jpg"}
+                src={S3_FOLDER + "static/" + commodity.img_path + ".jpg"}
                 height={25}
                 width={25}
                 style={{
@@ -66,13 +66,13 @@ const Forms = ({
             </div>,
           ],
         };
-      }),
+      })
     );
   }, [selectedCommodity]);
 
   useEffect(() => {
     const newValue: CommodityT | undefined = COMMODITIES_DATA.find(
-      (commodity) => commodity.name === selectedCommId,
+      (commodity) => commodity.name === selectedCommId
     );
     newValue && setSelectedCommodity(newValue);
   }, [selectedCommId]);
@@ -101,7 +101,7 @@ const Forms = ({
             if (a.identifier > b.identifier) return 1;
             if (a.identifier < b.identifier) return -1;
             return 0;
-          },
+          }
         )}
         selected={selectedCommId}
         setSelected={setSelectedCommId}

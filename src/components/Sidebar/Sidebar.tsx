@@ -1,14 +1,16 @@
 import { Fragment, useState } from "react";
+import { IoBookmarkOutline, IoInformationCircleOutline } from "react-icons/io5";
+
 import "./styles.css";
 import { SidebarProps, SidebarSelected } from "./types";
-import { IoBookmarkOutline, IoInformationCircleOutline } from "react-icons/io5";
-import { DOMAIN } from "../../utils/config";
+import { S3_FOLDER } from "../../utils/config";
 import SidebarHead from "./SidebarHead";
 import SidebarMenu from "./SidebarMenu";
 import DataSources from "./DataSources";
 import ResourceBody from "./ResourceBody";
 import AboutUs from "./AboutUs";
 import BackdropWrapper from "../Backdrop/BackdropWrapper";
+import { slugify } from "../../utils/functions/utils";
 
 const Sidebar = ({
   commodity,
@@ -49,7 +51,12 @@ const Sidebar = ({
         key="default"
         icon={
           <img
-            src={DOMAIN + "/static/" + commodity.img_path + ".jpg"}
+            src={
+              S3_FOLDER +
+              "static/commodity_imgs/" +
+              slugify(commodity.name.toLowerCase()) +
+              ".jpg"
+            }
             alt={commodity.name + " Image"}
             width={45}
             height={45}

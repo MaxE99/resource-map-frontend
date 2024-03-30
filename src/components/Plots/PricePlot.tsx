@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { CommodityPriceT } from "../../utils/types/api";
-import { PricePlotProps } from "./types";
 import { Data } from "plotly.js";
 import Plot from "react-plotly.js";
+
+import { PricePlotProps } from "./types";
 import NoDataChip from "../NoDataChip/NoDataChip";
+import { PriceT } from "../../utils/types/api";
 
 const PricePlot = ({ data }: PricePlotProps): JSX.Element => {
   const [hoverInfoText, setHoverInfoText] = useState<string>("");
@@ -12,18 +13,18 @@ const PricePlot = ({ data }: PricePlotProps): JSX.Element => {
   const dates: string[] = data
     ? data
         .sort(
-          (a: CommodityPriceT, b: CommodityPriceT) =>
+          (a: PriceT, b: PriceT) =>
             new Date(a.date).getTime() - new Date(b.date).getTime()
         )
-        .map((entry: CommodityPriceT) => entry.date)
+        .map((entry: PriceT) => entry.date)
     : [];
   const prices: number[] = data
     ? data
         .sort(
-          (a: CommodityPriceT, b: CommodityPriceT) =>
+          (a: PriceT, b: PriceT) =>
             new Date(a.date).getTime() - new Date(b.date).getTime()
         )
-        .map((entry: CommodityPriceT) => Number(entry.price))
+        .map((entry: PriceT) => Number(entry.price))
     : [];
 
   const plotData: Data[] = [

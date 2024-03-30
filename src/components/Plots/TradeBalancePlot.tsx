@@ -1,10 +1,11 @@
-import Plot from "react-plotly.js";
 import { Fragment, useEffect, useState } from "react";
-import { ImportExportBalanceT } from "../../utils/types/api";
-import NoDataChip from "../NoDataChip/NoDataChip";
-import { fetchImportExportBalanceData } from "../../utils/functions/api";
-import { TradeBalancePlotT } from "./types";
+import Plot from "react-plotly.js";
 import { Data } from "plotly.js";
+
+import { TradeBalanceResT, TradeBalanceT } from "../../utils/types/api";
+import NoDataChip from "../NoDataChip/NoDataChip";
+import { fetchCountryTradeBalanceData } from "../../utils/functions/api";
+import { TradeBalancePlotT } from "./types";
 import CountryToggleGroup from "../Country/CountryToggleGroup";
 import { BASE_STYLE } from "../../utils/styles/base";
 
@@ -15,17 +16,14 @@ const TradeBalancePlot = ({
 }: TradeBalancePlotT): JSX.Element => {
   const [currentChoice, setCurrentChoice] = useState<string>("Commodity");
   const [plotIndex, setPlotIndex] = useState<number>(0);
-  const [importExportBalance, setImportExportBalance] = useState<
-    ImportExportBalanceT[]
-  >([]);
+  const [tradeBalance, setTradeBalance] = useState<TradeBalanceT[]>([]);
 
   useEffect(() => {
-    if (feature.properties?.ADMIN) {
-      fetchImportExportBalanceData(undefined, feature.properties.ADMIN)
-        .then((data: ImportExportBalanceT[]) => setImportExportBalance(data))
+    feature.properties?.ADMIN &&
+      fetchCountryTradeBalanceData(feature.properties.ADMIN)
+        .then(({ data }: TradeBalanceResT) => setTradeBalance(data))
         .catch((error) => console.error("Error fetching data:", error))
         .finally(() => setIsBalanceLoaded(true));
-    }
   }, []);
 
   useEffect(() => {
@@ -37,11 +35,11 @@ const TradeBalancePlot = ({
       type: "scatter",
       mode: "lines",
       name: "Commodity Imports",
-      x: importExportBalance.map((data) => data.year),
+      x: tradeBalance.map((data) => data.year),
       y:
         currentChoice === "Commodity"
-          ? importExportBalance.map((data) => data.total_commodity_imports)
-          : importExportBalance.map((data) => data.total_imports),
+          ? tradeBalance.map((data) => data.total_commodity_imports)
+          : tradeBalance.map((data) => data.total_imports),
       showlegend: false,
       line: { color: BASE_STYLE.COLOR_PALLETE.RED },
     },
@@ -49,34 +47,36 @@ const TradeBalancePlot = ({
       type: "scatter",
       mode: "lines",
       name: "Exports",
-      x: importExportBalance.map((data) => data.year),
+      x: tradeBalance.map((data) => data.year),
       y:
         currentChoice === "Commodity"
-          ? importExportBalance.map((data) => data.total_commodity_exports)
-          : importExportBalance.map((data) => data.total_exports),
+          ? tradeBalance.map((data) => data.total_commodity_exports)
+          : tradeBalance.map((data) => data.total_exports),
       showlegend: false,
       line: { color: BASE_STYLE.COLOR_PALLETE.GREEN },
     },
     {
       type: "bar",
       name: "Balance",
-      x: importExportBalance.map((data) => data.year),
+      x: tradeBalance.map((data) => data.year),
       y:
         currentChoice === "Commodity"
-          ? importExportBalance.map(
-              (data) =>
-                data.total_commodity_exports - data.total_commodity_imports,
+          ? tradeBalance.map(
+              (data: TradeBalanceT) =>
+                Number(data.total_commodity_exports) -
+                Number(data.total_commodity_imports)
             )
-          : importExportBalance.map(
-              (data) => data.total_exports - data.total_imports,
+          : tradeBalance.map(
+              (data) => Number(data.total_exports) - Number(data.total_imports)
             ),
       showlegend: false,
       marker: {
-        color: importExportBalance.map((data) => {
+        color: tradeBalance.map((data: TradeBalanceT) => {
           const balance =
             currentChoice === "Commodity"
-              ? data.total_commodity_exports - data.total_commodity_imports
-              : data.total_exports - data.total_imports;
+              ? Number(data.total_commodity_exports) -
+                Number(data.total_commodity_imports)
+              : Number(data.total_exports) - Number(data.total_imports);
           return balance >= 0
             ? BASE_STYLE.COLOR_PALLETE.GREEN
             : BASE_STYLE.COLOR_PALLETE.RED; // Set color to green for positive, red for negative
@@ -125,7 +125,7 @@ const TradeBalancePlot = ({
           setCurrentChoice={setCurrentChoice}
         />
       </div>
-      {importExportBalance.length ? (
+      {tradeBalance.length ? (
         <div style={{ height: "500px" }}>
           <Plot
             style={{ width: "100%" }}

@@ -1,12 +1,12 @@
 import { useContext } from "react";
+import { Box } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 import { CountryHeaderT } from "./types";
 import { AppContext } from "../AppContextProvider";
-import { DOMAIN } from "../../utils/config";
+import { S3_FOLDER } from "../../utils/config";
 import { BASE_STYLE } from "../../utils/styles/base";
 import { slugify } from "../../utils/functions/utils";
-import { Box } from "@mui/material";
 
 const CountryHeader = ({
   countryName,
@@ -17,7 +17,7 @@ const CountryHeader = ({
   return (
     <div className="countryNameBox" onClick={() => setIsDialogOpen(true)}>
       <img
-        src={DOMAIN + `/static/flags/${slugify(countryName)}.png`}
+        src={S3_FOLDER + `static/flags/${slugify(countryName)}.png`}
         style={{ height: "25px", marginRight: "5px" }}
       />
       <Box
@@ -29,21 +29,10 @@ const CountryHeader = ({
           alignItems: "center",
         }}
       >
-        <Box
-          sx={{
-            color: "inherit",
-            fontSize: "30px",
-          }}
-        >
-          {countryName}
-        </Box>
+        <Box sx={{ color: "inherit", fontSize: "30px" }}>{countryName}</Box>
         {!isHovered && (
           <OpenInNewIcon
-            sx={{
-              marginLeft: "5px",
-              fontSize: "20px",
-              color: "inherit",
-            }}
+            sx={{ marginLeft: "5px", fontSize: "20px", color: "inherit" }}
           />
         )}
       </Box>

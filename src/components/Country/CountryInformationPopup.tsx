@@ -1,7 +1,7 @@
+import { useContext, useEffect, useState } from "react";
+
 import { CountryInformationPopupT } from "./types";
 import ResourceTable from "./ResourceTable";
-import ImportExportTreemap from "../Plots/ImportExportTreemap";
-import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../AppContextProvider";
 import CountryHeader from "./CountryHeader";
 import TradeBalancePlot from "../Plots/TradeBalancePlot";
@@ -18,17 +18,22 @@ const CountryInformationPopup = ({
     useState<boolean>(true);
   const [isProductionReservesLoaded, setIsProductionReservesLoaded] =
     useState<boolean>(false);
-  const [isImportExportLoaded, setIsImportExportLoaded] =
-    useState<boolean>(false);
+  // const [isImportExportLoaded, setIsImportExportLoaded] =
+  //   useState<boolean>(false);
   const [isBalanceLoaded, setIsBalanceLoaded] = useState<boolean>(false);
 
   const { setIsLoading } = useContext<any>(AppContext);
 
   useEffect(() => {
-    setIsCountryInfoLoading(
-      !(isImportExportLoaded && isProductionReservesLoaded && isBalanceLoaded),
-    );
-  }, [isImportExportLoaded, isProductionReservesLoaded, isBalanceLoaded]);
+    // setIsCountryInfoLoading(
+    //   !(isImportExportLoaded && isProductionReservesLoaded && isBalanceLoaded)
+    // );
+    setIsCountryInfoLoading(!(isProductionReservesLoaded && isBalanceLoaded));
+  }, [
+    // isImportExportLoaded,
+    isProductionReservesLoaded,
+    isBalanceLoaded,
+  ]);
 
   useEffect(() => {
     setIsLoading(isCountryInfoLoading);
@@ -41,11 +46,7 @@ const CountryInformationPopup = ({
         overflowY: isCountryInfoLoading ? "hidden" : "scroll",
       }}
     >
-      <div
-        style={{
-          padding: "20px",
-        }}
-      >
+      <div style={{ padding: "20px" }}>
         <CountryHeader
           countryName={feature?.properties?.ADMIN}
           isHovered={isFeatureHovered}
@@ -58,12 +59,12 @@ const CountryInformationPopup = ({
           setYear={setYear}
           windowWidth={windowWidth}
         />
-        <ImportExportTreemap
+        {/* <ImportExportTreemap
           feature={feature}
           isImportExportLoaded={isImportExportLoaded}
           setIsImportExportLoaded={setIsImportExportLoaded}
           windowWidth={windowWidth}
-        />
+        /> */}
         <TradeBalancePlot
           feature={feature}
           setIsBalanceLoaded={setIsBalanceLoaded}

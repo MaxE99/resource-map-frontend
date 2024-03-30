@@ -1,16 +1,18 @@
+import { useState } from "react";
 import Plot from "react-plotly.js";
 import { Data } from "plotly.js";
 
-import { ProductionReservesT } from "../../utils/types/api";
+import { CommodityCountryDataT } from "../../utils/types/api";
 import { BASE_STYLE } from "../../utils/styles/base";
-import { useState } from "react";
 import { ResourcePlotT } from "./types";
 
 const ResourcePlot = ({ data }: ResourcePlotT): JSX.Element => {
   const [hoverInfoText, setHoverInfoText] = useState<string>("");
-  const dates: number[] = data.map((entry: ProductionReservesT) => entry.year);
-  const amounts: string[] = data.map(
-    (entry: ProductionReservesT) => entry.amount,
+  const dates: number[] = data.map((item: CommodityCountryDataT) =>
+    Number(item.year)
+  );
+  const amounts: number[] = data.map((item: CommodityCountryDataT) =>
+    Number(item.amount)
   );
 
   const plotData: Data[] = [

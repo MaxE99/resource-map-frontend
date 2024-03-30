@@ -1,5 +1,6 @@
-import "./styles.css";
 import { Tooltip } from "@mui/material";
+
+import "./styles.css";
 import { BASE_STYLE } from "../../utils/styles/base";
 
 type FormButtonT = {

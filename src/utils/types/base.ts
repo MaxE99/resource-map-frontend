@@ -1,10 +1,6 @@
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import {
-  CommodityPriceT,
-  CommodityT,
-  GovInfoT,
-  ProductionReservesT,
-} from "./api";
+
+import { CommodityT, GovInfoT, PriceT, ProductionReservesT } from "./api";
 
 type MarksT = {
   value: number;
@@ -30,7 +26,7 @@ type DefaultCommodityT = {
   commodity: CommodityT;
   gov_info: GovInfoT;
   production: ProductionReservesT[];
-  prices: CommodityPriceT[];
+  prices: PriceT[];
 };
 
 type AddGeoJSONInfoT = {

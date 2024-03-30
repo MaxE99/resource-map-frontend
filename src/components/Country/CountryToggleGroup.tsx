@@ -1,4 +1,5 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+
 import { CountryToggleGroupT } from "./types";
 import { BASE_STYLE } from "../../utils/styles/base";
 
@@ -10,7 +11,7 @@ const CountryToggleGroup = ({
 }: CountryToggleGroupT): JSX.Element => {
   const handleChange = (
     _: React.MouseEvent<HTMLElement>,
-    selection: string,
+    selection: string
   ) => {
     setCurrentChoice(selection);
   };

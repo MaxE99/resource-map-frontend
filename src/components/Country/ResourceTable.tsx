@@ -7,14 +7,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Slider from "@mui/material/Slider";
 import Paper from "@mui/material/Paper";
+
 import { ResourceTableT } from "./types";
 import { MARKS } from "../../utils/config";
-import { ProductionReservesT } from "../../utils/types/api";
-import NoDataChip from "../NoDataChip/NoDataChip";
 import {
-  fetchProductionData,
-  fetchReservesData,
-} from "../../utils/functions/api";
+  CountryResourceTableResT,
+  CountryResourceTableT,
+} from "../../utils/types/api";
+import NoDataChip from "../NoDataChip/NoDataChip";
+import { fetchCountryResourceTable } from "../../utils/functions/api";
 import CountryToggleGroup from "./CountryToggleGroup";
 import { BASE_STYLE } from "../../utils/styles/base";
 
@@ -28,30 +29,31 @@ const ResourceTable = ({
   setYear,
   windowWidth,
 }: ResourceTableT): JSX.Element => {
-  const [prodReserveData, setProdReserveData] = useState<ProductionReservesT[]>(
-    [],
-  );
+  const [prodReserveData, setProdReserveData] = useState<
+    CountryResourceTableT[]
+  >([]);
   const [currentChoice, setCurrentChoice] = useState<string>("production");
 
   useEffect(() => {
     setIsProductionReservesLoaded(false);
-    const fetchData = async () => {
-      try {
-        const data = await (currentChoice === "production"
-          ? fetchProductionData(year, undefined, feature.properties?.ADMIN)
-          : fetchReservesData(year, undefined, feature.properties?.ADMIN));
-
+    fetchCountryResourceTable(
+      year,
+      feature.properties?.ADMIN,
+      currentChoice === "production"
+    )
+      .then(({ data }: CountryResourceTableResT) => {
         const filteredData = data
-          .filter((d) => !isNaN(Number(d.amount)) && Number(d.amount) !== 0)
-          .sort((a, b) => a.commodity_name.localeCompare(b.commodity_name));
+          .filter(
+            (d: CountryResourceTableT) =>
+              !isNaN(Number(d.amount)) && Number(d.amount) !== 0
+          )
+          .sort((a: CountryResourceTableT, b: CountryResourceTableT) =>
+            a.commodity.localeCompare(b.commodity)
+          );
         setProdReserveData(filteredData);
-      } catch (error) {
-        console.error("Error fetching data", error);
-      } finally {
-        setIsProductionReservesLoaded(true);
-      }
-    };
-    fetchData();
+      })
+      .catch((error) => console.error("Error fetching data:", error))
+      .finally(() => setIsProductionReservesLoaded(true));
   }, [year, currentChoice]);
 
   const handleYearChange = (_: any, newYear: any) => {
@@ -139,7 +141,7 @@ const ResourceTable = ({
                       color: BASE_STYLE.COLOR_PALLETE.TEXT,
                     }}
                   >
-                    {row.commodity_name}
+                    {row.commodity}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -163,16 +165,17 @@ const ResourceTable = ({
                     sx={{
                       textAlign: "center",
                       color:
-                        row.rank && row.rank <= 3
+                        row.rank && Number(row.rank) <= 3
                           ? BASE_STYLE.COLOR_PALLETE.BACKGROUND
                           : BASE_STYLE.COLOR_PALLETE.TEXT,
-                      fontWeight: row.rank && row.rank <= 3 ? 600 : "normal",
+                      fontWeight:
+                        row.rank && Number(row.rank) <= 3 ? 600 : "normal",
                       backgroundColor:
-                        row.rank === 1
+                        Number(row.rank) === 1
                           ? "gold"
-                          : row.rank === 2
+                          : Number(row.rank) === 2
                           ? "silver"
-                          : row.rank === 3
+                          : Number(row.rank) === 3
                           ? "#CD7F32"
                           : "transparent",
                     }}

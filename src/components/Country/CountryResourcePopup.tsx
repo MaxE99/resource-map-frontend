@@ -3,12 +3,12 @@ import { useContext, useEffect, useState, Fragment } from "react";
 import ResourcePlot from "../Plots/ResourcePlot";
 import { AppContext } from "../AppContextProvider";
 import { CountryResourcePopupT } from "./types";
-import { ProductionReservesT } from "../../utils/types/api";
-import CountryHeader from "./CountryHeader";
 import {
-  fetchProductionData,
-  fetchReservesData,
-} from "../../utils/functions/api";
+  CommodityCountryDataResT,
+  CommodityCountryDataT,
+} from "../../utils/types/api";
+import CountryHeader from "./CountryHeader";
+import { fetchCommodityCountryData } from "../../utils/functions/api";
 import { BASE_STYLE } from "../../utils/styles/base";
 
 const CountryResourcePopup = ({
@@ -17,8 +17,9 @@ const CountryResourcePopup = ({
   isFeatureHovered,
   setIsPopupOpen,
 }: CountryResourcePopupT): JSX.Element | null => {
-  const [productionData, setProductionData] = useState<ProductionReservesT[]>();
-  const [reserveData, setReserveData] = useState<ProductionReservesT[]>();
+  const [productionData, setProductionData] =
+    useState<CommodityCountryDataT[]>();
+  const [reserveData, setReserveData] = useState<CommodityCountryDataT[]>();
   const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
 
   const { setIsLoading } = useContext<any>(AppContext);
@@ -30,10 +31,11 @@ const CountryResourcePopup = ({
       let isProductionDataLoaded = false;
       let isReservesDataLoaded = false;
       setIsLoading(true);
-      fetchProductionData(undefined, commodity.name, feature.properties.ADMIN)
-        .then((data: ProductionReservesT[]) => {
+      fetchCommodityCountryData(commodity, feature.properties.ADMIN)
+        .then(({ data }: CommodityCountryDataResT) => {
           const sortedData = data.sort(
-            (a: ProductionReservesT, b: ProductionReservesT) => a.year - b.year,
+            (a: CommodityCountryDataT, b: CommodityCountryDataT) =>
+              Number(a.year) - Number(b.year)
           );
           setProductionData(sortedData);
         })
@@ -46,10 +48,11 @@ const CountryResourcePopup = ({
           }
         });
 
-      fetchReservesData(undefined, commodity.name, feature.properties.ADMIN)
-        .then((data: ProductionReservesT[]) => {
+      fetchCommodityCountryData(commodity, feature.properties.ADMIN, false)
+        .then(({ data }: CommodityCountryDataResT) => {
           const sortedData = data.sort(
-            (a: ProductionReservesT, b: ProductionReservesT) => a.year - b.year,
+            (a: CommodityCountryDataT, b: CommodityCountryDataT) =>
+              Number(a.year) - Number(b.year)
           );
           setReserveData(sortedData);
         })

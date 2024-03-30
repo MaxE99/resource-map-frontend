@@ -14,7 +14,7 @@ import { BASE_STYLE } from "../../utils/styles/base";
 import CountryBalancePopup from "../Country/CountryBalancePopup";
 import NoDataChip from "../NoDataChip/NoDataChip";
 import CountryStrongholdPopup from "../Country/CountryStrongholdPopup";
-import { ProductionReservesT } from "../../utils/types/api";
+import { StrongholdT } from "../../utils/types/api";
 import { calculateStrongholdCoords } from "./functions";
 
 const Map = ({
@@ -32,9 +32,9 @@ const Map = ({
   const [hoveredFeature, setHoveredFeature] = useState<
     GeoJSON.Feature | undefined
   >(undefined);
-  const [selectedStrongholds, setSelectedStrongholds] = useState<
-    ProductionReservesT[]
-  >([]);
+  const [selectedStrongholds, setSelectedStrongholds] = useState<StrongholdT[]>(
+    []
+  );
   const {
     isShowingProduction,
     setIsShowingProduction,

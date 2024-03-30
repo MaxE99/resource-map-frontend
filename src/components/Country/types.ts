@@ -1,9 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
-import { CommodityT, ProductionReservesT } from "../../utils/types/api";
+
+import { StrongholdT } from "../../utils/types/api";
 
 type CountryResourcePopupT = {
   feature: GeoJSON.Feature;
-  commodity: CommodityT;
+  commodity: string;
   isFeatureHovered: boolean;
   setIsPopupOpen: Dispatch<SetStateAction<boolean>>;
 };
@@ -31,10 +32,10 @@ type ResourceTableT = {
   windowWidth: number;
 };
 
-type CountryStrongholdT = {
+type CountryStrongholdPopupT = {
   isFeatureHovered: boolean;
-  strongholds: ProductionReservesT[];
-  setSelectedStrongholds: Dispatch<SetStateAction<ProductionReservesT[]>>;
+  strongholds: StrongholdT[];
+  setSelectedStrongholds: Dispatch<SetStateAction<StrongholdT[]>>;
   setIsPopupOpen: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -55,7 +56,7 @@ export type {
   CountryInformationPopupT,
   ResourceTableT,
   CountryBalancePopupT,
-  CountryStrongholdT,
+  CountryStrongholdPopupT,
   CountryHeaderT,
   CountryToggleGroupT,
 };
