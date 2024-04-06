@@ -2,7 +2,7 @@ import { MarksT } from "./types/base";
 
 const DOMAIN = "https://api.resource-map.com/";
 
-const S3_FOLDER = "https://s3.us-east-2.amazonaws.com/resource-map.com-images/";
+const S3_FOLDER = "https://s3.us-east-1.amazonaws.com/resource-map.com-media/";
 
 const API = {
   PRODUCTION: DOMAIN + "production",
