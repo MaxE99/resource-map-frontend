@@ -4,7 +4,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 import { CountryHeaderT } from "./types";
 import { AppContext } from "../AppContextProvider";
-import { S3_FOLDER } from "../../utils/config";
+import { CLOUDFRONT_DOMAIN } from "../../utils/config";
 import { BASE_STYLE } from "../../utils/styles/base";
 import { slugify } from "../../utils/functions/utils";
 
@@ -17,7 +17,7 @@ const CountryHeader = ({
   return (
     <div className="countryNameBox" onClick={() => setIsDialogOpen(true)}>
       <img
-        src={S3_FOLDER + `static/flags/${slugify(countryName)}.png`}
+        src={CLOUDFRONT_DOMAIN + `static/flags/${slugify(countryName)}.png`}
         style={{ height: "25px", marginRight: "5px" }}
       />
       <Box

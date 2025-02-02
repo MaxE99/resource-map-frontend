@@ -1,7 +1,7 @@
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { Tooltip } from "@mui/material";
 
-import { S3_FOLDER } from "../../utils/config";
+import { CLOUDFRONT_DOMAIN } from "../../utils/config";
 import { CreatorImageProps } from "./types";
 
 const CreatorImage = ({
@@ -23,7 +23,8 @@ const CreatorImage = ({
         width={200}
         style={{ borderRadius: "8px" }}
         src={
-          S3_FOLDER + (name === "Max" ? "static/max.jpg" : "static/kilian.jpeg")
+          CLOUDFRONT_DOMAIN +
+          (name === "Max" ? "static/max.jpg" : "static/kilian.jpeg")
         }
       />
       <div

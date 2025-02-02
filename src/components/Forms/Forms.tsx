@@ -7,7 +7,7 @@ import { CommodityT } from "../../utils/types/api";
 import Dropdown from "../Dropdown/Dropdown";
 import "./styles.css";
 import { OptionProps } from "../Dropdown/types";
-import { S3_FOLDER } from "../../utils/config";
+import { CLOUDFRONT_DOMAIN } from "../../utils/config";
 import FormButton from "./FormButton";
 import { BASE_STYLE } from "../../utils/styles/base";
 import { COMMODITIES_DATA } from "../../utils/startData";
@@ -51,7 +51,9 @@ const Forms = ({
               }}
             >
               <img
-                src={S3_FOLDER + "static/" + commodity.img_path + ".jpg"}
+                src={
+                  CLOUDFRONT_DOMAIN + "static/" + commodity.img_path + ".jpg"
+                }
                 height={25}
                 width={25}
                 style={{

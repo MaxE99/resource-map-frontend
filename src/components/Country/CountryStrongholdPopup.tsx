@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import "./styles.css";
 import { CountryStrongholdPopupT } from "./types";
 import { StrongholdT } from "../../utils/types/api";
-import { S3_FOLDER } from "../../utils/config";
+import { CLOUDFRONT_DOMAIN } from "../../utils/config";
 import CountryHeader from "./CountryHeader";
 import { slugify } from "../../utils/functions/utils";
 
@@ -61,7 +61,7 @@ const CountryStrongholdPopup = ({
             >
               <img
                 src={
-                  S3_FOLDER +
+                  CLOUDFRONT_DOMAIN +
                   `static/commodity_imgs/${slugify(stronghold.commodity)}.jpg`
                 }
                 className="strongholdCommodityImg"

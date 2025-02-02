@@ -3,7 +3,7 @@ import { IoBookmarkOutline, IoInformationCircleOutline } from "react-icons/io5";
 
 import "./styles.css";
 import { SidebarProps, SidebarSelected } from "./types";
-import { S3_FOLDER } from "../../utils/config";
+import { CLOUDFRONT_DOMAIN } from "../../utils/config";
 import SidebarHead from "./SidebarHead";
 import SidebarMenu from "./SidebarMenu";
 import DataSources from "./DataSources";
@@ -52,7 +52,7 @@ const Sidebar = ({
         icon={
           <img
             src={
-              S3_FOLDER +
+              CLOUDFRONT_DOMAIN +
               "static/commodity_imgs/" +
               slugify(commodity.name.toLowerCase()) +
               ".jpg"

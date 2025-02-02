@@ -2,7 +2,7 @@ import { MarksT } from "./types/base";
 
 const DOMAIN = "https://api.resource-map.com/";
 
-const S3_FOLDER = "https://d60gm4l9kus1q.cloudfront.net/";
+const CLOUDFRONT_DOMAIN = "https://d85on8dkfvwg4.cloudfront.net/";
 
 const API = {
   PRODUCTION: DOMAIN + "production",
@@ -258,4 +258,11 @@ const IMAGE_SOURCES = [
   { name: "Other Commodity Images", link: "https://images-of-elements.com" },
 ];
 
-export { API, DOMAIN, S3_FOLDER, MARKS, IMPORT_EXPORT_MARKS, IMAGE_SOURCES };
+export {
+  API,
+  DOMAIN,
+  CLOUDFRONT_DOMAIN,
+  MARKS,
+  IMPORT_EXPORT_MARKS,
+  IMAGE_SOURCES,
+};
