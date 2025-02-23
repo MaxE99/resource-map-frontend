@@ -1,0 +1,57 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write # Required for OIDC authentication
+      contents: read # Required for accessing the repository contents
+
+    env:
+      AWS_REGION: us-east-1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ secrets.ROLE_ARN }}
+          role-session-name: GitHubActions
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to S3
+        run: |
+          aws s3 rm ${{ secrets.BUCKET_URI }} --recursive
+          aws s3 cp dist/ ${{ secrets.BUCKET_URI }} --recursive
+          aws s3 cp dist/index.html ${{ secrets.BUCKET_URI }} --metadata-directive REPLACE --content-type "text/html" --cache-control "no-store, no-cache, must-revalidate"
+
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths "/*"
